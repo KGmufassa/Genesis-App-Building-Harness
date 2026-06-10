@@ -34,8 +34,8 @@
     ]
   },
   "statistics": {
-    "skills_scanned": 73,
-    "skills_included": 16,
+    "skills_scanned": 74,
+    "skills_included": 17,
     "stage_associated_skills_excluded": 57,
     "non_skill_artifacts_ignored": 1
   },
@@ -1334,12 +1334,14 @@
       "aliases": [
         "security checklist",
         "secure code review",
-        "app security"
+        "app security",
+        "dynamic security review",
+        "security surface scanner"
       ],
       "folder": "security-review",
       "source_path": ".opencode/Skills/security-review/skill.md",
       "stage_associated": false,
-      "description": "Reviews code and implementation plans for security risks across secrets, input validation, SQL injection, authentication, authorization, XSS, CSRF, rate limiting, sensitive data exposure, dependencies, and deployment readiness.",
+      "description": "Dynamically reviews and hardens code security by scanning changed security surfaces, detecting project context, selecting relevant checks, ranking findings, patching safe issues when permitted, and reporting verification and residual risk.",
       "domains": [
         "security",
         "application security",
@@ -1348,6 +1350,10 @@
         "data protection"
       ],
       "capabilities": [
+        "scan changed files first",
+        "detect project stack and security surfaces",
+        "classify security risk surfaces",
+        "select context-aware security checks",
         "detect hardcoded secrets",
         "validate user input handling",
         "prevent SQL injection",
@@ -1356,6 +1362,11 @@
         "check CSRF protections",
         "verify rate limiting",
         "prevent sensitive data exposure",
+        "review webhook and payment security",
+        "review AI endpoint abuse controls",
+        "apply permission-aware security fixes",
+        "produce severity-ranked findings",
+        "report residual security risk",
         "review dependency security",
         "produce pre-deployment security checklist"
       ],
@@ -1366,19 +1377,30 @@
         "work with secrets",
         "implement payment feature",
         "store sensitive data",
+        "touch AI endpoint",
+        "add webhook",
+        "handle file upload",
+        "change database write",
+        "review changed security-sensitive files",
         "security review",
+        "pre-completion security check",
         "pre-deployment security check"
       ],
       "input_requirements": [
-        "code or implementation plan",
+        "changed files or implementation plan",
         "auth and API context",
         "data sensitivity context",
+        "agent edit and bash permissions",
         "deployment context when applicable"
       ],
       "outputs": [
+        "detected security context",
+        "security surface map",
+        "selected checks",
         "security findings",
+        "fixes applied when permitted",
         "verification checklist",
-        "secure implementation patterns",
+        "residual risk report",
         "pre-deployment security status"
       ],
       "tools_or_scripts": [
@@ -1393,18 +1415,28 @@
         "Web Security Academy"
       ],
       "constraints": [
+        "must review changed security-relevant files first",
+        "must expand scope only when security boundaries require it",
+        "must adapt checks to detected stack and surfaces",
+        "must respect edit and bash permissions",
         "must never allow hardcoded secrets",
-        "must validate all user input",
+        "must validate user input at trust boundaries",
         "must avoid leaking sensitive error details",
         "must check authorization before sensitive operations",
-        "must err on the side of caution"
+        "must document verification and residual risk"
       ],
       "rule_engine_tags": [
         "security",
+        "dynamic-review",
+        "changed-files-first",
+        "surface-classification",
         "auth",
         "api",
         "secrets",
         "input-validation",
+        "webhooks",
+        "payments",
+        "ai-endpoints",
         "deployment"
       ],
       "selection_priority": "high",
@@ -1412,7 +1444,79 @@
         "security-sensitive",
         "sensitive-data",
         "production-impact",
-        "requires-audit"
+        "requires-audit",
+        "permission-aware",
+        "residual-risk"
+      ],
+      "inferred_metadata": false
+    },
+    {
+      "skill_id": "commit-summary",
+      "name": "commit-summary",
+      "aliases": [
+        "commit title",
+        "commit description",
+        "change summary",
+        "commit message helper"
+      ],
+      "folder": "commit-summary",
+      "source_path": ".opencode/Skills/commit-summary/skill.md",
+      "stage_associated": false,
+      "description": "Creates a concise commit title and brief 20-30 word description summarizing codebase changes from git diff, git status, changed files, or user-provided change notes.",
+      "domains": [
+        "git",
+        "developer workflow",
+        "commit messaging",
+        "change summarization"
+      ],
+      "capabilities": [
+        "inspect git status",
+        "inspect git diff summary",
+        "identify primary change theme",
+        "separate core changes from incidental churn",
+        "write concise commit titles",
+        "write 20-30 word commit descriptions",
+        "avoid unsupported change claims"
+      ],
+      "task_triggers": [
+        "create commit summary",
+        "write commit title",
+        "write commit description",
+        "summarize changes for commit",
+        "create title and 20 word description"
+      ],
+      "input_requirements": [
+        "user-provided change notes or repository diff",
+        "git status when available",
+        "git diff or diff stat when available"
+      ],
+      "outputs": [
+        "commit title",
+        "20-30 word commit description"
+      ],
+      "tools_or_scripts": [
+        "git status --short",
+        "git diff --stat",
+        "git diff"
+      ],
+      "references": [],
+      "constraints": [
+        "must not invent changes",
+        "must keep title concise",
+        "must keep description between 20 and 30 words",
+        "must return only title and description unless clarification is needed"
+      ],
+      "rule_engine_tags": [
+        "git",
+        "commit",
+        "summary",
+        "developer-workflow",
+        "change-description"
+      ],
+      "selection_priority": "normal",
+      "risk_flags": [
+        "requires-change-context",
+        "summary-accuracy"
       ],
       "inferred_metadata": false
     },

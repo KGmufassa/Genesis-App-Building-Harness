@@ -1,495 +1,547 @@
 ---
 name: security-review
-description: Use this skill when adding authentication, handling user input, working with secrets, creating API endpoints, or implementing payment/sensitive features. Provides comprehensive security checklist and patterns.
+description: Use this dynamic agent skill when code changes touch authentication, authorization, API routes, database access, user input, file uploads, payments, webhooks, secrets, AI endpoints, sensitive data, logging, or deployment configuration. It scans changed security surfaces, selects context-aware checks, ranks findings by severity, patches safe issues when permitted, and reports verification and residual risk.
 origin: ECC
 ---
 
 # Security Review Skill
 
-This skill ensures all code follows security best practices and identifies potential vulnerabilities.
+This skill reviews and hardens code security dynamically.
 
-## When to Activate
+It is a general agent skill, not a Stage 1-8 command or stage subskill.
 
-- Implementing authentication or authorization
-- Handling user input or file uploads
-- Creating new API endpoints
-- Working with secrets or credentials
-- Implementing payment features
-- Storing or transmitting sensitive data
-- Integrating third-party APIs
-
-## Security Checklist
-
-### 1. Secrets Management
-
-#### ❌ NEVER Do This
-```typescript
-const apiKey = "sk-proj-xxxxx"  // Hardcoded secret
-const dbPassword = "password123" // In source code
-```
-
-#### ✅ ALWAYS Do This
-```typescript
-const apiKey = process.env.OPENAI_API_KEY
-const dbUrl = process.env.DATABASE_URL
-
-// Verify secrets exist
-if (!apiKey) {
-  throw new Error('OPENAI_API_KEY not configured')
-}
-```
-
-#### Verification Steps
-- [ ] No hardcoded API keys, tokens, or passwords
-- [ ] All secrets in environment variables
-- [ ] `.env.local` in .gitignore
-- [ ] No secrets in git history
-- [ ] Production secrets in hosting platform (Vercel, Railway)
-
-### 2. Input Validation
-
-#### Always Validate User Input
-```typescript
-import { z } from 'zod'
-
-// Define validation schema
-const CreateUserSchema = z.object({
-  email: z.string().email(),
-  name: z.string().min(1).max(100),
-  age: z.number().int().min(0).max(150)
-})
-
-// Validate before processing
-export async function createUser(input: unknown) {
-  try {
-    const validated = CreateUserSchema.parse(input)
-    return await db.users.create(validated)
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return { success: false, errors: error.errors }
-    }
-    throw error
-  }
-}
-```
-
-#### File Upload Validation
-```typescript
-function validateFileUpload(file: File) {
-  // Size check (5MB max)
-  const maxSize = 5 * 1024 * 1024
-  if (file.size > maxSize) {
-    throw new Error('File too large (max 5MB)')
-  }
-
-  // Type check
-  const allowedTypes = ['image/jpeg', 'image/png', 'image/gif']
-  if (!allowedTypes.includes(file.type)) {
-    throw new Error('Invalid file type')
-  }
-
-  // Extension check
-  const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif']
-  const extension = file.name.toLowerCase().match(/\.[^.]+$/)?.[0]
-  if (!extension || !allowedExtensions.includes(extension)) {
-    throw new Error('Invalid file extension')
-  }
-
-  return true
-}
-```
-
-#### Verification Steps
-- [ ] All user inputs validated with schemas
-- [ ] File uploads restricted (size, type, extension)
-- [ ] No direct use of user input in queries
-- [ ] Whitelist validation (not blacklist)
-- [ ] Error messages don't leak sensitive info
-
-### 3. SQL Injection Prevention
-
-#### ❌ NEVER Concatenate SQL
-```typescript
-// DANGEROUS - SQL Injection vulnerability
-const query = `SELECT * FROM users WHERE email = '${userEmail}'`
-await db.query(query)
-```
-
-#### ✅ ALWAYS Use Parameterized Queries
-```typescript
-// Safe - parameterized query
-const { data } = await supabase
-  .from('users')
-  .select('*')
-  .eq('email', userEmail)
-
-// Or with raw SQL
-await db.query(
-  'SELECT * FROM users WHERE email = $1',
-  [userEmail]
-)
-```
-
-#### Verification Steps
-- [ ] All database queries use parameterized queries
-- [ ] No string concatenation in SQL
-- [ ] ORM/query builder used correctly
-- [ ] Supabase queries properly sanitized
-
-### 4. Authentication & Authorization
-
-#### JWT Token Handling
-```typescript
-// ❌ WRONG: localStorage (vulnerable to XSS)
-localStorage.setItem('token', token)
-
-// ✅ CORRECT: httpOnly cookies
-res.setHeader('Set-Cookie',
-  `token=${token}; HttpOnly; Secure; SameSite=Strict; Max-Age=3600`)
-```
-
-#### Authorization Checks
-```typescript
-export async function deleteUser(userId: string, requesterId: string) {
-  // ALWAYS verify authorization first
-  const requester = await db.users.findUnique({
-    where: { id: requesterId }
-  })
-
-  if (requester.role !== 'admin') {
-    return NextResponse.json(
-      { error: 'Unauthorized' },
-      { status: 403 }
-    )
-  }
-
-  // Proceed with deletion
-  await db.users.delete({ where: { id: userId } })
-}
-```
-
-#### Row Level Security (Supabase)
-```sql
--- Enable RLS on all tables
-ALTER TABLE users ENABLE ROW LEVEL SECURITY;
-
--- Users can only view their own data
-CREATE POLICY "Users view own data"
-  ON users FOR SELECT
-  USING (auth.uid() = id);
-
--- Users can only update their own data
-CREATE POLICY "Users update own data"
-  ON users FOR UPDATE
-  USING (auth.uid() = id);
-```
-
-#### Verification Steps
-- [ ] Tokens stored in httpOnly cookies (not localStorage)
-- [ ] Authorization checks before sensitive operations
-- [ ] Row Level Security enabled in Supabase
-- [ ] Role-based access control implemented
-- [ ] Session management secure
-
-### 5. XSS Prevention
-
-#### Sanitize HTML
-```typescript
-import DOMPurify from 'isomorphic-dompurify'
-
-// ALWAYS sanitize user-provided HTML
-function renderUserContent(html: string) {
-  const clean = DOMPurify.sanitize(html, {
-    ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'p'],
-    ALLOWED_ATTR: []
-  })
-  return <div dangerouslySetInnerHTML={{ __html: clean }} />
-}
-```
-
-#### Content Security Policy
-```typescript
-// next.config.js
-const securityHeaders = [
-  {
-    key: 'Content-Security-Policy',
-    value: `
-      default-src 'self';
-      script-src 'self' 'unsafe-eval' 'unsafe-inline';
-      style-src 'self' 'unsafe-inline';
-      img-src 'self' data: https:;
-      font-src 'self';
-      connect-src 'self' https://api.example.com;
-    `.replace(/\s{2,}/g, ' ').trim()
-  }
-]
-```
-
-#### Verification Steps
-- [ ] User-provided HTML sanitized
-- [ ] CSP headers configured
-- [ ] No unvalidated dynamic content rendering
-- [ ] React's built-in XSS protection used
-
-### 6. CSRF Protection
-
-#### CSRF Tokens
-```typescript
-import { csrf } from '@/lib/csrf'
-
-export async function POST(request: Request) {
-  const token = request.headers.get('X-CSRF-Token')
-
-  if (!csrf.verify(token)) {
-    return NextResponse.json(
-      { error: 'Invalid CSRF token' },
-      { status: 403 }
-    )
-  }
-
-  // Process request
-}
-```
-
-#### SameSite Cookies
-```typescript
-res.setHeader('Set-Cookie',
-  `session=${sessionId}; HttpOnly; Secure; SameSite=Strict`)
-```
-
-#### Verification Steps
-- [ ] CSRF tokens on state-changing operations
-- [ ] SameSite=Strict on all cookies
-- [ ] Double-submit cookie pattern implemented
-
-### 7. Rate Limiting
-
-#### API Rate Limiting
-```typescript
-import rateLimit from 'express-rate-limit'
-
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // 100 requests per window
-  message: 'Too many requests'
-})
-
-// Apply to routes
-app.use('/api/', limiter)
-```
-
-#### Expensive Operations
-```typescript
-// Aggressive rate limiting for searches
-const searchLimiter = rateLimit({
-  windowMs: 60 * 1000, // 1 minute
-  max: 10, // 10 requests per minute
-  message: 'Too many search requests'
-})
-
-app.use('/api/search', searchLimiter)
-```
-
-#### Verification Steps
-- [ ] Rate limiting on all API endpoints
-- [ ] Stricter limits on expensive operations
-- [ ] IP-based rate limiting
-- [ ] User-based rate limiting (authenticated)
-
-### 8. Sensitive Data Exposure
-
-#### Logging
-```typescript
-// ❌ WRONG: Logging sensitive data
-console.log('User login:', { email, password })
-console.log('Payment:', { cardNumber, cvv })
-
-// ✅ CORRECT: Redact sensitive data
-console.log('User login:', { email, userId })
-console.log('Payment:', { last4: card.last4, userId })
-```
-
-#### Error Messages
-```typescript
-// ❌ WRONG: Exposing internal details
-catch (error) {
-  return NextResponse.json(
-    { error: error.message, stack: error.stack },
-    { status: 500 }
-  )
-}
-
-// ✅ CORRECT: Generic error messages
-catch (error) {
-  console.error('Internal error:', error)
-  return NextResponse.json(
-    { error: 'An error occurred. Please try again.' },
-    { status: 500 }
-  )
-}
-```
-
-#### Verification Steps
-- [ ] No passwords, tokens, or secrets in logs
-- [ ] Error messages generic for users
-- [ ] Detailed errors only in server logs
-- [ ] No stack traces exposed to users
-
-### 9. Blockchain Security (Solana)
-
-#### Wallet Verification
-```typescript
-import { verify } from '@solana/web3.js'
-
-async function verifyWalletOwnership(
-  publicKey: string,
-  signature: string,
-  message: string
-) {
-  try {
-    const isValid = verify(
-      Buffer.from(message),
-      Buffer.from(signature, 'base64'),
-      Buffer.from(publicKey, 'base64')
-    )
-    return isValid
-  } catch (error) {
-    return false
-  }
-}
-```
-
-#### Transaction Verification
-```typescript
-async function verifyTransaction(transaction: Transaction) {
-  // Verify recipient
-  if (transaction.to !== expectedRecipient) {
-    throw new Error('Invalid recipient')
-  }
-
-  // Verify amount
-  if (transaction.amount > maxAmount) {
-    throw new Error('Amount exceeds limit')
-  }
-
-  // Verify user has sufficient balance
-  const balance = await getBalance(transaction.from)
-  if (balance < transaction.amount) {
-    throw new Error('Insufficient balance')
-  }
-
-  return true
-}
-```
-
-#### Verification Steps
-- [ ] Wallet signatures verified
-- [ ] Transaction details validated
-- [ ] Balance checks before transactions
-- [ ] No blind transaction signing
-
-### 10. Dependency Security
-
-#### Regular Updates
-```bash
-# Check for vulnerabilities
-npm audit
-
-# Fix automatically fixable issues
-npm audit fix
-
-# Update dependencies
-npm update
-
-# Check for outdated packages
-npm outdated
-```
-
-#### Lock Files
-```bash
-# ALWAYS commit lock files
-git add package-lock.json
-
-# Use in CI/CD for reproducible builds
-npm ci  # Instead of npm install
-```
-
-#### Verification Steps
-- [ ] Dependencies up to date
-- [ ] No known vulnerabilities (npm audit clean)
-- [ ] Lock files committed
-- [ ] Dependabot enabled on GitHub
-- [ ] Regular security updates
-
-## Security Testing
-
-### Automated Security Tests
-```typescript
-// Test authentication
-test('requires authentication', async () => {
-  const response = await fetch('/api/protected')
-  expect(response.status).toBe(401)
-})
-
-// Test authorization
-test('requires admin role', async () => {
-  const response = await fetch('/api/admin', {
-    headers: { Authorization: `Bearer ${userToken}` }
-  })
-  expect(response.status).toBe(403)
-})
-
-// Test input validation
-test('rejects invalid input', async () => {
-  const response = await fetch('/api/users', {
-    method: 'POST',
-    body: JSON.stringify({ email: 'not-an-email' })
-  })
-  expect(response.status).toBe(400)
-})
-
-// Test rate limiting
-test('enforces rate limits', async () => {
-  const requests = Array(101).fill(null).map(() =>
-    fetch('/api/endpoint')
-  )
-
-  const responses = await Promise.all(requests)
-  const tooManyRequests = responses.filter(r => r.status === 429)
-
-  expect(tooManyRequests.length).toBeGreaterThan(0)
-})
-```
-
-## Pre-Deployment Security Checklist
-
-Before ANY production deployment:
-
-- [ ] **Secrets**: No hardcoded secrets, all in env vars
-- [ ] **Input Validation**: All user inputs validated
-- [ ] **SQL Injection**: All queries parameterized
-- [ ] **XSS**: User content sanitized
-- [ ] **CSRF**: Protection enabled
-- [ ] **Authentication**: Proper token handling
-- [ ] **Authorization**: Role checks in place
-- [ ] **Rate Limiting**: Enabled on all endpoints
-- [ ] **HTTPS**: Enforced in production
-- [ ] **Security Headers**: CSP, X-Frame-Options configured
-- [ ] **Error Handling**: No sensitive data in errors
-- [ ] **Logging**: No sensitive data logged
-- [ ] **Dependencies**: Up to date, no vulnerabilities
-- [ ] **Row Level Security**: Enabled in Supabase
-- [ ] **CORS**: Properly configured
-- [ ] **File Uploads**: Validated (size, type)
-- [ ] **Wallet Signatures**: Verified (if blockchain)
-
-## Resources
-
-- [OWASP Top 10](https://owasp.org/www-project-top-ten/)
-- [Next.js Security](https://nextjs.org/docs/security)
-- [Supabase Security](https://supabase.com/docs/guides/auth)
-- [Web Security Academy](https://portswigger.net/web-security)
+Use it when implementing, reviewing, or validating code that touches security-sensitive areas.
 
 ---
 
-**Remember**: Security is not optional. One vulnerability can compromise the entire platform. When in doubt, err on the side of caution.
+# Core Operating Model
+
+Follow this workflow:
+
+```text
+Scan changed files
+↓
+Detect project stack and security surfaces
+↓
+Classify risk level
+↓
+Select relevant security checks
+↓
+Review prioritized files and nearby boundaries
+↓
+Patch issues if the agent has permission
+↓
+Recommend or run verification
+↓
+Report residual risk
+```
+
+Default behavior:
+
+```text
+Review changed security-relevant files first.
+Expand only when imports, permissions, data flow, or execution paths require it.
+```
+
+---
+
+# Activation Triggers
+
+Use this skill when a task touches:
+
+* authentication
+* authorization
+* sessions
+* cookies
+* API routes
+* server actions
+* database reads or writes
+* user input
+* file uploads
+* admin features
+* payments
+* webhooks
+* secrets
+* environment variables
+* third-party APIs
+* AI endpoints
+* sensitive user data
+* logging or error handling
+* deployment configuration
+
+---
+
+# Non-Goals
+
+Do not use this skill to:
+
+* orchestrate a product stage
+* generate build tickets
+* replace implementation validation
+* perform broad refactors unrelated to security
+* invent missing business rules
+* weaken security to satisfy convenience
+* mark stage completion
+
+Implementation or validation agents control execution. This skill controls security judgment.
+
+---
+
+# Review Modes
+
+Support these modes:
+
+```text
+review_mode
+fix_mode
+pre_completion_check
+pre_deploy_check
+```
+
+## review_mode
+
+Report findings only. Use when edit permission is unavailable or the user asked for review only.
+
+## fix_mode
+
+Patch high-confidence security issues and verify the fix. Use only when edit permission is available.
+
+## pre_completion_check
+
+Run before an implementation agent marks security-sensitive work complete.
+
+## pre_deploy_check
+
+Perform a broader production-readiness security review.
+
+---
+
+# Permission-Aware Behavior
+
+Adapt to agent permissions:
+
+```text
+edit denied -> report findings only
+edit allowed -> patch safe and well-scoped issues
+bash denied -> list verification commands
+bash allowed -> run focused security checks when appropriate
+```
+
+Do not attempt invasive changes in review-only mode.
+
+---
+
+# Dynamic Context Detection
+
+Before reviewing, detect:
+
+```json
+{
+  "framework": "",
+  "runtime": "",
+  "package_manager": "",
+  "auth_system": "",
+  "database_layer": "",
+  "deployment_target": "",
+  "api_surface": [],
+  "auth_surface": [],
+  "data_access_surface": [],
+  "sensitive_operations": [],
+  "security_relevant_files": []
+}
+```
+
+Look for:
+
+* Next.js route handlers, middleware, server actions, and API routes
+* Express routes and middleware
+* Supabase clients, RLS assumptions, and service role usage
+* Prisma, Drizzle, query builders, or raw SQL
+* Clerk, Auth.js, Supabase Auth, JWT, OAuth, or custom auth
+* Stripe, GitHub, Clerk, Supabase, or custom webhooks
+* OpenAI or other AI provider endpoints
+* Vercel, Railway, Docker, or other deployment configuration
+
+---
+
+# Changed-Files-First Review
+
+Prioritize review in this order:
+
+```text
+1. changed files
+2. imported auth, database, config, validation, and secret helpers
+3. route handlers, controllers, server actions, and middleware
+4. permission checks and ownership checks
+5. tests covering the changed behavior
+6. deployment and environment configuration if affected
+```
+
+Only expand beyond changed files when they cross a security boundary or expose a likely vulnerability.
+
+---
+
+# Security Surface Classification
+
+Classify touched code into one or more surfaces:
+
+```text
+public_surface
+authenticated_surface
+privileged_surface
+data_read_surface
+data_write_surface
+secret_handling_surface
+external_integration_surface
+file_upload_surface
+payment_surface
+webhook_surface
+ai_abuse_surface
+logging_surface
+deployment_surface
+```
+
+Use the surface classification to select checks.
+
+---
+
+# Context-Based Check Selection
+
+## API Route Or Server Action
+
+Check:
+
+* authentication
+* authorization
+* input validation
+* rate limiting
+* safe error handling
+* sensitive logging
+* response data exposure
+
+## Database Read Or Write
+
+Check:
+
+* parameterized queries
+* row ownership
+* role permissions
+* mass assignment
+* RLS assumptions
+* transaction safety
+
+## Auth Or Session Code
+
+Check:
+
+* secure cookie flags
+* token storage
+* session expiration
+* refresh behavior
+* CSRF exposure
+* privilege escalation paths
+
+## File Upload
+
+Check:
+
+* file size limit
+* MIME type allowlist
+* extension allowlist
+* storage permissions
+* virus or content scanning needs
+* path traversal risk
+
+## Webhook
+
+Check:
+
+* signature verification
+* raw body handling
+* timestamp tolerance
+* replay protection
+* idempotency
+* event allowlist
+* retry behavior
+
+## Payment
+
+Check:
+
+* webhook verification
+* idempotency
+* amount and currency validation
+* metadata trust boundaries
+* sensitive logging
+* authorization around billing actions
+
+## AI Endpoint
+
+Check:
+
+* prompt size limits
+* rate limits
+* abuse controls
+* prompt injection exposure
+* unsafe tool invocation
+* system prompt leakage
+* sensitive data in prompts or logs
+* output validation
+
+## Frontend Rendering
+
+Check:
+
+* unsafe HTML rendering
+* `dangerouslySetInnerHTML`
+* DOM injection
+* token storage in browser
+* sensitive data exposure
+
+## Secrets And Config
+
+Check:
+
+* hardcoded secrets
+* exposed service roles
+* env var validation
+* `.env` git safety
+* accidental logging
+
+---
+
+# Recommended Search Patterns
+
+Adapt searches to the actual stack. Useful defaults:
+
+```bash
+rg "process.env|localStorage|sessionStorage|dangerouslySetInnerHTML|innerHTML|eval\\(|Function\\("
+rg "password|secret|token|apiKey|privateKey|service_role|Authorization|Bearer"
+rg "SELECT .*\\$\\{|query\\(|raw\\(|execute\\(|from\\(|insert\\(|update\\(|delete\\("
+rg "NextResponse|route.ts|route.js|server action|app/api|pages/api"
+rg "webhook|signature|stripe|clerk|github|supabase"
+rg "upload|File|FormData|multipart|blob|bucket|storage"
+```
+
+Also inspect package manifests, middleware, auth helpers, database clients, validation schemas, and tests when they are relevant to the changed files.
+
+---
+
+# Risk Escalation Rules
+
+Use this severity model.
+
+## Critical
+
+Examples:
+
+* exposed secrets
+* auth bypass
+* service role leakage
+* payment or webhook spoofing
+* arbitrary code execution
+* unrestricted admin action
+
+## High
+
+Examples:
+
+* missing authorization
+* cross-user data access
+* unsafe file upload
+* SQL injection risk
+* sensitive data exposure
+* missing webhook signature verification
+
+## Medium
+
+Examples:
+
+* missing rate limits
+* weak input validation
+* verbose user-facing errors
+* incomplete CSRF protection
+* missing security tests
+
+## Low
+
+Examples:
+
+* missing security headers
+* incomplete logging redaction
+* dependency update recommendations
+* minor hardening opportunities
+
+---
+
+# Abuse-Case Prompts
+
+For every risky change, ask:
+
+```text
+How could an unauthenticated user abuse this?
+How could an authenticated user access another user's data?
+How could a normal user perform an admin action?
+How could this be spammed or overloaded?
+Could this leak secrets, tokens, PII, prompts, or internal errors?
+Could this trust client-provided data that must be server-verified?
+Could this endpoint be replayed, forged, or called out of order?
+```
+
+---
+
+# Safe Logging Rules
+
+Never log:
+
+* passwords
+* API keys
+* access tokens
+* refresh tokens
+* session cookies
+* authorization headers
+* full request bodies containing sensitive data
+* payment details
+* private user data
+* service role keys
+* private prompts or system prompts
+* sensitive AI inputs or outputs
+
+Prefer structured, redacted logs:
+
+```json
+{
+  "event": "payment_webhook_failed",
+  "user_id": "usr_123",
+  "provider_event_id": "evt_123",
+  "reason": "signature_invalid"
+}
+```
+
+---
+
+# Security Test Recommendations
+
+Recommend or create tests for:
+
+* unauthenticated request returns `401`
+* unauthorized cross-user access returns `403`
+* invalid input returns `400`
+* dangerous payload is rejected
+* rate limit returns `429`
+* webhook rejects invalid signature
+* webhook replay is rejected
+* file upload rejects invalid type and oversized files
+* protected action requires correct role
+* user-facing errors do not expose internals
+
+When tests are not feasible, list exact manual verification steps.
+
+---
+
+# Fix Behavior
+
+When edits are allowed:
+
+* patch only security issues with clear evidence
+* keep fixes scoped to the affected surface
+* preserve existing application behavior unless behavior is unsafe
+* add or update focused tests when possible
+* run relevant validation commands when allowed
+* document any remaining risk
+
+When edits are not allowed:
+
+* report findings
+* include exact file references
+* include recommended fixes
+* include verification steps
+
+---
+
+# Finding Output Format
+
+Use this format for findings:
+
+```json
+{
+  "finding_id": "SEC-001",
+  "severity": "critical | high | medium | low",
+  "category": "",
+  "surface": "",
+  "file": "",
+  "issue": "",
+  "risk": "",
+  "recommended_fix": "",
+  "verification_step": "",
+  "status": "open | fixed | accepted_risk | not_applicable"
+}
+```
+
+---
+
+# Review Report Output
+
+Return:
+
+```json
+{
+  "security_review_status": "passed | fixed | findings_remaining | blocked",
+  "review_mode": "",
+  "detected_context": {},
+  "surfaces_reviewed": [],
+  "selected_checks": [],
+  "skipped_checks": [],
+  "findings": [],
+  "fixes_applied": [],
+  "verification": [],
+  "residual_risks": []
+}
+```
+
+---
+
+# Completion Rule
+
+Do not mark security-sensitive work complete until:
+
+* relevant surfaces were reviewed
+* critical and high findings are fixed or explicitly reported
+* verification steps were run or listed
+* residual risks are documented
+* security-sensitive assumptions are stated clearly
+
+---
+
+# Pre-Deployment Security Checklist
+
+For `pre_deploy_check`, verify:
+
+* no hardcoded secrets
+* required environment variables are validated
+* user input is validated server-side
+* database access is parameterized or ORM-safe
+* authorization exists before sensitive operations
+* protected cookies use secure flags
+* CSRF exposure is handled for cookie-based auth
+* user-provided HTML is sanitized or avoided
+* rate limits exist for public and expensive endpoints
+* webhook signatures and replay protection are implemented
+* file uploads are constrained by size, type, extension, and storage permissions
+* AI endpoints have abuse limits and do not leak prompts or sensitive data
+* errors shown to users do not leak internals
+* logs redact sensitive data
+* dependency audit is clean or residual risk is documented
+* deployment security headers and CORS are appropriate
+
+---
+
+# Resources
+
+Useful references:
+
+* OWASP Top 10
+* Web Security Academy
+* framework security documentation for the detected stack
+* provider security documentation for detected auth, database, payment, AI, and hosting services
+
