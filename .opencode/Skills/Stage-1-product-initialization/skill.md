@@ -145,6 +145,36 @@ Build-Plans/Build-status/Planning-state.json
 
 The command should behave like a guided product initialization interview.
 
+## Initialization Intake
+
+When the command is initialized and no usable raw product intent exists yet, first ask the user:
+
+```text
+1. What app do you want to build?
+2. Who is the app for?
+3. What features or capabilities do you already know you want included?
+```
+
+If the user already provided the app idea but not features, ask only for the missing feature or capability details.
+
+If the user provided features but not the core app idea or target user, ask only for the missing product identity or user details.
+
+Record the user's answer as the initial `raw_product_intent` and seed:
+
+```text
+product_identity
+strategic_intent
+user_profiles
+feature_groups
+interactive_guidance.answered_questions
+```
+
+Do not run downstream Stage 1 subskills until there is enough initial app intent to identify:
+
+* app idea
+* primary user or audience
+* initial feature or capability list
+
 Use this decision rule:
 
 ```text
@@ -203,6 +233,10 @@ Build-Plans/Build-status/Planning-state.json
 ```
 
 Do not discard existing valid planning outputs unless the user explicitly requests a clean restart.
+
+Before running `product-intelligence`, verify that `raw_user_input`, conversation context, existing Stage 1 outputs, or planning state contains enough initial app intent.
+
+If the app idea, primary user, or initial features are missing, pause and ask the initialization intake questions instead of continuing.
 
 ---
 

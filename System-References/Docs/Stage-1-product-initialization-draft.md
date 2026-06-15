@@ -161,6 +161,36 @@ The command must load this file at the beginning of Stage 1, update it after eac
 
 The Stage 1 command should behave like a guided product initialization interview.
 
+## Initialization Intake
+
+When the Stage 1 command is initialized and no usable raw product intent exists yet, it must first ask the user to explain:
+
+```text
+1. What app do you want to build?
+2. Who is the app for?
+3. What features or capabilities do you already know you want included?
+```
+
+If the user already provided a product idea but not features, ask only for the missing feature/capability details.
+
+If the user provided features but not the core app idea or target user, ask only for the missing product identity or user details.
+
+Record the user's answer as the initial `raw_product_intent` and seed:
+
+```text
+product_identity
+strategic_intent
+user_profiles
+feature_groups
+interactive_guidance.answered_questions
+```
+
+Do not run the downstream Stage 1 subskills until there is enough initial app intent to identify at least:
+
+* app idea
+* primary user or audience
+* initial feature or capability list
+
 Use this decision rule:
 
 ```text
