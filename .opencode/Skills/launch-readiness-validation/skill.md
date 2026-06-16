@@ -10,6 +10,8 @@ It confirms:
 * unresolved launch blockers
 * onboarding readiness
 * support readiness
+* visual QA readiness
+* design system compliance readiness
 * accepted launch risks
 
 ---
@@ -24,6 +26,10 @@ Validate:
 * validation results
 * regression status
 * system health
+* visual QA results
+* responsive validation results
+* design system compliance
+* visual drift status
 * unresolved repair items
 * launch-critical risks
 
@@ -72,14 +78,25 @@ Return:
   "launch_readiness": {},
   "launch_blockers": [],
   "readiness_gates": [],
+  "visual_launch_readiness": {},
+  "design_system_launch_readiness": {},
   "onboarding_gaps": [],
   "support_gaps": []
 }
 ```
+
+Block launch readiness when launch-critical frontend work has:
+
+* missing required preview URL or preview evidence
+* unresolved visual QA failures
+* unresolved responsive validation failures
+* unresolved design system compliance failures
+* `major_visual_drift`
+
+These may proceed only when explicitly recorded as accepted launch risks.
 
 This skill contributes to:
 
 ```text
 Build-Plans/Stage-7/01-launch-readiness.json
 ```
-

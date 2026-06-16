@@ -57,11 +57,15 @@ SCREEN-
 BEHAVIOR-
 STATE-
 A11Y-
+UI-BLUEPRINT-
+VISUAL-SPEC-
+DESIGN-SYSTEM-
 SLICE-
 TICKET-
 AGENT-
 BATCH-
 VALIDATION-
+VISUAL-QA-
 ARTIFACT-
 LAUNCH-GATE-
 TELEMETRY-
@@ -80,9 +84,9 @@ The harness should preserve this end-to-end chain:
 Stage 1 feature/workflow
 -> Stage 2 assumption
 -> Stage 3 architecture decision
--> Stage 4 screen/behavior/state
+-> Stage 4 screen/behavior/state/UI blueprint/visual spec/design system
 -> Stage 5 slice/ticket/agent
--> Stage 6 implementation/validation result
+-> Stage 6 implementation/validation/visual QA result
 -> Stage 7 launch gate/operational signal
 -> Stage 8 telemetry/evolution finding
 ```
@@ -99,9 +103,36 @@ Example:
   "assumption_ids": ["ASSUMPTION-009"],
   "service_ids": ["SERVICE-003"],
   "screen_ids": ["SCREEN-005"],
+  "ui_blueprint_ids": ["UI-BLUEPRINT-002"],
+  "visual_spec_ids": ["VISUAL-SPEC-002"],
+  "design_system_ids": ["DESIGN-SYSTEM-001"],
   "validation_ids": ["VALIDATION-018"]
 }
 ```
+
+---
+
+# Global Visual And Design Continuity Rules
+
+Frontend-facing work must preserve this continuity chain:
+
+```text
+Stage 4 UI blueprint
+-> Stage 4 visual spec
+-> Stage 4 design system foundation
+-> Stage 5 frontend ticket
+-> Stage 5 agent handoff
+-> Stage 6 implementation result
+-> Stage 6 visual QA result
+-> Stage 7 visual launch readiness
+```
+
+Rules:
+
+* Stage 4 cannot complete launch-critical frontend planning without approved or explicitly assumed visual specs and a design system foundation.
+* Stage 5 cannot create frontend build tickets without carrying UI blueprint refs, visual spec refs, design system refs, visual requirements, responsive requirements, and visual acceptance criteria.
+* Stage 6 cannot complete frontend tickets requiring visual QA without recording preview evidence, responsive validation, design system compliance, and visual drift status.
+* Stage 7 cannot mark launch readiness as complete when launch-critical frontend work has unresolved visual QA failures, unresolved design system compliance failures, missing required preview evidence, or `major_visual_drift`, unless explicitly accepted as a launch risk.
 
 ---
 
@@ -185,10 +216,10 @@ When a later stage discovers a blocker, it must route the issue to the correct e
 | Product identity, user, workflow, MVP scope problem | Stage 1 |
 | Invalid, contradicted, or unsupported assumption | Stage 2 |
 | Service, data, API, security, infrastructure, or scalability flaw | Stage 3 |
-| Journey, screen, behavior, state, or accessibility flaw | Stage 4 |
+| Journey, screen, behavior, state, accessibility, UI blueprint, visual spec, or design system flaw | Stage 4 |
 | Sequencing, ticket, agent, testing, or release planning flaw | Stage 5 |
-| Implementation, validation, regression, or repair flaw | Stage 6 |
-| Deployment, monitoring, analytics, support, or launch readiness flaw | Stage 7 |
+| Implementation, validation, regression, repair, visual QA, responsive validation, or design system compliance flaw | Stage 6 |
+| Deployment, monitoring, analytics, support, visual launch readiness, or launch readiness flaw | Stage 7 |
 | Live telemetry, optimization, roadmap, AI, or scale evolution need | Stage 8 |
 
 Revision feedback must include:

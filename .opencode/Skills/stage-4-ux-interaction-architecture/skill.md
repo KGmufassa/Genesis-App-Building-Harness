@@ -21,6 +21,8 @@ into:
 * feature behavior specifications
 * state transition map
 * accessibility framework
+* implementation-ready UI blueprints
+* frontend build package
 
 This is the Stage 4 command skill. It is not a single UX subskill.
 
@@ -41,6 +43,7 @@ Stage 4 must not:
 * redesign backend system architecture
 * write implementation tickets
 * produce final UI art direction as decoration
+* generate frontend code
 * plan engineering sprints
 
 Stage 4 may recommend product or architecture revisions only when interaction design exposes a blocking contradiction.
@@ -86,6 +89,10 @@ The command must load this file at the beginning of Stage 4, update it after eac
   "feature_behaviors": {},
   "state_transition_map": {},
   "accessibility_framework": {},
+  "ui_blueprints": {},
+  "visual_spec_inventory": [],
+  "design_system_foundation": {},
+  "frontend_build_package": {},
   "ux_decisions": [],
   "ux_risks": [],
   "interaction_tradeoffs": [],
@@ -267,7 +274,9 @@ Run Stage 4 skills in this order:
 3. screen-system-design
 4. feature-behavior-specification
 5. state-transition-and-accessibility-design
-6. ux-interaction-synthesis
+6. ui-blueprint-specification
+7. design-system-foundation
+8. ux-interaction-synthesis
 ```
 
 ---
@@ -376,11 +385,44 @@ interactive_guidance
 
 ---
 
-## 8. Run `ux-interaction-synthesis`
+## 8. Run `ui-blueprint-specification`
 
 Required shared state updates:
 
 ```text
+ui_blueprints
+visual_spec_inventory
+frontend_build_package
+stage_5_handoff
+ux_confidence_gaps
+interactive_guidance
+```
+
+---
+
+## 9. Run `design-system-foundation`
+
+Required shared state updates:
+
+```text
+design_system_foundation
+visual_spec_inventory
+stage_5_handoff
+ux_confidence_gaps
+interactive_guidance
+```
+
+---
+
+## 10. Run `ux-interaction-synthesis`
+
+Required shared state updates:
+
+```text
+ui_blueprints
+visual_spec_inventory
+design_system_foundation
+frontend_build_package
 ux_decisions
 ux_risks
 interaction_tradeoffs
@@ -402,6 +444,8 @@ Build-Plans/Stage-4/03-screen-system.json
 Build-Plans/Stage-4/04-feature-behaviors.json
 Build-Plans/Stage-4/05-state-transition-map.json
 Build-Plans/Stage-4/06-accessibility-framework.json
+Build-Plans/Stage-4/07-ui-blueprint-specification.json
+Build-Plans/Stage-4/08-design-system-foundation.json
 ```
 
 Each output must include:
@@ -435,13 +479,20 @@ If the audit does not pass, do not use `ready_for_stage_5`.
 
 Stage 4 may complete only when:
 
-* all six UX outputs exist
+* all eight UX, UI blueprint, and design system outputs exist
 * primary user journeys are defined
 * interaction architecture supports MVP workflows
 * screen system supports all launch-critical journeys
 * feature behaviors are specified
 * state transitions are mapped
 * accessibility framework exists
+* UI blueprints exist for all launch-critical pages and screens
+* each launch-critical UI blueprint includes page purpose, primary user, screen type, layout type, sections, components, actions, data needs, states, validation, and navigation
+* each launch-critical UI blueprint includes visual style, density, color direction, typography feel, component style, primary visual focus, responsive behavior, visual do and don't rules, visual acceptance criteria, and user approval status
+* design system foundation exists and defines shared color, typography, spacing, radius, elevation, icon, component, and responsive rules
+* launch-critical visual specs reference or align with the design system foundation
+* launch-critical visual specs and design system approval statuses are approved or explicitly accepted as assumptions
+* frontend build package includes page inventory, component inventory, shared components, routes, actions, states, frontend task hints, and recommended frontend skills
 * high and critical UX risks have mitigation paths
 * critical interactive guidance questions are answered or converted into recorded assumptions
 * no interaction-blocking Stage 3 unknowns remain unresolved
@@ -464,9 +515,15 @@ Before completing Stage 4, confirm:
 * Stage 4 did not redefine product strategy
 * Stage 4 did not redesign backend architecture
 * Stage 4 did not write implementation tickets
+* Stage 4 did not generate frontend code
 * every MVP workflow has a user journey
 * every launch-critical feature has behavior rules
 * every required screen maps to a journey or feature
+* every launch-critical page has a UI blueprint
+* every UI blueprint uses the page-definition matrix
+* every launch-critical UI blueprint uses the visual spec matrix
+* design system foundation exists for launch-critical frontend work
+* component inventory, shared components, routes, states, and actions are defined
 * every core workflow has states and recovery behavior
 * accessibility risks are recorded
 * critical interactive guidance questions are answered or converted into recorded assumptions

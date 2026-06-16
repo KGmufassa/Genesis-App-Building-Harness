@@ -58,6 +58,9 @@ Each output must include references to relevant:
 * parallel batch IDs
 * required skills used
 * validation gates
+* UI blueprint IDs
+* visual spec IDs
+* design system IDs
 * unresolved blockers
 
 ---
@@ -82,6 +85,10 @@ The validation results output must include:
 * acceptance criteria status
 * test/check results
 * coverage gaps
+* visual QA results
+* responsive validation results
+* design system compliance results
+* visual drift status
 
 The regression analysis output must include:
 
@@ -138,6 +145,7 @@ Stage 6 may complete only when:
 * high and critical defects have repairs, blockers, or escalation paths
 * repair work has been revalidated
 * system health is synthesized from implementation, validation, regression, and repair results
+* launch-critical frontend tickets include visual QA, responsive validation, design system compliance, and visual drift status when required
 * Stage 7 handoff contains unresolved operational, deployment, monitoring, analytics, and support needs
 
 Stage 6 is `ready_for_stage_7` only when:
@@ -146,6 +154,8 @@ Stage 6 is `ready_for_stage_7` only when:
 * no unresolved critical validation failures remain
 * no unresolved critical regressions remain
 * all launch-critical tickets are implemented and validated
+* no launch-critical frontend ticket has unresolved `major_visual_drift`
+* design system compliance is validated or explicitly accepted as known risk for launch-critical frontend work
 * all high-risk repairs are verified or explicitly accepted as known risk
 
 Possible completion statuses:
@@ -170,6 +180,8 @@ Before completing Stage 6, confirm:
 * every assigned agent has execution status
 * every parallel batch has validation status
 * validation results map to ticket acceptance criteria
+* frontend validation results map to UI blueprint, visual spec, and design system IDs when present
+* visual QA and responsive validation results are included for frontend tickets when required
 * regression analysis maps failures back to affected tickets, agents, batches, workflows, and features
 * repair log includes verification results
 * Stage 7 handoff is usable for launch and operationalization

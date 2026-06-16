@@ -175,7 +175,9 @@ The frontend agent should receive:
     "screen_system": "Build-Plans/Stage-4/03-screen-system.json",
     "feature_behaviors": "Build-Plans/Stage-4/04-feature-behaviors.json",
     "state_transition_map": "Build-Plans/Stage-4/05-state-transition-map.json",
-    "accessibility_framework": "Build-Plans/Stage-4/06-accessibility-framework.json"
+    "accessibility_framework": "Build-Plans/Stage-4/06-accessibility-framework.json",
+    "ui_blueprint_specification": "Build-Plans/Stage-4/07-ui-blueprint-specification.json",
+    "design_system_foundation": "Build-Plans/Stage-4/08-design-system-foundation.json"
   },
   "stage_3_files": {
     "api_architecture": "Build-Plans/Stage-3/04-api-architecture.json",
@@ -184,6 +186,14 @@ The frontend agent should receive:
   "skill_registry": "System-References/skill-regisry/skill-registry.json"
 }
 ```
+
+The frontend agent must treat `07-ui-blueprint-specification.json` as the implementation source for page structure, layout type, sections, components, shared components, routes, actions, data requirements, validation needs, UI states, accessibility requirements, responsive requirements, visual requirements, and visual acceptance criteria.
+
+Do not invent frontend structure that conflicts with the referenced UI blueprint.
+
+Do not invent visual direction that conflicts with the referenced visual spec.
+
+The frontend agent must treat `08-design-system-foundation.json` as the shared source for design tokens, component style rules, responsive breakpoints, accessibility constraints, and design system approval status.
 
 ---
 
@@ -302,6 +312,9 @@ For each ticket, read:
 * validation steps
 * recommended skills
 * Stage 4 UX references
+* Stage 4 UI blueprint references
+* Stage 4 visual spec references and visual requirements
+* Stage 4 design system references and design rules
 * Stage 3 API/security references
 
 ## 3. Select Skills
@@ -321,6 +334,16 @@ unclear interaction flow → Mapping-Ux-flows
 ## 4. Implement Ticket
 
 Make scoped frontend changes only within assigned ownership boundaries.
+
+For tickets with `ui_blueprint_refs`, preserve the referenced page, component, route, action, state, validation, accessibility, responsive, visual, and design system requirements from:
+
+```text
+Build-Plans/Stage-4/07-ui-blueprint-specification.json
+```
+
+For tickets with `visual_spec_refs`, validate against the referenced visual acceptance criteria and report any visual gaps.
+
+For tickets with `design_system_refs`, preserve the shared design system rules and report design system compliance.
 
 If a ticket requires backend, database, infrastructure, or shared API changes outside the assigned scope:
 
@@ -449,4 +472,3 @@ This agent definition is ready to become a working agent when:
 * Stage 5 agent assignment can select this agent for frontend tickets
 * Stage 6 execution can consume the agent handoff package
 * status output path is confirmed
-

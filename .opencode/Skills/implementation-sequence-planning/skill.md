@@ -27,6 +27,8 @@ This skill is the build sequencing layer for Stage 5.
   "api_architecture": {},
   "screen_system": {},
   "feature_behaviors": {},
+  "ui_blueprints": {},
+  "frontend_build_package": {},
   "existing_state": {}
 }
 ```
@@ -50,6 +52,8 @@ Define:
 * data model implementation order
 * API implementation order
 * UX implementation order
+* UI blueprint implementation order
+* shared component implementation order
 * integration implementation order
 * validation checkpoints
 
@@ -59,6 +63,8 @@ Identify:
 
 * end-to-end slices
 * workflow-based slices
+* page-based frontend slices
+* shared component slices
 * infrastructure setup slices
 * integration slices
 * testing slices
@@ -71,6 +77,7 @@ Identify:
 * premature feature work
 * hidden prerequisites
 * risky late integrations
+* page work scheduled before shared layout, route, or component foundations
 * missing validation checkpoints
 
 ---
@@ -137,6 +144,8 @@ Build-Plans/Build-status/Development-state.json
 Validate:
 
 * every launch-critical workflow has a build path
+* frontend sequencing uses the Stage 4 frontend build package when available
+* shared components, layout systems, navigation, and route foundations precede dependent page work
 * foundational infrastructure and data work precedes dependent features
 * integrations are not pushed so late that they threaten release readiness
 * each implementation slice has a validation checkpoint

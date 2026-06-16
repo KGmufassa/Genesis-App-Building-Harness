@@ -157,12 +157,18 @@ The Stage 6 handoff should be normalized into:
   "support_needs": [],
   "known_defects": [],
   "accepted_risks": [],
+  "visual_qa_results": [],
+  "responsive_validation_results": [],
+  "design_system_compliance": {},
+  "visual_drift_status": "",
   "dev_server_url": "",
   "artifact_refs": []
 }
 ```
 
 Stage 7 must not mark launch-ready while unresolved launch-critical Stage 6 blockers remain, unless they are explicitly accepted as known launch risks.
+
+Stage 7 must not mark launch-ready while launch-critical frontend work has unresolved visual QA failures, unresolved responsive validation failures, unresolved design system compliance failures, missing required preview evidence, or `major_visual_drift`, unless each item is explicitly accepted as a known launch risk.
 
 ---
 
@@ -204,6 +210,8 @@ environment_readiness
 secret_readiness
 data_migration_readiness
 validation_evidence_readiness
+visual_qa_readiness
+design_system_readiness
 monitoring_readiness
 analytics_readiness
 rollback_readiness
@@ -537,6 +545,8 @@ blocked
   "launch_blockers": [],
   "known_defects": [],
   "accepted_risks": [],
+  "visual_launch_readiness": {},
+  "design_system_launch_readiness": {},
   "onboarding_readiness": {},
   "support_readiness": {},
   "evidence_refs": [],
@@ -634,6 +644,7 @@ Stage 7 may complete as `ready_for_stage_8` only when:
 * all five Stage 7 output files exist
 * all launch gates are `ready`, `accepted_risk`, or `not_applicable`
 * deployment environment, setup, build, deployment, and rollback details are defined or explicitly blocked
+* visual QA, responsive validation, design system compliance, preview evidence, and visual drift status are launch-ready or explicitly accepted as known risks
 * monitoring checks and alert ownership are defined
 * analytics events and success metrics are defined
 * support, onboarding, and operational runbooks are defined

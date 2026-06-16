@@ -437,6 +437,56 @@ acceptance_criteria
 validation_steps
 risk_level
 completion_status
+ui_blueprint_refs
+visual_spec_refs
+design_system_refs
+page_refs
+component_refs
+route_refs
+state_refs
+action_refs
+frontend_task_hint
+visual_requirements
+responsive_requirements
+visual_acceptance_criteria_refs
+preview_required
+visual_qa_required
+design_system_compliance_required
+```
+
+Frontend tickets that include `ui_blueprint_refs` must preserve the referenced UI blueprint requirements from:
+
+```text
+Build-Plans/Stage-4/07-ui-blueprint-specification.json
+```
+
+Stage 6 must validate referenced UI blueprint requirements for:
+
+* page structure
+* layout type
+* sections and components
+* shared components
+* routes
+* user actions
+* required UI states
+* data requirements
+* validation requirements
+* accessibility requirements
+* responsive requirements
+* visual requirements
+* visual acceptance criteria
+* design system compliance
+
+For frontend tickets requiring preview or visual QA, Stage 6 must record:
+
+```json
+{
+  "preview_url": "",
+  "visual_qa_results": [],
+  "responsive_validation_results": [],
+  "design_system_compliance": {},
+  "visual_drift_status": "visual_match | minor_visual_drift | major_visual_drift | requires_user_review"
+}
 ```
 
 Each agent assignment must include:
@@ -482,6 +532,10 @@ Stage 6 must not execute a ticket until:
 * the agent can use the ticket-required skills
 * file scopes are clear
 * validation requirements are clear
+* frontend tickets include UI blueprint handoff inputs when `ui_blueprint_refs` are present
+* frontend tickets include visual requirements and visual acceptance criteria when `visual_spec_refs` are present
+* frontend tickets include design system handoff inputs when `design_system_refs` are present
+* frontend tickets include preview and visual QA requirements when required by Stage 5
 * parallel execution conflicts are resolved or the ticket is placed in a serial batch
 
 ---
@@ -1183,6 +1237,11 @@ Stage 6 may complete only when:
 * failed tickets include exhausted attempt counts, final failure reason, and escalation path
 * not-applicable tickets include rationale
 * every executed ticket followed its `agent_required_skills` and `agent_skill_instructions`
+* every executed frontend ticket with UI blueprint references was validated against the referenced UI blueprint requirements
+* every executed frontend ticket with visual spec references was validated against the referenced visual requirements and visual acceptance criteria
+* every executed frontend ticket with design system references was validated against the referenced design system foundation
+* every frontend ticket requiring preview recorded a preview URL or blocker
+* every frontend ticket requiring visual QA recorded visual QA results, responsive validation results, and visual drift status
 * every generated or assigned agent reported execution status
 * every parallel batch has validation results
 * all required validation gates have pass/fail status
@@ -1198,6 +1257,9 @@ Stage 6 is `ready_for_stage_7` only when:
 * no unresolved critical validation failures remain
 * no unresolved critical regressions remain
 * all launch-critical tickets are implemented and validated
+* all launch-critical frontend tickets preserve referenced UI blueprint page, component, route, action, state, validation, accessibility, responsive, visual, and design system requirements
+* all launch-critical frontend tickets requiring preview have a recorded preview URL or accepted blocker
+* all launch-critical frontend tickets have no `major_visual_drift` unless explicitly accepted as known release risk
 * all high-risk repairs are verified or explicitly accepted as known risk
 * no launch-critical ticket is `failed`, `blocked`, or `deferred` unless explicitly accepted as a known release risk
 
@@ -1218,6 +1280,10 @@ Before completing Stage 6, confirm:
 * every assigned agent has execution status
 * every parallel batch has validation status
 * validation results map to ticket acceptance criteria
+* frontend validation results map to referenced UI blueprint IDs when present
+* frontend validation results map to referenced visual spec IDs when present
+* frontend validation results map to referenced design system IDs when present
+* visual QA, responsive validation, design system compliance, and visual drift status are recorded for frontend tickets when required
 * regression analysis maps failures back to affected tickets, agents, batches, workflows, and features
 * repair log includes verification results
 * Stage 7 handoff is usable for launch and operationalization

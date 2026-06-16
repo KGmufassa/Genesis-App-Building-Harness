@@ -31,6 +31,9 @@ This skill is the task decomposition layer between Stage 5 orchestration and Sta
   "engineering_dependencies": {},
   "testing_strategy": {},
   "feature_behaviors": {},
+  "ui_blueprints": {},
+  "frontend_build_package": {},
+  "design_system_foundation": {},
   "stage_1_inputs": {},
   "stage_3_inputs": {},
   "stage_4_inputs": {},
@@ -66,6 +69,9 @@ Create build tickets from:
 * feature behaviors
 * architecture constraints
 * UX dependencies
+* UI blueprints
+* design system foundation
+* frontend build package hints
 
 Each ticket must be small enough to execute in Stage 6, but large enough to represent meaningful engineering progress.
 
@@ -84,6 +90,42 @@ Every build ticket must include:
   "stage_1_feature_refs": [],
   "stage_3_architecture_refs": [],
   "stage_4_ux_refs": [],
+  "ui_blueprint_refs": [],
+  "visual_spec_refs": [],
+  "design_system_refs": [],
+  "page_refs": [],
+  "component_refs": [],
+  "shared_component_refs": [],
+  "route_refs": [],
+  "state_refs": [],
+  "action_refs": [],
+  "frontend_task_hint": "",
+  "visual_requirements": {
+    "visual_style": "",
+    "density": "",
+    "color_direction": "",
+    "typography_feel": "",
+    "component_style": "",
+    "primary_visual_focus": "",
+    "responsive_behavior": "",
+    "visual_do_rules": [],
+    "visual_dont_rules": [],
+    "reference_apps": [],
+    "visual_acceptance_criteria": [],
+    "user_approval_status": ""
+  },
+  "responsive_requirements": {
+    "desktop_layout": "",
+    "tablet_layout": "",
+    "mobile_layout": "",
+    "collapse_rules": [],
+    "navigation_behavior": "",
+    "priority_content_mobile": []
+  },
+  "visual_acceptance_criteria_refs": [],
+  "preview_required": false,
+  "visual_qa_required": false,
+  "design_system_compliance_required": false,
   "prerequisites": [],
   "depends_on_tickets": [],
   "primary_skill": "",
@@ -225,6 +267,53 @@ Example:
   "ticket_id": "TICKET-004",
   "slice_id": "slice-001",
   "title": "Build login screen",
+  "ui_blueprint_refs": ["UI-BLUEPRINT-LOGIN"],
+  "visual_spec_refs": ["UI-BLUEPRINT-LOGIN.visual_spec"],
+  "design_system_refs": ["DESIGN-SYSTEM-FOUNDATION"],
+  "page_refs": ["SCREEN-LOGIN"],
+  "component_refs": ["LoginForm"],
+  "route_refs": ["/login"],
+  "state_refs": ["loading", "error", "success"],
+  "action_refs": ["submit_login"],
+  "frontend_task_hint": "Build login page from Stage 4 UI blueprint.",
+  "visual_requirements": {
+    "visual_style": "SaaS Dashboard",
+    "density": "Balanced",
+    "color_direction": "Neutral base with one primary action color",
+    "typography_feel": "Clean and readable",
+    "component_style": "Soft Card",
+    "primary_visual_focus": "Login form and primary submit action",
+    "responsive_behavior": "Single-column mobile layout, centered desktop form",
+    "visual_do_rules": [
+      "Make the primary submit action visually dominant"
+    ],
+    "visual_dont_rules": [
+      "Do not add decorative sections that distract from sign in"
+    ],
+    "reference_apps": [],
+    "visual_acceptance_criteria": [
+      "The login form is the first visible focus on desktop and mobile"
+    ],
+    "user_approval_status": "approved"
+  },
+  "responsive_requirements": {
+    "desktop_layout": "Centered form within app shell",
+    "tablet_layout": "Centered single-column form",
+    "mobile_layout": "Full-width single-column form",
+    "collapse_rules": [
+      "Keep primary action visible after form fields"
+    ],
+    "navigation_behavior": "No sidebar on login",
+    "priority_content_mobile": [
+      "email field",
+      "password field",
+      "submit action"
+    ]
+  },
+  "visual_acceptance_criteria_refs": ["VAC-LOGIN-001"],
+  "preview_required": true,
+  "visual_qa_required": true,
+  "design_system_compliance_required": true,
   "primary_skill": "frontend-design",
   "recommended_skills": [
     "frontend-design",
@@ -285,6 +374,13 @@ Identify:
 * tickets without acceptance criteria
 * tickets with missing validation steps
 * tickets that depend on unresolved architecture or UX decisions
+* frontend tickets without UI blueprint references
+* frontend tickets without visual spec references
+* frontend tickets without design system references
+* frontend tickets that omit page, component, route, state, or action references when applicable
+* frontend tickets that omit visual requirements or visual acceptance criteria when applicable
+* frontend tickets that omit responsive requirements when applicable
+* browser-validated frontend tickets without preview requirements
 * tickets that are too broad for Stage 6 execution
 * tickets that require skills unavailable in the registry
 * tickets without a best-suited primary skill
@@ -325,6 +421,12 @@ Pause for user input when ticket uncertainty blocks Stage 6 execution.
   "ticket_groups": [],
   "ticket_dependency_graph": [],
   "ticket_skill_assignments": [],
+  "ticket_ui_blueprint_assignments": [],
+  "ticket_visual_spec_assignments": [],
+  "ticket_design_system_assignments": [],
+  "visual_acceptance_criteria_ticket_map": [],
+  "frontend_task_groups": [],
+  "component_ticket_map": [],
   "ticket_risks": [],
   "stage_6_execution_queue": []
 }
@@ -365,5 +467,12 @@ Validate:
 * every ticket has `agent_skill_instructions`
 * every ticket has skill suitability scoring and selection rationale
 * every ticket has acceptance criteria and validation steps
+* every frontend ticket references applicable UI blueprint IDs or explicitly records why no UI blueprint applies
+* every frontend ticket references applicable visual spec IDs or explicitly records why no visual spec applies
+* every frontend ticket references applicable design system IDs or explicitly records why no design system applies
+* every frontend ticket preserves page, component, route, action, state, validation, accessibility, responsive, visual, and design system requirements from Stage 4
+* every frontend ticket preserves visual style, density, color direction, typography feel, component style, primary visual focus, visual do and don't rules, visual acceptance criteria, and user approval status from Stage 4
+* every frontend ticket maps visual acceptance criteria to validation steps
+* every frontend ticket requiring browser validation sets preview and visual QA requirements
 * ticket dependencies do not conflict with engineering dependency order
 * Stage 6 execution queue is dependency-aware

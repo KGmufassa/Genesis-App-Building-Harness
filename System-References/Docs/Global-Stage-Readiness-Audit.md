@@ -33,6 +33,7 @@ The audit validates:
 * blockers are explicit
 * traceability IDs exist or missing traceability is justified
 * artifact references are recorded when evidence exists
+* visual and design continuity checks pass when the stage contains frontend-facing work
 
 ---
 
@@ -72,6 +73,17 @@ Build-Plans/Build-status/Stage-5-readiness-audit.json
   "assumptions_recorded": false,
   "traceability_present": false,
   "artifacts_recorded": false,
+  "visual_design_continuity": {
+    "required": false,
+    "ui_blueprint_refs_present": false,
+    "visual_spec_refs_present": false,
+    "design_system_refs_present": false,
+    "visual_acceptance_criteria_mapped": false,
+    "preview_or_visual_qa_evidence_present": false,
+    "design_system_compliance_recorded": false,
+    "visual_drift_status_recorded": false,
+    "blocking_visual_gaps": []
+  },
   "blocking_gaps": [],
   "warnings": [],
   "next_actions": [],
@@ -96,6 +108,12 @@ A stage may use a stage-specific ready status only when:
 
 ```text
 ready_for_next_stage = true
+```
+
+For frontend-facing work, the audit must also enforce the visual and design continuity rules in:
+
+```text
+System-References/Docs/Global-Stage-Workflow-Contract.md
 ```
 
 If the audit fails, the stage must set completion status to one of:

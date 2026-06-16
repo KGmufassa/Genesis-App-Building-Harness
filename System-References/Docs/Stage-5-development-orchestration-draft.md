@@ -141,6 +141,10 @@ The command must load this file at the beginning of Stage 5, update it after eac
   "stage_3_inputs": {},
   "stage_4_inputs": {},
   "preflight": {},
+  "ui_blueprint_inputs": {},
+  "visual_spec_inputs": {},
+  "design_system_inputs": {},
+  "frontend_build_package": {},
   "development_roadmap": {},
   "implementation_sequence": {},
   "engineering_dependencies": {},
@@ -271,6 +275,8 @@ Required Stage 4 files:
 04-feature-behaviors.json
 05-state-transition-map.json
 06-accessibility-framework.json
+07-ui-blueprint-specification.json
+08-design-system-foundation.json
 ```
 
 Minimum viable input set:
@@ -291,6 +297,8 @@ Stage 4:
 03-screen-system.json
 04-feature-behaviors.json
 05-state-transition-map.json
+07-ui-blueprint-specification.json
+08-design-system-foundation.json
 ```
 
 If the minimum viable input set is missing, stop and set:
@@ -311,9 +319,13 @@ Before development orchestration, validate:
 * Stage 1 MVP scope exists
 * Stage 3 architecture outputs exist and are readable
 * Stage 4 UX outputs exist and are readable
+* Stage 4 UI blueprint output exists and is readable
+* Stage 4 design system foundation exists and is readable
 * launch-critical features are known
 * service, data, API, and infrastructure dependencies are available
 * feature behaviors and state transitions are clear enough to sequence implementation
+* UI blueprints define launch-critical pages, components, routes, actions, states, visual specs, visual acceptance criteria, and frontend build package hints
+* design system foundation defines shared visual tokens, component rules, responsive rules, and design approval status
 * accessibility and security requirements are available for test planning
 * earlier-stage risks do not block engineering planning
 
@@ -346,6 +358,11 @@ The `stage_6_handoff` object must include:
   "manual_execution_tickets": [],
   "generated_agent_files": [],
   "required_skills_by_ticket": {},
+  "ui_blueprint_refs_by_ticket": {},
+  "visual_spec_refs_by_ticket": {},
+  "design_system_refs_by_ticket": {},
+  "visual_requirements_by_ticket": {},
+  "frontend_build_package_refs": {},
   "validation_commands": {},
   "dev_server_plan": {},
   "environment_requirements": {},
@@ -974,6 +991,8 @@ Create build tickets from:
 * feature behaviors
 * architecture constraints
 * UX dependencies
+* UI blueprints
+* frontend build package hints
 
 Each ticket must be small enough to execute in Stage 6, but large enough to represent meaningful engineering progress.
 
@@ -992,6 +1011,42 @@ Every build ticket must include:
   "stage_1_feature_refs": [],
   "stage_3_architecture_refs": [],
   "stage_4_ux_refs": [],
+  "ui_blueprint_refs": [],
+  "visual_spec_refs": [],
+  "design_system_refs": [],
+  "page_refs": [],
+  "component_refs": [],
+  "shared_component_refs": [],
+  "route_refs": [],
+  "state_refs": [],
+  "action_refs": [],
+  "frontend_task_hint": "",
+  "visual_requirements": {
+    "visual_style": "",
+    "density": "",
+    "color_direction": "",
+    "typography_feel": "",
+    "component_style": "",
+    "primary_visual_focus": "",
+    "responsive_behavior": "",
+    "visual_do_rules": [],
+    "visual_dont_rules": [],
+    "reference_apps": [],
+    "visual_acceptance_criteria": [],
+    "user_approval_status": ""
+  },
+  "responsive_requirements": {
+    "desktop_layout": "",
+    "tablet_layout": "",
+    "mobile_layout": "",
+    "collapse_rules": [],
+    "navigation_behavior": "",
+    "priority_content_mobile": []
+  },
+  "visual_acceptance_criteria_refs": [],
+  "preview_required": false,
+  "visual_qa_required": false,
+  "design_system_compliance_required": false,
   "prerequisites": [],
   "depends_on_tickets": [],
   "primary_skill": "",
@@ -1741,6 +1796,9 @@ Use these handoff inputs:
 - `Build-Plans/Stage-4/04-feature-behaviors.json`
 - `Build-Plans/Stage-4/05-state-transition-map.json`
 - `Build-Plans/Stage-4/06-accessibility-framework.json`
+- `Build-Plans/Stage-4/07-ui-blueprint-specification.json`
+
+Use UI blueprints as the implementation source for page structure, layout type, sections, components, shared components, routes, actions, data requirements, validation needs, and required UI states.
 
 Validation requirements:
 - Login screen renders successfully.
@@ -2421,6 +2479,12 @@ Build-Plans/Stage-5/08-release-plan.json
   "ticket_groups": [],
   "ticket_dependency_graph": [],
   "ticket_skill_assignments": [],
+  "ticket_ui_blueprint_assignments": [],
+  "ticket_visual_spec_assignments": [],
+  "ticket_design_system_assignments": [],
+  "visual_acceptance_criteria_ticket_map": [],
+  "frontend_task_groups": [],
+  "component_ticket_map": [],
   "stage_6_execution_queue": [],
   "retry_policy": {},
   "ticket_risks": []
@@ -2487,6 +2551,9 @@ Each output must include:
 * related Stage 1 scope or feature inputs
 * related Stage 3 architecture dependencies
 * related Stage 4 UX dependencies
+* related Stage 4 UI blueprint dependencies where applicable
+* related Stage 4 visual spec dependencies where applicable
+* related Stage 4 design system dependencies where applicable
 * execution decisions
 * risks and constraints
 * unresolved questions
@@ -2497,6 +2564,11 @@ The build ticket output must include:
 * ticket IDs
 * slice IDs
 * ticket dependencies
+* UI blueprint references for frontend tickets
+* visual spec references and visual requirements for frontend tickets
+* design system references for frontend tickets
+* page, component, shared component, route, state, and action references when applicable
+* frontend task hints from the Stage 4 frontend build package
 * primary skill from the skill registry
 * recommended skill chain from the skill registry
 * required skills the assigned agent must use
@@ -2591,6 +2663,11 @@ Stage 5 may complete only when:
 * build tickets include skill usage instructions for the assigned agent
 * build tickets include skill suitability scores and selection rationale
 * build tickets include acceptance criteria and validation steps
+* frontend build tickets reference applicable UI blueprint IDs or explicitly record why no UI blueprint applies
+* frontend build tickets reference applicable visual spec IDs or explicitly record why no visual spec applies
+* frontend build tickets reference applicable design system IDs or explicitly record why no design system applies
+* frontend build tickets preserve page, component, route, action, state, validation, accessibility, responsive, visual, and design system requirements from Stage 4
+* frontend build tickets map visual acceptance criteria to validation steps
 * build tickets include validation layers, artifact expectations, and retry policy
 * UI/browser-validated tickets include dev server requirements
 * agent assignment plan scans available agents before assignment
@@ -2625,6 +2702,7 @@ Before completing Stage 5, confirm:
 * testing strategy includes validation checkpoints
 * build tickets exist for every MVP implementation slice
 * build tickets include primary skill, recommended skill chain, agent-required skills, skill usage instructions, acceptance criteria, and validation steps
+* frontend build tickets include UI blueprint references, visual spec references, design system references, component references, route references, state references, action references, visual requirements, and frontend task hints
 * agent assignment plan gives each agent clear ownership and handoff inputs
 * agent assignment plan records available-agent scan results, suitability scores, and unassigned ticket reasons
 * generated agents have valid markdown definitions in `.opencode/agents/`, safe permission settings, and complete prompt bodies

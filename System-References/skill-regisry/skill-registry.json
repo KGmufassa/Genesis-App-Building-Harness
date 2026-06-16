@@ -34,9 +34,9 @@
     ]
   },
   "statistics": {
-    "skills_scanned": 74,
+    "skills_scanned": 76,
     "skills_included": 17,
-    "stage_associated_skills_excluded": 57,
+    "stage_associated_skills_excluded": 59,
     "non_skill_artifacts_ignored": 1
   },
   "excluded_stage_skills": [
@@ -138,6 +138,14 @@
     },
     {
       "folder": "state-transition-and-accessibility-design",
+      "reason": "Stage 4 subskill"
+    },
+    {
+      "folder": "ui-blueprint-specification",
+      "reason": "Stage 4 subskill"
+    },
+    {
+      "folder": "design-system-foundation",
       "reason": "Stage 4 subskill"
     },
     {

@@ -64,6 +64,8 @@ stage-4-ux-interaction-architecture (command)
 ├── screen-system-design
 ├── feature-behavior-specification
 ├── state-transition-and-accessibility-design
+├── ui-blueprint-specification
+├── design-system-foundation
 └── ux-interaction-synthesis
 ```
 
@@ -78,6 +80,8 @@ stage-4-ux-interaction-architecture (command)
 The `stage-4-ux-interaction-architecture` command orchestrates Stage 4.
 
 It transforms product, validation, and system architecture intelligence into a UX and interaction architecture package that is ready for Stage 5 development orchestration.
+
+Stage 4 must also transform UX requirements into implementation-ready UI blueprints that can be consumed by frontend design skills, frontend builder skills, task generators, and agent builders without generating frontend code.
 
 This is the Stage 4 command skill. It is not a single UX subskill.
 
@@ -98,6 +102,7 @@ Stage 4 must not:
 * redesign backend system architecture
 * write implementation tickets
 * produce final UI art direction as decoration
+* generate frontend code
 * plan engineering sprints
 
 Stage 4 may recommend product or architecture revisions only when interaction design exposes a blocking contradiction.
@@ -143,6 +148,11 @@ The command must load this file at the beginning of Stage 4, update it after eac
   "feature_behaviors": {},
   "state_transition_map": {},
   "accessibility_framework": {},
+  "ui_blueprints": {},
+  "visual_spec_inventory": [],
+  "visual_approval_status": {},
+  "design_system_foundation": {},
+  "frontend_build_package": {},
   "ux_decisions": [],
   "ux_risks": [],
   "interaction_tradeoffs": [],
@@ -328,8 +338,17 @@ The `stage_5_handoff` object must include:
   "feature_behavior_ids": [],
   "state_transition_ids": [],
   "accessibility_requirement_ids": [],
+  "ui_blueprint_ids": [],
+  "visual_spec_ids": [],
+  "design_system_ref": "Build-Plans/Stage-4/08-design-system-foundation.json",
   "component_candidates": [],
+  "component_inventory": [],
+  "shared_component_candidates": [],
+  "route_inventory": [],
+  "action_inventory": [],
+  "visual_acceptance_criteria": [],
   "frontend_implementation_units": [],
+  "frontend_build_package": {},
   "validation_requirements": [],
   "responsive_requirements": [],
   "role_permission_interaction_constraints": [],
@@ -437,6 +456,168 @@ Every accessibility requirement must include:
 }
 ```
 
+## UI Blueprint Contract
+
+The UI blueprint layer must convert screens and interaction requirements into implementation-ready UI specifications without producing frontend code.
+
+Each page or screen must be defined through a visual page-definition matrix:
+
+```text
+PAGE:
+Purpose:
+Primary User:
+Screen Type:
+Layout Type:
+Sections:
+Components:
+Actions:
+Data Needed:
+States:
+Validation:
+Navigation:
+```
+
+The skill must avoid vague prompts such as:
+
+```text
+What should this dashboard look like?
+```
+
+Instead, it must force controlled choices.
+
+Screen type options:
+
+```text
+1. Dashboard
+2. List
+3. Detail View
+4. Form
+5. Wizard
+6. Settings
+7. Profile
+8. Analytics
+9. Messaging
+10. Custom
+```
+
+Layout type options:
+
+```text
+1. Sidebar
+2. Top Navigation
+3. Split View
+4. Card Grid
+5. Table
+6. Mobile First
+7. Full Screen
+8. Custom
+```
+
+Component selection options:
+
+```text
+Cards
+Charts
+Tables
+Search
+Filters
+Forms
+Tabs
+Modals
+Drawers
+Notifications
+File Upload
+Comments
+Timeline
+Maps
+Calendar
+```
+
+Action mapping options:
+
+```text
+Create
+Read
+Update
+Delete
+Export
+Share
+Invite
+Approve
+Reject
+Upload
+Download
+```
+
+Each blueprint must preserve this visual hierarchy:
+
+```text
+Page
+├─ Section
+│  ├─ Component
+│  │  ├─ Action
+│  │  ├─ Data Source
+│  │  ├─ Validation
+│  │  └─ States
+```
+
+Blueprint structure:
+
+```json
+{
+  "ui_blueprint_id": "UI-BLUEPRINT-001",
+  "page_or_screen_id": "",
+  "page_name": "",
+  "purpose": "",
+  "primary_user_role": "",
+  "screen_type": "",
+  "layout_type": "",
+  "route_or_location_hint": "",
+  "sections": [],
+  "components": [],
+  "shared_components": [],
+  "navigation": [],
+  "user_actions": [],
+  "forms": [],
+  "tables": [],
+  "cards": [],
+  "modals": [],
+  "drawers": [],
+  "states": {
+    "loading": {},
+    "empty": {},
+    "error": {},
+    "success": {},
+    "populated": {}
+  },
+  "data_requirements": [],
+  "validation_requirements": [],
+  "accessibility_requirements": [],
+  "responsive_requirements": [],
+  "frontend_task_hints": [],
+  "recommended_skills": [
+    "frontend-design",
+    "frontend-builder"
+  ],
+  "source_trace": []
+}
+```
+
+The UI blueprint package should also produce a readable `UI_BLUEPRINT.md` view when useful, with sections for:
+
+```text
+/pages
+/components
+/shared-components
+/navigation
+/routes
+/states
+/actions
+/forms
+/data-requirements
+/frontend-build-package
+```
+
 ---
 
 # Orchestrated Skills
@@ -449,7 +630,9 @@ Run Stage 4 skills in this order:
 3. screen-system-design
 4. feature-behavior-specification
 5. state-transition-and-accessibility-design
-6. ux-interaction-synthesis
+6. ui-blueprint-specification
+7. design-system-foundation
+8. ux-interaction-synthesis
 ```
 
 ---
@@ -1070,6 +1253,324 @@ interactive_guidance
 
 ---
 
+# Skill — ui-blueprint-specification
+
+# Purpose
+
+The `ui-blueprint-specification` skill transforms UX requirements into implementation-ready UI blueprints without generating frontend code.
+
+It defines:
+
+* pages
+* screens
+* layouts
+* components
+* navigation
+* user actions
+* states
+* forms
+* tables
+* cards
+* modals
+* drawers
+* empty states
+* loading states
+* error states
+* frontend build package inputs
+
+This skill is the bridge between Stage 4 UX architecture and Stage 5 frontend implementation planning.
+
+---
+
+# Core Responsibilities
+
+## Page Definition Matrix
+
+Force each page or screen through a structured matrix:
+
+```text
+PAGE
+Purpose
+Primary User
+Screen Type
+Layout Type
+Sections
+Components
+Actions
+Data Needed
+States
+Validation
+Navigation
+```
+
+The skill must ask controlled UI questions using screen type, layout type, component selection, and action mapping options instead of broad visual preference questions.
+
+## Visual Spec Matrix
+
+Force each launch-critical page or screen through a visual specification matrix:
+
+```text
+VISUAL SPEC
+Visual Style
+Density
+Color Direction
+Typography Feel
+Component Style
+Primary Visual Focus
+Responsive Behavior
+Visual Do Rules
+Visual Don't Rules
+Reference Apps
+Visual Acceptance Criteria
+User Approval Status
+```
+
+The visual spec matrix captures how the UI should visually feel and what the frontend builder must preserve. It must not generate frontend code or mockups.
+
+## Visual Hierarchy Modeling
+
+Represent each page as:
+
+```text
+Page
+├─ Section
+│  ├─ Component
+│  │  ├─ Action
+│  │  ├─ Data Source
+│  │  ├─ Validation
+│  │  └─ States
+```
+
+## Frontend Build Package
+
+Generate a frontend build package containing:
+
+* page inventory
+* component inventory
+* shared components
+* navigation inventory
+* route inventory
+* state inventory
+* action inventory
+* frontend tasks
+* recommended frontend skills
+
+---
+
+# Interactive Guidance Responsibilities
+
+Ask the user to confirm or choose:
+
+* screen type
+* layout type
+* sections
+* component selections
+* user actions
+* required states
+* shared components
+* route/navigation expectations
+* visual style
+* density
+* color direction
+* typography feel
+* component style
+* primary visual focus
+* visual do and don't rules
+* visual acceptance criteria
+* user approval status
+
+Ask no more than 1-3 page-definition questions at once.
+
+Infer common UI patterns when they are strongly implied by the screen type and workflow, but record them in:
+
+```text
+interactive_guidance.assumptions_made
+```
+
+Pause for user input when:
+
+* a launch-critical page lacks purpose
+* a screen type cannot be inferred
+* a layout choice materially affects navigation or implementation
+* required components or actions are ambiguous
+* required states are missing for a launch-critical interaction
+* visual style, density, or primary visual focus is missing for a launch-critical page
+* the user has not approved the visual spec for a launch-critical page
+
+Update:
+
+```text
+interactive_guidance.open_questions
+interactive_guidance.answered_questions
+interactive_guidance.assumptions_made
+interactive_guidance.blocked_decisions
+interactive_guidance.ux_confidence_gaps
+```
+
+---
+
+# Inputs
+
+```json
+{
+  "user_journeys": {},
+  "interaction_architecture": {},
+  "screen_system": {},
+  "feature_behaviors": {},
+  "state_transition_map": {},
+  "accessibility_framework": {},
+  "ui_blueprints": {},
+  "frontend_build_package": {},
+  "existing_state": {}
+}
+```
+
+---
+
+# Outputs
+
+```json
+{
+  "ui_blueprints": [],
+  "page_inventory": [],
+  "component_inventory": [],
+  "visual_spec_inventory": [],
+  "shared_components": [],
+  "navigation_inventory": [],
+  "route_inventory": [],
+  "state_inventory": [],
+  "action_inventory": [],
+  "frontend_build_package": {},
+  "visual_approval_status": {},
+  "frontend_task_hints": [],
+  "open_questions": []
+}
+```
+
+---
+
+# Shared State Updates
+
+```text
+ui_blueprints
+visual_spec_inventory
+frontend_build_package
+stage_5_handoff
+ux_confidence_gaps
+```
+
+---
+
+# Skill — design-system-foundation
+
+# Purpose
+
+The `design-system-foundation` skill defines the shared design system that all Stage 4 UI blueprints must follow.
+
+It produces an implementation-ready visual contract without generating frontend code.
+
+It defines:
+
+* product visual personality
+* design style
+* color tokens
+* typography tokens
+* spacing scale
+* radius rules
+* elevation rules
+* icon rules
+* component style rules
+* responsive breakpoints
+* visual references
+* liked and disliked patterns
+* accessibility constraints
+* design approval status
+
+---
+
+# Core Responsibilities
+
+## Design System Matrix
+
+Force the shared app design system through:
+
+```text
+DESIGN SYSTEM
+Product Visual Personality
+Design Style
+Color System
+Typography System
+Spacing System
+Radius System
+Elevation System
+Icon Style
+Button Rules
+Card Rules
+Form Rules
+Table Rules
+Modal And Drawer Rules
+Navigation Rules
+Responsive Breakpoints
+Visual References
+Liked Patterns
+Disliked Patterns
+Accessibility Constraints
+Design Do Rules
+Design Don't Rules
+Design Approval Status
+```
+
+## UI Blueprint Alignment
+
+Validate that launch-critical UI blueprints and visual specs reference or align with the shared design system.
+
+---
+
+# Interactive Guidance Responsibilities
+
+Ask the user to confirm or choose:
+
+* product visual personality
+* design style
+* color direction
+* typography feel
+* density and spacing
+* component style direction
+* visual references
+* liked and disliked patterns
+* design approval status
+
+Pause for user input when:
+
+* launch-critical visual specs conflict with each other
+* color, typography, spacing, or component style rules are too vague for frontend implementation
+* responsive breakpoints or collapse rules are missing
+* design approval status is unconfirmed
+
+---
+
+# Outputs
+
+```json
+{
+  "design_system_foundation": {},
+  "ui_blueprint_alignment": [],
+  "stage_5_handoff": {},
+  "open_questions": []
+}
+```
+
+# Shared State Updates
+
+```text
+design_system_foundation
+visual_spec_inventory
+stage_5_handoff
+ux_confidence_gaps
+```
+
+---
+
 # Skill — ux-interaction-synthesis
 
 # Purpose
@@ -1186,6 +1687,8 @@ and return the specific questions or decisions required.
   "feature_behaviors": {},
   "state_transition_map": {},
   "accessibility_framework": {},
+  "ui_blueprints": {},
+  "frontend_build_package": {},
   "existing_state": {}
 }
 ```
@@ -1200,6 +1703,7 @@ and return the specific questions or decisions required.
   "ux_decisions": [],
   "ux_risks": [],
   "interaction_tradeoffs": [],
+  "design_system_foundation": {},
   "stage_5_handoff": {},
   "completion_status": {}
 }
@@ -1218,6 +1722,8 @@ Build-Plans/Stage-4/03-screen-system.json
 Build-Plans/Stage-4/04-feature-behaviors.json
 Build-Plans/Stage-4/05-state-transition-map.json
 Build-Plans/Stage-4/06-accessibility-framework.json
+Build-Plans/Stage-4/07-ui-blueprint-specification.json
+Build-Plans/Stage-4/08-design-system-foundation.json
 ```
 
 Each output must include:
@@ -1332,6 +1838,107 @@ Each output must include:
 }
 ```
 
+`07-ui-blueprint-specification.json` must include:
+
+```json
+{
+  "stage": "Stage 4",
+  "status": "",
+  "ui_blueprints": [],
+  "page_inventory": [],
+  "component_inventory": [],
+  "visual_spec_inventory": [],
+  "shared_components": [],
+  "navigation_inventory": [],
+  "route_inventory": [],
+  "state_inventory": [],
+  "action_inventory": [],
+  "frontend_build_package": {
+    "page_count": 0,
+    "component_count": 0,
+    "shared_component_count": 0,
+    "frontend_tasks": [],
+    "recommended_skills": [
+      "frontend-design",
+      "frontend-builder"
+    ],
+    "task_generator_notes": [],
+    "agent_builder_notes": []
+  },
+  "visual_approval_status": {},
+  "ui_blueprint_markdown_path": "",
+  "stage_5_handoff": {}
+}
+```
+
+Each `ui_blueprints[]` entry must include:
+
+```json
+{
+  "ui_blueprint_id": "",
+  "page_ref": "",
+  "visual_spec": {
+    "visual_style": "",
+    "density": "",
+    "color_direction": "",
+    "typography_feel": "",
+    "component_style": "",
+    "primary_visual_focus": "",
+    "responsive_behavior": "",
+    "visual_do_rules": [],
+    "visual_dont_rules": [],
+    "reference_apps": [],
+    "visual_acceptance_criteria": [],
+    "user_approval_status": "unconfirmed"
+  }
+}
+```
+
+`08-design-system-foundation.json` must include:
+
+```json
+{
+  "stage": "Stage 4",
+  "status": "",
+  "design_system": {
+    "design_system_id": "",
+    "product_visual_personality": "",
+    "design_style": "",
+    "color_tokens": {},
+    "typography_tokens": {},
+    "spacing_scale": {},
+    "radius_rules": {},
+    "elevation_rules": {},
+    "icon_rules": {},
+    "component_style_rules": {
+      "buttons": {},
+      "cards": {},
+      "forms": {},
+      "tables": {},
+      "modals": {},
+      "drawers": {},
+      "navigation": {}
+    },
+    "responsive_breakpoints": {
+      "desktop": "",
+      "tablet": "",
+      "mobile": "",
+      "collapse_rules": [],
+      "mobile_priority_content": []
+    },
+    "visual_references": [],
+    "liked_patterns": [],
+    "disliked_patterns": [],
+    "accessibility_constraints": [],
+    "design_do_rules": [],
+    "design_dont_rules": [],
+    "design_approval_status": "unconfirmed"
+  },
+  "ui_blueprint_alignment": [],
+  "stage_5_handoff": {}
+}
+```
+
 ---
 
 # Completion Gate
@@ -1350,16 +1957,23 @@ System-References/Docs/Global-Stage-Workflow-Contract.md
 
 Stage 4 may complete only when:
 
-* all six UX outputs exist
+* all eight UX, UI blueprint, and design system outputs exist
 * primary user journeys are defined
 * interaction architecture supports MVP workflows
 * screen system supports all launch-critical journeys
 * feature behaviors are specified
 * state transitions are mapped
 * accessibility framework exists
+* UI blueprints exist for all launch-critical pages and screens
+* each launch-critical UI blueprint includes page purpose, primary user, screen type, layout type, sections, components, actions, data needs, states, validation, and navigation
+* each launch-critical UI blueprint includes a visual spec with style, density, color direction, typography feel, component style, primary visual focus, responsive behavior, visual do and don't rules, visual acceptance criteria, and user approval status
+* design system foundation exists and defines shared color, typography, spacing, radius, elevation, icon, component, responsive, and accessibility rules
+* launch-critical visual specs reference or align with the design system foundation
+* launch-critical visual specs and design system approval statuses are approved or explicitly accepted as assumptions
+* frontend build package includes page inventory, component inventory, shared components, routes, actions, states, frontend task hints, and recommended frontend skills
 * launch-critical screens include role access, required data, actions, states, responsive requirements, and accessibility requirements
 * launch-critical feature behaviors include acceptance criteria and validation rules
-* Stage 5 handoff includes implementation units, validation requirements, responsive requirements, and UX risks
+* Stage 5 handoff includes implementation units, UI blueprint IDs, component inventory, frontend build package, validation requirements, responsive requirements, and UX risks
 * high and critical UX risks have mitigation paths
 * critical interactive guidance questions are answered or converted into recorded assumptions
 * no interaction-blocking Stage 3 unknowns remain unresolved
@@ -1373,9 +1987,19 @@ Before completing Stage 4, confirm:
 * Stage 4 did not redefine product strategy
 * Stage 4 did not redesign backend architecture
 * Stage 4 did not write implementation tickets
+* Stage 4 did not generate frontend code
 * every MVP workflow has a user journey
 * every launch-critical feature has behavior rules
 * every required screen maps to a journey or feature
+* every launch-critical page has a UI blueprint
+* every UI blueprint uses the page-definition matrix
+* every launch-critical UI blueprint uses the visual spec matrix
+* every launch-critical UI blueprint includes visual acceptance criteria and user approval status
+* design system foundation exists for launch-critical frontend work
+* visual references, liked patterns, disliked patterns, and design approval status are recorded when available
+* every UI blueprint maps page -> section -> component -> action -> data source -> validation -> states
+* component inventory, shared components, routes, states, and actions are defined
+* frontend build package is usable by frontend-design, frontend-builder, task generators, and agent builders
 * every core workflow has states and recovery behavior
 * accessibility risks are recorded
 * critical interactive guidance questions are answered or converted into recorded assumptions
