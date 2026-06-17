@@ -103,6 +103,47 @@ The command must load this file at the beginning of Stage 2, update it after eac
 }
 ```
 
+---
+
+# A-Grade Workflow Compliance
+
+Stage 2 must consume `stage_contract_profile` and `guidance_policy`.
+
+Stage 2 must reference:
+
+```text
+System-References/Schemas/stage-2-output.schema.json
+```
+
+Stage 2 evidence findings should create or reference artifacts in:
+
+```text
+Build-Plans/Build-status/Artifact-evidence-registry.json
+```
+
+Architecture-critical assumptions require evidence quality of `medium` or higher unless explicitly accepted as risk.
+
+Before using `ready_for_stage_3`, Stage 2 must provide `schema_validation`, `reference_integrity`, `risk_acceptance_ledger`, and `revision_loops` in the readiness audit or stage state.
+
+Accepted high and critical validation risks must be recorded in:
+
+```text
+Build-Plans/Build-status/Risk-acceptance-ledger.json
+```
+
+Failed readiness checks must become revision-loop actions with owning output, owning skill, required change, and next action.
+
+Stage 2 evidence entries must distinguish:
+
+```text
+evidence-backed finding
+inference
+unsupported assumption
+critical unknown
+```
+
+Each evidence entry must include source type, freshness, evidence quality, confidence effect, confidence delta, inference flag, limitations, and external research needs.
+
 Each subskill reads the current validation state and writes its updates back into the shared state before the next skill runs.
 
 After each subskill completes, the command must persist the updated shared state to:

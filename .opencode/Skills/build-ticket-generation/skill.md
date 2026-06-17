@@ -126,6 +126,7 @@ Every build ticket must include:
   "preview_required": false,
   "visual_qa_required": false,
   "design_system_compliance_required": false,
+  "expected_artifacts": [],
   "prerequisites": [],
   "depends_on_tickets": [],
   "primary_skill": "",
@@ -314,6 +315,20 @@ Example:
   "preview_required": true,
   "visual_qa_required": true,
   "design_system_compliance_required": true,
+  "expected_artifacts": [
+    {
+      "type": "preview_url",
+      "required_for_completion": true
+    },
+    {
+      "type": "screenshot",
+      "required_for_completion": true
+    },
+    {
+      "type": "validation_report",
+      "required_for_completion": true
+    }
+  ],
   "primary_skill": "frontend-design",
   "recommended_skills": [
     "frontend-design",
@@ -381,6 +396,7 @@ Identify:
 * frontend tickets that omit visual requirements or visual acceptance criteria when applicable
 * frontend tickets that omit responsive requirements when applicable
 * browser-validated frontend tickets without preview requirements
+* tickets that require validation evidence but omit `expected_artifacts`
 * tickets that are too broad for Stage 6 execution
 * tickets that require skills unavailable in the registry
 * tickets without a best-suited primary skill
@@ -474,5 +490,6 @@ Validate:
 * every frontend ticket preserves visual style, density, color direction, typography feel, component style, primary visual focus, visual do and don't rules, visual acceptance criteria, and user approval status from Stage 4
 * every frontend ticket maps visual acceptance criteria to validation steps
 * every frontend ticket requiring browser validation sets preview and visual QA requirements
+* every ticket that requires evidence defines expected artifact types for the artifact evidence registry
 * ticket dependencies do not conflict with engineering dependency order
 * Stage 6 execution queue is dependency-aware

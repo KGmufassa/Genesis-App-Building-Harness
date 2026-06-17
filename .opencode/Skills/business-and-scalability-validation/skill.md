@@ -29,6 +29,14 @@ This skill is the business viability and scalability intelligence engine for Sta
 }
 ```
 
+---
+
+# Evidence Quality Responsibilities
+
+Business, monetization, growth, and scalability findings must record source type, freshness, evidence quality, confidence delta, inference status, limitations, and external research needs.
+
+Low-evidence revenue, pricing, CAC, retention, or scaling claims must be marked provisional.
+
 Read and update shared validation state from:
 
 ```text

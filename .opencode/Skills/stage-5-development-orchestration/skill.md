@@ -550,3 +550,33 @@ Before completing Stage 5, confirm:
 * release plan includes readiness gates
 * critical interactive guidance questions are answered or converted into recorded assumptions
 * Stage 6 handoff is usable for implementation and validation
+
+---
+
+# A-Grade Workflow Compliance
+
+Stage 5 must consume `stage_contract_profile` and `guidance_policy`.
+
+Stage 5 must reference:
+
+```text
+System-References/Schemas/stage-5-output.schema.json
+```
+
+Build tickets must define `expected_artifacts` when validation, preview, visual QA, deployment proof, or launch readiness evidence will be required later.
+
+Expected artifacts must be carried into:
+
+```text
+Build-Plans/Build-status/Artifact-evidence-registry.json
+```
+
+Before using `ready_for_stage_6`, Stage 5 must provide `schema_validation`, `reference_integrity`, `risk_acceptance_ledger`, and `revision_loops` in the readiness audit or stage state.
+
+Accepted high and critical execution, sequencing, ticketing, or agent risks must be recorded in:
+
+```text
+Build-Plans/Build-status/Risk-acceptance-ledger.json
+```
+
+Failed readiness checks must become revision-loop actions with owning output, owning skill, required change, and next action.

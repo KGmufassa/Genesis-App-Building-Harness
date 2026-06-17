@@ -67,8 +67,14 @@ Validate:
 * risks are present or explicitly marked not applicable
 * assumptions are present or explicitly marked not applicable
 * traceability IDs are present or missing traceability is justified
-* artifact references are present when evidence exists
-* blockers have next actions
+* stage contract profile requirements are checked when a profile is present
+* referenced schema files exist and required outputs are checked against them
+* artifact references are present when evidence-backed claims, previews, builds, validation results, or deployment proofs are required
+* `Build-Plans/Build-status/Artifact-evidence-registry.json` exists when artifact evidence is required
+* `Build-Plans/Build-status/Risk-acceptance-ledger.json` exists when progression depends on accepted risk
+* cross-stage references are present, unique, and resolvable when used by required outputs
+* frontend-facing work preserves UI blueprint, visual spec, and design system continuity when applicable
+* blockers have next actions and failed checks produce revision-loop records
 
 ---
 
@@ -98,6 +104,54 @@ using this structure:
   "assumptions_recorded": false,
   "traceability_present": false,
   "artifacts_recorded": false,
+  "stage_contract_profile": {
+    "profile_id": "",
+    "profile_requirements_checked": false,
+    "missing_profile_requirements": []
+  },
+  "schema_validation": {
+    "schema_refs": [],
+    "validated_files": [],
+    "schema_errors": [],
+    "schemas_valid": false,
+    "validated_at": "",
+    "validator": "",
+    "blocking": true
+  },
+  "reference_integrity": {
+    "checked_refs": [],
+    "missing_refs": [],
+    "orphaned_refs": [],
+    "stale_refs": [],
+    "duplicate_ids": [],
+    "integrity_status": "passed | passed_with_warnings | failed",
+    "blocking_ref_errors": []
+  },
+  "artifact_evidence_registry": {
+    "registry_path": "Build-Plans/Build-status/Artifact-evidence-registry.json",
+    "required": false,
+    "required_artifacts_present": false,
+    "missing_artifacts": []
+  },
+  "risk_acceptance_ledger": {
+    "ledger_path": "Build-Plans/Build-status/Risk-acceptance-ledger.json",
+    "required": false,
+    "accepted_risks_present": false,
+    "missing_risk_acceptance_entries": [],
+    "expired_or_unowned_risks": []
+  },
+  "revision_loops": [],
+  "visual_design_continuity": {
+    "required": false,
+    "ui_blueprint_refs_present": false,
+    "visual_spec_refs_present": false,
+    "design_system_refs_present": false,
+    "visual_acceptance_criteria_mapped": false,
+    "preview_or_visual_qa_evidence_present": false,
+    "design_system_compliance_recorded": false,
+    "visual_drift_status_recorded": false,
+    "blocking_visual_gaps": []
+  },
   "blocking_gaps": [],
   "warnings": [],
   "next_actions": [],
@@ -138,6 +192,18 @@ Record:
 # Completion Rule
 
 If `ready_for_next_stage` is false, the calling stage command must not use its ready completion status.
+
+The audit must fail or block when required schema validation, stage profile requirements, artifact evidence, risk acceptance entries, reference integrity, revision-loop ownership, or visual continuity proof is missing for a stage that depends on those contracts.
+
+When the audit fails, write revision-loop records that identify:
+
+* owning stage
+* owning output
+* owning skill or command
+* blocking issue
+* required change
+* recommended action
+* whether accepted risk is allowed
 
 The calling stage must instead set one of:
 

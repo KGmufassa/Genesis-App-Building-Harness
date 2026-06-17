@@ -512,3 +512,33 @@ Before completing Stage 3, confirm:
 * critical interactive guidance questions are answered or converted into recorded assumptions
 * Stage 4 handoff is usable for UX architecture
 * Stage 5 handoff is usable for development orchestration
+
+---
+
+# A-Grade Workflow Compliance
+
+Stage 3 must consume `stage_contract_profile` and `guidance_policy`.
+
+Stage 3 must reference:
+
+```text
+System-References/Schemas/stage-3-output.schema.json
+```
+
+Architecture decisions should reference Stage 2 evidence quality and create artifacts when architecture proof, diagrams, or decision records are produced.
+
+Those artifacts should be recorded or referenced in:
+
+```text
+Build-Plans/Build-status/Artifact-evidence-registry.json
+```
+
+Before using `ready_for_stage_4`, Stage 3 must provide `schema_validation`, `reference_integrity`, `risk_acceptance_ledger`, and `revision_loops` in the readiness audit or stage state.
+
+Accepted high and critical architecture risks must be recorded in:
+
+```text
+Build-Plans/Build-status/Risk-acceptance-ledger.json
+```
+
+Failed readiness checks must become revision-loop actions with owning output, owning skill, required change, and next action.

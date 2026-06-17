@@ -85,6 +85,7 @@ as the source for page structure, layout type, sections, components, shared comp
   "visual_spec_execution_refs": [],
   "design_system_execution_refs": [],
   "preview_urls": [],
+  "artifact_evidence_updates": [],
   "pending_items": [],
   "blocked_items": [],
   "implementation_notes": [],
@@ -127,5 +128,6 @@ Validate:
 * every executed frontend ticket with `design_system_refs` records the referenced design system IDs
 * every executed frontend ticket with `preview_required` records a preview URL or blocker
 * every executed frontend ticket preserves referenced page, component, route, action, state, validation, accessibility, responsive, visual, and design system requirements
+* every generated implementation, preview, build, or log artifact is recorded or queued for `Build-Plans/Build-status/Artifact-evidence-registry.json`
 * every blocker includes a reason and next action
 * every parallel batch execution records batch status

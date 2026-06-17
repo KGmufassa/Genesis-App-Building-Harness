@@ -528,3 +528,31 @@ Before completing Stage 4, confirm:
 * accessibility risks are recorded
 * critical interactive guidance questions are answered or converted into recorded assumptions
 * Stage 5 handoff is usable for development orchestration
+
+---
+
+# A-Grade Workflow Compliance
+
+Stage 4 must consume `stage_contract_profile` and `guidance_policy`.
+
+Stage 4 must reference:
+
+```text
+System-References/Schemas/stage-4-output.schema.json
+```
+
+UI blueprints, visual specs, design system decisions, accessibility proof, and reference assets should be recorded or referenced in:
+
+```text
+Build-Plans/Build-status/Artifact-evidence-registry.json
+```
+
+Before using `ready_for_stage_5`, Stage 4 must provide `schema_validation`, `reference_integrity`, `risk_acceptance_ledger`, and `revision_loops` in the readiness audit or stage state.
+
+Accepted high and critical UX, visual, accessibility, or design-system risks must be recorded in:
+
+```text
+Build-Plans/Build-status/Risk-acceptance-ledger.json
+```
+
+Failed readiness checks must become revision-loop actions with owning output, owning skill, required change, and next action.

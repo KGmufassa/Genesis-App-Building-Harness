@@ -547,6 +547,16 @@ blocked
   "accepted_risks": [],
   "visual_launch_readiness": {},
   "design_system_launch_readiness": {},
+  "deployment_proof": {
+    "production_build_artifact": "",
+    "deployment_dry_run_result": {},
+    "smoke_test_results": [],
+    "rollback_test_result": {},
+    "environment_verification": {},
+    "monitoring_alert_test": {},
+    "release_blockers": [],
+    "accepted_launch_risks": []
+  },
   "onboarding_readiness": {},
   "support_readiness": {},
   "evidence_refs": [],
@@ -644,9 +654,41 @@ Stage 7 may complete as `ready_for_stage_8` only when:
 * all five Stage 7 output files exist
 * all launch gates are `ready`, `accepted_risk`, or `not_applicable`
 * deployment environment, setup, build, deployment, and rollback details are defined or explicitly blocked
+* production build proof, deployment dry-run evidence, smoke test evidence, rollback verification, and environment verification are recorded or explicitly accepted as known risks
 * visual QA, responsive validation, design system compliance, preview evidence, and visual drift status are launch-ready or explicitly accepted as known risks
 * monitoring checks and alert ownership are defined
 * analytics events and success metrics are defined
 * support, onboarding, and operational runbooks are defined
 * critical launch blockers are resolved or explicitly accepted as known risks
 * Stage 8 handoff includes telemetry, analytics, monitoring, support, incident, and watchlist sources
+
+---
+
+# A-Grade Workflow Compliance
+
+Stage 7 must consume `stage_contract_profile` and `guidance_policy`.
+
+Stage 7 output validation should reference:
+
+```text
+System-References/Schemas/stage-7-output.schema.json
+```
+
+Stage 7 must record production build proof, deployment dry-run evidence, smoke test results, rollback verification, environment verification, monitoring alert proof, and accepted launch risk evidence in:
+
+```text
+Build-Plans/Build-status/Artifact-evidence-registry.json
+```
+
+Stage 7 readiness must also record:
+
+```json
+{
+  "schema_validation": {},
+  "reference_integrity": {},
+  "risk_acceptance_ledger": {},
+  "revision_loops": []
+}
+```
+
+Stage 7 may not use `ready_for_stage_8` until required schema validation passes, launch gate, deployment proof, monitoring, analytics, support, onboarding, artifact, and accepted-risk references resolve to upstream sources, accepted high and critical launch risks are written to `Build-Plans/Build-status/Risk-acceptance-ledger.json`, and failed readiness checks are converted into revision-loop actions.

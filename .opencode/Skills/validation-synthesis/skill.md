@@ -33,6 +33,22 @@ This skill is the final validation synthesis and progression intelligence engine
 }
 ```
 
+---
+
+# Evidence Quality Responsibilities
+
+Before Stage 2 completion, synthesize evidence quality across all validated assumptions.
+
+The synthesis must identify:
+
+* evidence-backed findings
+* inferences
+* unsupported assumptions
+* critical unknowns
+* architecture-critical assumptions below evidence threshold
+
+Stage 3 handoff must include evidence quality and confidence rationale for architecture-critical assumptions.
+
 Read and update shared validation state from:
 
 ```text

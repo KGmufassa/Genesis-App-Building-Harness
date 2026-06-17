@@ -452,6 +452,7 @@ visual_acceptance_criteria_refs
 preview_required
 visual_qa_required
 design_system_compliance_required
+expected_artifacts
 ```
 
 Frontend tickets that include `ui_blueprint_refs` must preserve the referenced UI blueprint requirements from:
@@ -834,6 +835,7 @@ Outputs:
   "dev_server_updates": {},
   "change_safety_updates": {},
   "artifacts": [],
+  "artifact_evidence_updates": [],
   "pending_items": [],
   "blocked_items": [],
   "failed_items": [],
@@ -887,6 +889,7 @@ Outputs:
   "validation_layers": {},
   "discovered_commands": [],
   "artifacts": [],
+  "artifact_evidence_updates": [],
   "coverage_gaps": [],
   "validation_risks": []
 }
@@ -1088,6 +1091,7 @@ The repair log output must include:
   "environment_state": {},
   "dev_server": {},
   "changed_files": {},
+  "artifact_evidence_updates": [],
   "artifact_refs": []
 }
 ```
@@ -1107,6 +1111,7 @@ The repair log output must include:
   "dev_server_validation": {},
   "coverage_gaps": [],
   "failed_checks": [],
+  "artifact_evidence_updates": [],
   "artifact_refs": []
 }
 ```
@@ -1242,6 +1247,7 @@ Stage 6 may complete only when:
 * every executed frontend ticket with design system references was validated against the referenced design system foundation
 * every frontend ticket requiring preview recorded a preview URL or blocker
 * every frontend ticket requiring visual QA recorded visual QA results, responsive validation results, and visual drift status
+* every ticket with `expected_artifacts` has matching entries in `Build-Plans/Build-status/Artifact-evidence-registry.json` or a documented blocker
 * every generated or assigned agent reported execution status
 * every parallel batch has validation results
 * all required validation gates have pass/fail status
@@ -1260,6 +1266,7 @@ Stage 6 is `ready_for_stage_7` only when:
 * all launch-critical frontend tickets preserve referenced UI blueprint page, component, route, action, state, validation, accessibility, responsive, visual, and design system requirements
 * all launch-critical frontend tickets requiring preview have a recorded preview URL or accepted blocker
 * all launch-critical frontend tickets have no `major_visual_drift` unless explicitly accepted as known release risk
+* all launch-critical expected artifacts are recorded in the artifact evidence registry or explicitly accepted as known release risk
 * all high-risk repairs are verified or explicitly accepted as known risk
 * no launch-critical ticket is `failed`, `blocked`, or `deferred` unless explicitly accepted as a known release risk
 
@@ -1280,6 +1287,7 @@ Before completing Stage 6, confirm:
 * every assigned agent has execution status
 * every parallel batch has validation status
 * validation results map to ticket acceptance criteria
+* expected artifact evidence maps back to Stage 5 ticket IDs
 * frontend validation results map to referenced UI blueprint IDs when present
 * frontend validation results map to referenced visual spec IDs when present
 * frontend validation results map to referenced design system IDs when present
@@ -1287,3 +1295,34 @@ Before completing Stage 6, confirm:
 * regression analysis maps failures back to affected tickets, agents, batches, workflows, and features
 * repair log includes verification results
 * Stage 7 handoff is usable for launch and operationalization
+
+---
+
+# A-Grade Workflow Compliance
+
+Stage 6 must consume `stage_contract_profile` and `guidance_policy`.
+
+Stage 6 output validation should reference:
+
+```text
+System-References/Schemas/stage-6-output.schema.json
+```
+
+Stage 6 must record implementation, validation, repair, regression, preview, visual QA, and build evidence in:
+
+```text
+Build-Plans/Build-status/Artifact-evidence-registry.json
+```
+
+Stage 6 readiness must also record:
+
+```json
+{
+  "schema_validation": {},
+  "reference_integrity": {},
+  "risk_acceptance_ledger": {},
+  "revision_loops": []
+}
+```
+
+Stage 6 may not use `ready_for_stage_7` until required schema validation passes, ticket, agent, batch, validation, artifact, UI blueprint, visual spec, design system, repair, and regression references resolve to upstream sources, accepted high and critical implementation or validation risks are written to `Build-Plans/Build-status/Risk-acceptance-ledger.json`, and failed readiness checks are converted into revision-loop actions.

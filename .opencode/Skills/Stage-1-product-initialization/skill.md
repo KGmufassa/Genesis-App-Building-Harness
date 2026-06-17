@@ -503,3 +503,33 @@ Build-Plans/Stage-1/10-success-framework.json
 The command must not skip directly to final synthesis.
 
 It must run the Stage 1 skills in sequence, because each skill depends on the structured intelligence produced by the previous skill.
+
+---
+
+# A-Grade Workflow Compliance
+
+Stage 1 must initialize or confirm `stage_contract_profile` and `guidance_policy`.
+
+Stage 1 must reference:
+
+```text
+System-References/Schemas/stage-1-output.schema.json
+```
+
+Stage 1 should infer the initial app profile when possible and record the rationale in `interactive_guidance.assumptions_made`.
+
+Planning artifacts, source notes, and user-provided intake evidence should be recorded or referenced in:
+
+```text
+Build-Plans/Build-status/Artifact-evidence-registry.json
+```
+
+Before using `ready_for_stage_2`, Stage 1 must provide `schema_validation`, `reference_integrity`, `risk_acceptance_ledger`, and `revision_loops` in the readiness audit or stage state.
+
+Accepted high and critical risks must be recorded in:
+
+```text
+Build-Plans/Build-status/Risk-acceptance-ledger.json
+```
+
+Failed readiness checks must become revision-loop actions with owning output, owning skill, required change, and next action.

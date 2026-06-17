@@ -66,3 +66,20 @@ This skill contributes to:
 Build-Plans/Stage-8/02-operational-optimization.json
 ```
 
+---
+
+# Feedback Routing Responsibilities
+
+When operational findings indicate that the root issue belongs to an earlier stage, produce `feedback_route_candidates` instead of treating the issue only as a Stage 8 optimization.
+
+Route examples:
+
+* workflow burden caused by unclear product scope -> Stage 1
+* support demand caused by invalid assumptions or market mismatch -> Stage 2
+* operational fragility caused by architecture, infrastructure, or integration choices -> Stage 3
+* user confusion caused by interaction, screen, visual, or state design -> Stage 4
+* support-heavy rollout caused by execution planning gaps -> Stage 5
+* recurring defects or insufficient validation -> Stage 6
+* monitoring, onboarding, runbook, support, or deployment readiness gaps -> Stage 7
+
+Each route candidate must include source signal IDs, severity, evidence references, recommended target stage, recommended action, and whether it blocks current evolution.

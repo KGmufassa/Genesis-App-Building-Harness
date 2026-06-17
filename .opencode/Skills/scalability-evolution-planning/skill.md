@@ -67,3 +67,18 @@ This skill contributes to:
 Build-Plans/Stage-8/05-scalability-evolution.json
 ```
 
+---
+
+# Feedback Routing Responsibilities
+
+When scalability findings require work owned by an earlier stage, produce `feedback_route_candidates` with source signal IDs, severity, evidence references, recommended target stage, recommended action, and whether the route blocks current evolution.
+
+Route examples:
+
+* scale changes that alter MVP scope or workflow boundaries -> Stage 1
+* scaling assumptions that need external validation -> Stage 2
+* performance, capacity, infrastructure, data, AI cost, security, or integration architecture changes -> Stage 3
+* scale-driven UI, navigation, loading, empty, error, or responsive behavior changes -> Stage 4
+* execution sequencing, ticket, agent, or rollout plan changes -> Stage 5
+* implementation repairs, regression fixes, or validation coverage gaps -> Stage 6
+* monitoring, alerting, deployment, support, rollback, or runbook gaps -> Stage 7

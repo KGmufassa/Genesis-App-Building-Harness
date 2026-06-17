@@ -55,6 +55,16 @@ Use `ready_for_stage_8` only after `global-stage-readiness-audit` passes.
 
 ---
 
+# Deployment Proof Synthesis
+
+Before Stage 7 can complete, synthesize deployment proof from launch readiness and deployment planning.
+
+The synthesis must identify missing production build proof, deployment dry-run evidence, smoke test evidence, rollback verification, environment verification, monitoring alert proof, and accepted launch risk evidence.
+
+Missing launch-critical proof must become a launch blocker unless explicitly accepted as known risk.
+
+---
+
 # Outputs
 
 Write final Stage 7 outputs:
@@ -74,4 +84,3 @@ Build-Plans/Build-status/Operationalization-state.json
 ```
 
 with `stage_8_handoff`, `completion_status`, unresolved blockers, and launch risks.
-

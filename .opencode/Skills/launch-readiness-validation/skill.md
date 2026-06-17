@@ -80,6 +80,7 @@ Return:
   "readiness_gates": [],
   "visual_launch_readiness": {},
   "design_system_launch_readiness": {},
+  "deployment_proof_readiness": {},
   "onboarding_gaps": [],
   "support_gaps": []
 }
@@ -94,6 +95,8 @@ Block launch readiness when launch-critical frontend work has:
 * `major_visual_drift`
 
 These may proceed only when explicitly recorded as accepted launch risks.
+
+Launch readiness must also validate production build proof, deployment dry-run evidence, smoke test evidence, rollback verification, environment verification, and monitoring alert proof when they are required by the active stage contract profile.
 
 This skill contributes to:
 

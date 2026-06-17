@@ -139,3 +139,31 @@ blocked
 Use `ready_for_stage_8` only when Stage 8 can safely consume launch, monitoring, analytics, support, incident, and operational signal sources.
 
 Stage 7 must not use `ready_for_stage_8` when launch-critical frontend work has unresolved visual QA failures, unresolved design system compliance failures, missing required preview evidence, or `major_visual_drift`, unless each item is explicitly accepted as a known launch risk.
+
+---
+
+# A-Grade Workflow Compliance
+
+Stage 7 must consume `stage_contract_profile` and `guidance_policy`.
+
+Stage 7 must reference:
+
+```text
+System-References/Schemas/stage-7-output.schema.json
+```
+
+Stage 7 must record production build proof, deployment dry-run evidence, smoke test results, rollback verification, environment verification, monitoring alert proof, and accepted launch risk evidence in:
+
+```text
+Build-Plans/Build-status/Artifact-evidence-registry.json
+```
+
+Before using `ready_for_stage_8`, Stage 7 must provide `schema_validation`, `reference_integrity`, `risk_acceptance_ledger`, and `revision_loops` in the readiness audit or stage state.
+
+Accepted high and critical launch, deployment, monitoring, analytics, support, or operational risks must be recorded in:
+
+```text
+Build-Plans/Build-status/Risk-acceptance-ledger.json
+```
+
+Failed readiness checks must become revision-loop actions with owning output, owning skill, required change, and next action.

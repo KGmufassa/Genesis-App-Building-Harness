@@ -70,3 +70,20 @@ This skill contributes to:
 Build-Plans/Stage-8/01-telemetry-analysis.json
 ```
 
+---
+
+# Feedback Routing Responsibilities
+
+When telemetry reveals a problem that belongs to an earlier stage, produce `feedback_route_candidates` instead of absorbing the issue only as Stage 8 optimization.
+
+Route examples:
+
+* unclear user value, abandoned workflow, or wrong target user -> Stage 1
+* weak demand, positioning mismatch, or invalid assumption -> Stage 2
+* performance, scale, integration, or security architecture issue -> Stage 3
+* confusing navigation, poor screen flow, or visual mismatch -> Stage 4
+* ticket sequencing, agent assignment, or rollout planning issue -> Stage 5
+* defects, regressions, or validation gaps -> Stage 6
+* deployment, monitoring, onboarding, support, or launch-readiness issue -> Stage 7
+
+Each route candidate must include source signal IDs, severity, evidence references, recommended target stage, recommended action, and whether it blocks current evolution.

@@ -29,6 +29,14 @@ This skill is the technical feasibility and operational validation engine for St
 }
 ```
 
+---
+
+# Evidence Quality Responsibilities
+
+Technical and operational findings must record source type, evidence quality, confidence delta, inference status, limitations, and whether implementation proof or external validation is required.
+
+Architecture-critical technical assumptions require medium or high evidence quality or must be carried as Stage 3 risks.
+
 Read and update shared validation state from:
 
 ```text

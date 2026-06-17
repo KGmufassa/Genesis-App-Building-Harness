@@ -60,6 +60,14 @@ Use `evolution_plan_ready` only after `global-stage-readiness-audit` passes.
 
 ---
 
+# Feedback Routing Responsibilities
+
+Synthesize telemetry, operational, AI, roadmap, and scalability findings into feedback routes when live signals reveal issues owned by earlier stages.
+
+Every critical feedback route must include evidence refs, target stage, severity, recommended action, and ownership or next action.
+
+---
+
 # Outputs
 
 Write final Stage 8 outputs:
@@ -79,4 +87,3 @@ Build-Plans/Build-status/Evolution-state.json
 ```
 
 with `completion_status`, prioritized evolution actions, routed prior-stage feedback, unresolved telemetry gaps, and remaining risks.
-

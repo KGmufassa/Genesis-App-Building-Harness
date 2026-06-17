@@ -146,6 +146,7 @@ Stage 6 may complete only when:
 * repair work has been revalidated
 * system health is synthesized from implementation, validation, regression, and repair results
 * launch-critical frontend tickets include visual QA, responsive validation, design system compliance, and visual drift status when required
+* ticket `expected_artifacts` are recorded in `Build-Plans/Build-status/Artifact-evidence-registry.json` or documented as blockers
 * Stage 7 handoff contains unresolved operational, deployment, monitoring, analytics, and support needs
 
 Stage 6 is `ready_for_stage_7` only when:
@@ -180,6 +181,7 @@ Before completing Stage 6, confirm:
 * every assigned agent has execution status
 * every parallel batch has validation status
 * validation results map to ticket acceptance criteria
+* expected artifact evidence maps back to Stage 5 ticket IDs
 * frontend validation results map to UI blueprint, visual spec, and design system IDs when present
 * visual QA and responsive validation results are included for frontend tickets when required
 * regression analysis maps failures back to affected tickets, agents, batches, workflows, and features

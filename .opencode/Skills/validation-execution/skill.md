@@ -97,6 +97,7 @@ requires_user_review
   "visual_qa_results": [],
   "responsive_validation_results": [],
   "visual_drift_results": [],
+  "artifact_evidence_updates": [],
   "passed_checks": [],
   "failed_checks": [],
   "coverage_gaps": [],
@@ -142,3 +143,4 @@ Validate:
 * frontend tickets with visual spec refs validate visual acceptance criteria and report any visual gaps
 * frontend tickets with visual QA requirements report visual QA evidence and visual drift status
 * frontend tickets with design system refs report design system compliance
+* validation outputs, screenshots, preview URLs, logs, and reports are recorded or queued for `Build-Plans/Build-status/Artifact-evidence-registry.json`

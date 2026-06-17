@@ -130,3 +130,55 @@ blocked
 ```
 
 Use `evolution_plan_ready` only when findings are evidence-backed, recommendations are traceable, and revision loops are routed to the correct earlier stages.
+
+---
+
+# Prior Stage Feedback Routing
+
+Stage 8 must classify live findings and route them to the correct stage when they expose a flaw in product strategy, validation, architecture, UX, implementation, launch operations, or roadmap direction.
+
+Feedback route object:
+
+```json
+{
+  "feedback_route_id": "",
+  "source_signal_ids": [],
+  "finding": "",
+  "recommended_target_stage": "",
+  "severity": "",
+  "evidence_refs": [],
+  "recommended_action": "",
+  "blocks_current_evolution": false,
+  "creates_new_stage_cycle": false
+}
+```
+
+Unresolved critical feedback routes must have owners or explicit next actions before `evolution_plan_ready`.
+
+---
+
+# A-Grade Workflow Compliance
+
+Stage 8 must consume `stage_contract_profile` and `guidance_policy`.
+
+Stage 8 must reference:
+
+```text
+System-References/Schemas/stage-8-output.schema.json
+```
+
+Stage 8 telemetry, analytics, support, incident, user feedback, and cost/scalability evidence should be referenced in:
+
+```text
+Build-Plans/Build-status/Artifact-evidence-registry.json
+```
+
+Before using `evolution_plan_ready`, Stage 8 must provide `schema_validation`, `reference_integrity`, `risk_acceptance_ledger`, and `revision_loops` in the readiness audit or stage state.
+
+Accepted high and critical evolution, feedback routing, telemetry, scalability, AI, or operational risks must be recorded in:
+
+```text
+Build-Plans/Build-status/Risk-acceptance-ledger.json
+```
+
+Failed readiness checks must become revision-loop actions with owning output, owning skill, required change, and next action.

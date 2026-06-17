@@ -70,3 +70,20 @@ This skill contributes to:
 Build-Plans/Stage-8/03-ai-improvement-plan.json
 ```
 
+---
+
+# Feedback Routing Responsibilities
+
+When AI quality findings indicate that the root issue belongs to an earlier stage, produce `feedback_route_candidates` instead of treating the issue only as a Stage 8 AI optimization.
+
+Route examples:
+
+* AI behavior does not fit the intended product outcome -> Stage 1
+* AI assumptions were not sufficiently validated -> Stage 2
+* AI endpoint, data, security, infrastructure, or integration constraints are architectural -> Stage 3
+* AI interaction, explanation, error, loading, or recovery behavior is confusing -> Stage 4
+* AI work was under-scoped or incorrectly sequenced in build tickets -> Stage 5
+* AI defects, regressions, missing tests, or validation gaps remain -> Stage 6
+* AI monitoring, support, abuse handling, or production operations are insufficient -> Stage 7
+
+Each route candidate must include source signal IDs, severity, evidence references, recommended target stage, recommended action, and whether it blocks current evolution.

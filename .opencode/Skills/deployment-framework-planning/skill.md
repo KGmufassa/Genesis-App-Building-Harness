@@ -54,6 +54,33 @@ Define rollback triggers, rollback commands, owner expectations, and user/data i
 
 ---
 
+# Deployment Proof Responsibilities
+
+When Stage 7 claims deployment readiness, this skill must define or collect:
+
+```json
+{
+  "deployment_proof": {
+    "production_build_artifact": "",
+    "deployment_dry_run_result": {},
+    "smoke_test_results": [],
+    "rollback_test_result": {},
+    "environment_verification": {},
+    "monitoring_alert_test": {},
+    "release_blockers": [],
+    "accepted_launch_risks": []
+  }
+}
+```
+
+Deployment proof artifacts must be recorded or referenced in:
+
+```text
+Build-Plans/Build-status/Artifact-evidence-registry.json
+```
+
+---
+
 # Outputs
 
 Update shared Stage 7 state in:
@@ -79,4 +106,3 @@ This skill contributes to:
 ```text
 Build-Plans/Stage-7/02-deployment-framework.json
 ```
-

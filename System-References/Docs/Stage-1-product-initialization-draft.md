@@ -600,3 +600,34 @@ Before completing Stage 1, confirm:
 * major dependencies and risks are recorded
 * assumptions and gaps are visible for Stage 2
 * Stage 2 handoff is usable for research and validation
+
+---
+
+# A-Grade Workflow Compliance
+
+Stage 1 must initialize or confirm `stage_contract_profile` and `guidance_policy`.
+
+Stage 1 output validation should reference:
+
+```text
+System-References/Schemas/stage-1-output.schema.json
+```
+
+Stage 1 planning artifacts, source notes, and user-provided intake evidence should be recorded or referenced in:
+
+```text
+Build-Plans/Build-status/Artifact-evidence-registry.json
+```
+
+Stage 1 readiness must also record:
+
+```json
+{
+  "schema_validation": {},
+  "reference_integrity": {},
+  "risk_acceptance_ledger": {},
+  "revision_loops": []
+}
+```
+
+Stage 1 may not use `ready_for_stage_2` until required schema validation passes, blocking reference errors are resolved or accepted, accepted high and critical risks are written to `Build-Plans/Build-status/Risk-acceptance-ledger.json`, and failed readiness checks are converted into revision-loop actions.

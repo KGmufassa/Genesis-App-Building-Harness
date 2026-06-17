@@ -34,6 +34,11 @@ The audit validates:
 * traceability IDs exist or missing traceability is justified
 * artifact references are recorded when evidence exists
 * visual and design continuity checks pass when the stage contains frontend-facing work
+* stage contract profile requirements are satisfied
+* schema validation results are recorded for required outputs
+* accepted risks are recorded in the risk acceptance ledger when progression depends on accepted risk
+* cross-stage references are valid, not duplicated, and not stale
+* failed readiness conditions produce revision-loop records with owning stage, output, skill, and next action
 
 ---
 
@@ -73,6 +78,43 @@ Build-Plans/Build-status/Stage-5-readiness-audit.json
   "assumptions_recorded": false,
   "traceability_present": false,
   "artifacts_recorded": false,
+  "stage_contract_profile": {
+    "profile_id": "",
+    "profile_requirements_checked": false,
+    "missing_profile_requirements": []
+  },
+  "schema_validation": {
+    "schema_refs": [],
+    "validated_files": [],
+    "schema_errors": [],
+    "schemas_valid": false,
+    "validated_at": "",
+    "validator": "",
+    "blocking": true
+  },
+  "reference_integrity": {
+    "checked_refs": [],
+    "missing_refs": [],
+    "orphaned_refs": [],
+    "stale_refs": [],
+    "duplicate_ids": [],
+    "integrity_status": "passed | passed_with_warnings | failed",
+    "blocking_ref_errors": []
+  },
+  "artifact_evidence_registry": {
+    "registry_path": "Build-Plans/Build-status/Artifact-evidence-registry.json",
+    "required": false,
+    "required_artifacts_present": false,
+    "missing_artifacts": []
+  },
+  "risk_acceptance_ledger": {
+    "ledger_path": "Build-Plans/Build-status/Risk-acceptance-ledger.json",
+    "required": false,
+    "accepted_risks_present": false,
+    "missing_risk_acceptance_entries": [],
+    "expired_or_unowned_risks": []
+  },
+  "revision_loops": [],
   "visual_design_continuity": {
     "required": false,
     "ui_blueprint_refs_present": false,
@@ -115,6 +157,20 @@ For frontend-facing work, the audit must also enforce the visual and design cont
 ```text
 System-References/Docs/Global-Stage-Workflow-Contract.md
 ```
+
+For evidence-backed readiness claims, the audit must verify related evidence exists in:
+
+```text
+Build-Plans/Build-status/Artifact-evidence-registry.json
+```
+
+For accepted-risk readiness claims, the audit must verify risk acceptance entries exist in:
+
+```text
+Build-Plans/Build-status/Risk-acceptance-ledger.json
+```
+
+For every failed or blocked readiness condition, the audit must create a revision-loop object with the owning stage, output, skill, required change, and whether accepted risk is allowed.
 
 If the audit fails, the stage must set completion status to one of:
 

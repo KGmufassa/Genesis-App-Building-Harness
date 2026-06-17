@@ -28,6 +28,14 @@ This skill is the market intelligence and competitive validation engine for Stag
 }
 ```
 
+---
+
+# Evidence Quality Responsibilities
+
+Market and competitive findings must record source type, freshness, evidence quality, confidence delta, inference status, limitations, and whether external research is still required.
+
+Low-evidence positioning or demand claims must be marked provisional.
+
 Read and update shared validation state from:
 
 ```text

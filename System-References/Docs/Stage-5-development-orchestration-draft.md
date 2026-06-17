@@ -1295,7 +1295,7 @@ Identify:
 * tickets with missing validation steps
 * tickets with missing executable validation commands when launch-critical
 * tickets with missing dev server expectations when UI validation is required
-* tickets with missing artifact expectations
+* tickets with missing `expected_artifacts`
 * tickets with missing retry or escalation policy for high-risk work
 * tickets that depend on unresolved architecture or UX decisions
 * tickets that are too broad for Stage 6 execution
@@ -2483,6 +2483,7 @@ Build-Plans/Stage-5/08-release-plan.json
   "ticket_visual_spec_assignments": [],
   "ticket_design_system_assignments": [],
   "visual_acceptance_criteria_ticket_map": [],
+  "ticket_artifact_expectations": [],
   "frontend_task_groups": [],
   "component_ticket_map": [],
   "stage_6_execution_queue": [],
@@ -2567,6 +2568,7 @@ The build ticket output must include:
 * UI blueprint references for frontend tickets
 * visual spec references and visual requirements for frontend tickets
 * design system references for frontend tickets
+* expected artifacts for tickets requiring validation, preview, visual QA, deployment proof, or launch-readiness evidence
 * page, component, shared component, route, state, and action references when applicable
 * frontend task hints from the Stage 4 frontend build package
 * primary skill from the skill registry
@@ -2579,7 +2581,7 @@ The build ticket output must include:
 * validation steps
 * validation layers and executable validation commands when known
 * dev server requirements for UI or browser-validated tickets
-* artifact expectations
+* `expected_artifacts`
 * retry and repair policy
 * risk level
 * Stage 6 execution queue position
@@ -2668,7 +2670,7 @@ Stage 5 may complete only when:
 * frontend build tickets reference applicable design system IDs or explicitly record why no design system applies
 * frontend build tickets preserve page, component, route, action, state, validation, accessibility, responsive, visual, and design system requirements from Stage 4
 * frontend build tickets map visual acceptance criteria to validation steps
-* build tickets include validation layers, artifact expectations, and retry policy
+* build tickets include validation layers, `expected_artifacts`, and retry policy
 * UI/browser-validated tickets include dev server requirements
 * agent assignment plan scans available agents before assignment
 * agent assignment plan assigns every MVP ticket to the most suitable available agent that can use the ticket-required skills, or records why it requires manual ownership
@@ -2681,7 +2683,7 @@ Stage 5 may complete only when:
 * parallel execution plan separates safe parallel work from serial work
 * parallel execution plan blocks unresolved dependency, file ownership, API, schema, architecture, or UX conflicts
 * parallel execution plan defines file locks, merge owner, and failure policy
-* Stage 6 handoff includes execution queue, validation commands, dev server plan, environment requirements, file scope controls, retry policy, and artifact expectations
+* Stage 6 handoff includes execution queue, validation commands, dev server plan, environment requirements, file scope controls, retry policy, and `expected_artifacts`
 * release plan exists
 * high and critical execution risks have mitigation paths
 * critical interactive guidance questions are answered or converted into recorded assumptions
@@ -2710,3 +2712,36 @@ Before completing Stage 5, confirm:
 * release plan includes readiness gates
 * critical interactive guidance questions are answered or converted into recorded assumptions
 * Stage 6 handoff is usable for implementation and validation
+
+---
+
+# A-Grade Workflow Compliance
+
+Stage 5 must consume `stage_contract_profile` and `guidance_policy`.
+
+Stage 5 output validation should reference:
+
+```text
+System-References/Schemas/stage-5-output.schema.json
+```
+
+Build tickets must define `expected_artifacts` when validation, preview, visual QA, deployment proof, or launch readiness evidence will be required later.
+
+Expected artifacts must be carried into:
+
+```text
+Build-Plans/Build-status/Artifact-evidence-registry.json
+```
+
+Stage 5 readiness must also record:
+
+```json
+{
+  "schema_validation": {},
+  "reference_integrity": {},
+  "risk_acceptance_ledger": {},
+  "revision_loops": []
+}
+```
+
+Stage 5 may not use `ready_for_stage_6` until required schema validation passes, slice, ticket, skill, agent, UI blueprint, visual spec, design system, route, component, validation, and artifact references resolve to upstream sources, accepted high and critical execution risks are written to `Build-Plans/Build-status/Risk-acceptance-ledger.json`, and failed readiness checks are converted into revision-loop actions.

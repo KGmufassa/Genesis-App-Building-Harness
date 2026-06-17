@@ -238,6 +238,35 @@ Revision feedback must include:
 }
 ```
 
+Readiness failures must also produce revision-loop records.
+
+```json
+{
+  "revision_loop": {
+    "revision_id": "",
+    "triggering_audit": "",
+    "owning_stage": "",
+    "owning_output": "",
+    "owning_skill": "",
+    "blocking_issue": "",
+    "required_change": "",
+    "recommended_action": "",
+    "can_continue_with_accepted_risk": false,
+    "target_status_after_revision": "",
+    "status": "open | in_progress | resolved | accepted_risk"
+  }
+}
+```
+
+Revision-loop records must distinguish:
+
+* current-stage revisions
+* prior-stage revisions
+* blocked items needing user input
+* accepted-risk exceptions
+
+Accepted-risk revision loops must link to `Build-Plans/Build-status/Risk-acceptance-ledger.json`.
+
 ---
 
 # Shared Risk Model
@@ -287,6 +316,51 @@ resolved
 ```
 
 High and critical risks must include mitigation, owner stage, and next action.
+
+---
+
+# Risk Acceptance Ledger Rules
+
+Accepted risks must be durable and visible downstream.
+
+Canonical risk acceptance ledger path:
+
+```text
+Build-Plans/Build-status/Risk-acceptance-ledger.json
+```
+
+Risk acceptance ledger structure:
+
+```json
+{
+  "ledger_version": "1.0.0",
+  "accepted_risks": [
+    {
+      "risk_id": "",
+      "source_stage": "",
+      "source_output": "",
+      "risk": "",
+      "severity": "low | medium | high | critical",
+      "accepted_by": "",
+      "accepted_at": "",
+      "acceptance_reason": "",
+      "mitigation": "",
+      "owner_stage": "",
+      "downstream_visibility": [],
+      "revisit_trigger": "",
+      "expires_or_recheck_at": "",
+      "status": "active | mitigated | expired | superseded"
+    }
+  ]
+}
+```
+
+Rules:
+
+* accepted high and critical risks must include owner stage, mitigation, downstream visibility, and revisit trigger
+* accepted high and critical risks must appear in the next stage handoff
+* accepted launch risks must be visible to Stage 8
+* expired or superseded accepted risks must be revisited before a ready completion status is used
 
 ---
 
@@ -360,22 +434,193 @@ Examples:
 * support summaries
 * user feedback records
 
-Artifact structure:
+Canonical artifact registry path:
+
+```text
+Build-Plans/Build-status/Artifact-evidence-registry.json
+```
+
+Artifact registry structure:
 
 ```json
 {
-  "artifact_id": "",
-  "stage": "",
-  "type": "",
-  "source": "",
-  "path_or_reference": "",
-  "summary": "",
-  "related_ids": [],
-  "created_at": ""
+  "registry_version": "1.0.0",
+  "artifacts": [
+    {
+      "artifact_id": "",
+      "type": "test_output | screenshot | preview_url | build_log | validation_report | deployment_evidence | launch_check | telemetry_source",
+      "related_stage": "",
+      "related_stage_output": "",
+      "related_ticket_ids": [],
+      "related_validation_ids": [],
+      "related_agent_ids": [],
+      "path_or_url": "",
+      "status": "pending | passed | failed | blocked | accepted_risk",
+      "confidence": "low | medium | high",
+      "created_by": "",
+      "created_at": "",
+      "notes": ""
+    }
+  ]
 }
 ```
 
 Large artifacts should be referenced by path instead of embedded in full.
+
+Stages 5-7 must use this registry for expected artifacts, generated validation evidence, deployment proof, preview evidence, launch checks, and accepted-risk evidence.
+
+---
+
+# Stage Contract Profile Rules
+
+Each project should use a stage contract profile to decide required depth, required outputs, optional outputs, and approval gates.
+
+The profile may be selected by the user or inferred during Stage 1.
+
+Supported profile examples:
+
+```text
+simple-crud-app
+frontend-heavy-app
+ai-heavy-app
+marketplace-app
+internal-tool
+enterprise-saas
+mobile-first-app
+compliance-sensitive-app
+integration-heavy-app
+data-heavy-app
+```
+
+Shared profile object:
+
+```json
+{
+  "stage_contract_profile": {
+    "profile_id": "",
+    "profile_name": "",
+    "app_type": "",
+    "complexity_level": "low | medium | high | critical",
+    "guidance_depth": "minimal | standard | detailed | exhaustive",
+    "required_stage_depth": {
+      "stage_1": "",
+      "stage_2": "",
+      "stage_3": "",
+      "stage_4": "",
+      "stage_5": "",
+      "stage_6": "",
+      "stage_7": "",
+      "stage_8": ""
+    },
+    "required_validation_layers": [],
+    "optional_outputs": [],
+    "required_outputs": [],
+    "skip_allowed_outputs": [],
+    "approval_gates": []
+  }
+}
+```
+
+Readiness audits must evaluate the active stage against the selected profile instead of assuming every project requires exhaustive depth.
+
+---
+
+# Schema Validation Rules
+
+Stage outputs should be validated against machine-checkable schema references.
+
+Canonical schema folder:
+
+```text
+System-References/Schemas/
+```
+
+Each readiness audit should record:
+
+```json
+{
+  "schema_validation": {
+    "schema_refs": [],
+    "validated_files": [],
+    "schema_errors": [],
+    "schemas_valid": false,
+    "validated_at": "",
+    "validator": "",
+    "blocking": true
+  }
+}
+```
+
+Missing or invalid schema validation may block readiness when the affected output is required by the active stage contract profile.
+
+Every stage review doc and stage command must require this object before a ready completion status is used.
+
+---
+
+# Reference Integrity Rules
+
+Every readiness audit should validate cross-stage references.
+
+Reference integrity structure:
+
+```json
+{
+  "reference_integrity": {
+    "checked_refs": [],
+    "missing_refs": [],
+    "orphaned_refs": [],
+    "stale_refs": [],
+    "duplicate_ids": [],
+    "integrity_status": "passed | passed_with_warnings | failed",
+    "blocking_ref_errors": []
+  }
+}
+```
+
+Reference checks should cover:
+
+```text
+USER-*
+WORKFLOW-*
+CAP-*
+FEATURE-*
+BOUNDARY-*
+DEP-*
+RISK-*
+ASSUMPTION-*
+SERVICE-*
+ENTITY-*
+API-*
+SCREEN-*
+PAGE-*
+COMPONENT-*
+TICKET-*
+AGENT-*
+ARTIFACT-*
+```
+
+Readiness must fail when launch-critical downstream outputs reference missing, duplicate, or stale upstream IDs unless the active stage contract profile allows an explicit accepted exception.
+
+---
+
+# Canonical Artifact Field Names
+
+Use these field names consistently:
+
+```text
+expected_artifacts
+artifact_evidence_updates
+artifact_refs
+Artifact-evidence-registry.json
+```
+
+Stage 5 build tickets must define `expected_artifacts` when validation, preview, visual QA, deployment proof, launch readiness, or post-launch evidence is required.
+
+Stage 6 must map `expected_artifacts` to `artifact_evidence_updates` and final `artifact_refs`.
+
+Stage 7 must consume `artifact_refs` and `deployment_proof`.
+
+Global readiness audits must validate that required expected artifacts have matching registry entries or accepted blockers.
 
 ---
 
@@ -405,6 +650,23 @@ Each stage state should include:
 }
 ```
 
+Each stage state should also include:
+
+```json
+{
+  "guidance_policy": {
+    "complexity_level": "low | medium | high | critical",
+    "guidance_depth": "minimal | standard | detailed | exhaustive",
+    "ask_threshold": "only_blockers | material_decisions | important_tradeoffs | all_uncertainties",
+    "default_inference_allowed": true,
+    "approval_required_for": [],
+    "max_questions_per_turn": 3
+  }
+}
+```
+
+Low-complexity profiles should ask fewer questions and record more safe assumptions. High-risk profiles should ask more confirmation questions and block on more unresolved decisions.
+
 ---
 
 # Stage Readiness Audit
@@ -432,6 +694,11 @@ Readiness audit output:
   "schemas_valid": true,
   "handoff_present": true,
   "traceability_present": true,
+  "schema_validation": {},
+  "reference_integrity": {},
+  "artifact_evidence_registry": {},
+  "risk_acceptance_ledger": {},
+  "revision_loops": [],
   "blocking_gaps": [],
   "warnings": [],
   "ready_for_next_stage": false

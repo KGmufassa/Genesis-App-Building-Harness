@@ -208,6 +208,7 @@ visual_acceptance_criteria_refs
 preview_required
 visual_qa_required
 design_system_compliance_required
+expected_artifacts
 ```
 
 Frontend tickets that include `ui_blueprint_refs` must preserve the referenced UI blueprint requirements from:
@@ -229,6 +230,8 @@ For frontend tickets that require preview or visual QA, Stage 6 must record:
   "visual_drift_status": "visual_match | minor_visual_drift | major_visual_drift | requires_user_review"
 }
 ```
+
+For any ticket with `expected_artifacts`, Stage 6 must record matching artifact evidence updates or a blocker explaining why the artifact could not be produced.
 
 Each agent assignment must include:
 
@@ -479,3 +482,31 @@ Before completing Stage 6, confirm:
 * regression analysis maps failures back to affected tickets, agents, batches, workflows, and features
 * repair log includes verification results
 * Stage 7 handoff is usable for launch and operationalization
+
+---
+
+# A-Grade Workflow Compliance
+
+Stage 6 must consume `stage_contract_profile` and `guidance_policy`.
+
+Stage 6 must reference:
+
+```text
+System-References/Schemas/stage-6-output.schema.json
+```
+
+Stage 6 must record implementation, validation, repair, regression, preview, visual QA, and build evidence in:
+
+```text
+Build-Plans/Build-status/Artifact-evidence-registry.json
+```
+
+Before using `ready_for_stage_7`, Stage 6 must provide `schema_validation`, `reference_integrity`, `risk_acceptance_ledger`, and `revision_loops` in the readiness audit or stage state.
+
+Accepted high and critical implementation, validation, regression, repair, or visual QA risks must be recorded in:
+
+```text
+Build-Plans/Build-status/Risk-acceptance-ledger.json
+```
+
+Failed readiness checks must become revision-loop actions with owning output, owning skill, required change, and next action.

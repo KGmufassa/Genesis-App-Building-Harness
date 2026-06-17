@@ -162,6 +162,41 @@ Normalize the handoff into:
 
 ---
 
+# Prior Stage Feedback Routing
+
+Stage 8 must classify live findings and route them to the correct stage when they cannot be solved only through post-launch optimization.
+
+Routing rules:
+
+| Signal | Route |
+| --- | --- |
+| Retention, positioning, or product-market issue | Stage 1 or Stage 2 |
+| Invalid validated assumption | Stage 2 |
+| Performance, API, infrastructure, security, or scalability issue | Stage 3 |
+| UX confusion, navigation friction, accessibility issue | Stage 4 |
+| Ticket sequencing, agent, or test coverage issue | Stage 5 |
+| Bug, regression, repair, or validation failure | Stage 6 |
+| Support, monitoring, onboarding, or operational issue | Stage 7 |
+| Roadmap expansion or optimization opportunity | Stage 8 |
+
+Feedback route object:
+
+```json
+{
+  "feedback_route_id": "",
+  "source_signal_ids": [],
+  "finding": "",
+  "recommended_target_stage": "",
+  "severity": "",
+  "evidence_refs": [],
+  "recommended_action": "",
+  "blocks_current_evolution": false,
+  "creates_new_stage_cycle": false
+}
+```
+
+---
+
 # Stage 8 Input Contract
 
 Load Stage 7 outputs from:
@@ -658,3 +693,35 @@ Stage 8 may complete as `evolution_plan_ready` only when:
 * AI improvements include evaluation and regression requirements
 * operational and scalability recommendations include measurable signals
 * experiments include hypotheses, metrics, rollout scope, and review dates
+* unresolved critical feedback routes have owners or explicit next actions
+
+---
+
+# A-Grade Workflow Compliance
+
+Stage 8 must consume `stage_contract_profile` and `guidance_policy`.
+
+Stage 8 output validation should reference:
+
+```text
+System-References/Schemas/stage-8-output.schema.json
+```
+
+Stage 8 telemetry, analytics, support, incident, user feedback, and cost/scalability evidence should be referenced in:
+
+```text
+Build-Plans/Build-status/Artifact-evidence-registry.json
+```
+
+Stage 8 readiness must also record:
+
+```json
+{
+  "schema_validation": {},
+  "reference_integrity": {},
+  "risk_acceptance_ledger": {},
+  "revision_loops": []
+}
+```
+
+Stage 8 may not use `evolution_plan_ready` until required schema validation passes, telemetry, support, incident, cost, feedback route, experiment, roadmap, artifact, and accepted-risk references resolve to upstream sources, accepted high and critical evolution risks are written to `Build-Plans/Build-status/Risk-acceptance-ledger.json`, and failed readiness checks are converted into revision-loop actions.

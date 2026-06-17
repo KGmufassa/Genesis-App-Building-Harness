@@ -38,6 +38,22 @@ This skill is the assumption extraction and validation targeting engine for Stag
 }
 ```
 
+---
+
+# Evidence Quality Responsibilities
+
+When extracting assumptions, initialize evidence metadata with:
+
+```text
+source_type
+freshness
+evidence_quality
+is_inference
+requires_external_research
+```
+
+Do not mark inferred assumptions as validated. Mark them as `unvalidated` or `unknown` until a validation skill attaches evidence.
+
 Read Stage 1 outputs from:
 
 ```text

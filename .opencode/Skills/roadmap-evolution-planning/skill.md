@@ -70,3 +70,18 @@ This skill contributes to:
 Build-Plans/Stage-8/04-roadmap-evolution.json
 ```
 
+---
+
+# Feedback Routing Responsibilities
+
+When roadmap findings require work owned by an earlier stage, produce `feedback_route_candidates` with source signal IDs, severity, evidence references, recommended target stage, recommended action, and whether the route blocks current evolution.
+
+Route examples:
+
+* product scope, user, workflow, or MVP boundary changes -> Stage 1
+* assumption, demand, market, or business validation changes -> Stage 2
+* architecture, data, integration, security, or infrastructure changes -> Stage 3
+* UX, UI blueprint, navigation, visual specification, accessibility, or state changes -> Stage 4
+* slicing, ticketing, sequencing, agent, or release planning changes -> Stage 5
+* implementation defect, regression, repair, or validation changes -> Stage 6
+* deployment, monitoring, onboarding, support, analytics, or launch operation changes -> Stage 7

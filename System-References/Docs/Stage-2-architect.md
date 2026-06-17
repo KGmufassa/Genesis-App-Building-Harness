@@ -807,6 +807,41 @@ Stage 2 should maintain a centralized assumption registry.
 
 ---
 
+# Evidence Quality Rules
+
+Every Stage 2 finding must distinguish:
+
+```text
+evidence-backed finding
+inference
+unsupported assumption
+critical unknown
+```
+
+Evidence entries must use:
+
+```json
+{
+  "evidence_id": "",
+  "claim_or_assumption_id": "",
+  "source_type": "primary | secondary | user_provided | inferred | unavailable",
+  "source_url": "",
+  "source_date": "",
+  "freshness": "current | recent | stale | unknown",
+  "evidence_quality": "none | low | medium | high",
+  "confidence_effect": "increase | decrease | neutral",
+  "confidence_delta": 0.0,
+  "summary": "",
+  "is_inference": false,
+  "limitations": [],
+  "requires_external_research": false
+}
+```
+
+Architecture-critical assumptions cannot be marked `validated` unless evidence quality is `medium` or `high`, the risk is explicitly accepted and carried into Stage 3, or the assumption remains a critical unknown blocking architecture progression.
+
+---
+
 # Example Structure
 
 ```json id="’winijlwm23"
@@ -1013,3 +1048,36 @@ into:
 * validated product intelligence
 * risk-aware feasibility analysis
 * architecture-ready confidence models.
+
+---
+
+# A-Grade Workflow Compliance
+
+Stage 2 must consume `stage_contract_profile` and `guidance_policy`.
+
+Stage 2 output validation should reference:
+
+```text
+System-References/Schemas/stage-2-output.schema.json
+```
+
+Stage 2 evidence findings should create or reference artifacts in:
+
+```text
+Build-Plans/Build-status/Artifact-evidence-registry.json
+```
+
+Architecture-critical assumptions require evidence quality of `medium` or higher unless explicitly accepted as risk.
+
+Stage 2 readiness must also record:
+
+```json
+{
+  "schema_validation": {},
+  "reference_integrity": {},
+  "risk_acceptance_ledger": {},
+  "revision_loops": []
+}
+```
+
+Stage 2 may not use `ready_for_stage_3` until required schema validation passes, assumption and evidence references resolve to Stage 1 sources, accepted high and critical validation risks are written to `Build-Plans/Build-status/Risk-acceptance-ledger.json`, and failed readiness checks are converted into revision-loop actions.
