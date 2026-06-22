@@ -459,6 +459,42 @@ Each output must include:
 
 ---
 
+# Stage Decision Brief
+
+Before final synthesis or `ready_for_stage_5`, generate:
+
+```text
+Build-Plans/Stage-4/00-stage-decision-brief.md
+```
+
+The brief uses the recommended approach to propose UX/UI direction before build tickets are generated.
+
+Ask:
+
+```text
+Do you approve this recommended UX/UI direction?
+```
+
+Allowed user decisions:
+
+```text
+Approve recommended UI direction
+Revise visual style
+Revise page/screen structure
+Revise navigation/layout
+Revise component priorities
+```
+
+Record the brief in shared UX state as `stage_decision_brief`.
+
+Do not use `ready_for_stage_5` unless:
+
+```text
+stage_decision_brief.approval_status = approved
+```
+
+---
+
 # Completion Gate
 
 Before Stage 4 may use `ready_for_stage_5`, run `global-stage-readiness-audit`.
@@ -496,6 +532,7 @@ Stage 4 may complete only when:
 * high and critical UX risks have mitigation paths
 * critical interactive guidance questions are answered or converted into recorded assumptions
 * no interaction-blocking Stage 3 unknowns remain unresolved
+* Stage 4 decision brief exists and is approved
 
 Possible completion statuses:
 
@@ -528,6 +565,7 @@ Before completing Stage 4, confirm:
 * accessibility risks are recorded
 * critical interactive guidance questions are answered or converted into recorded assumptions
 * Stage 5 handoff is usable for development orchestration
+* Stage 4 decision brief approval is recorded before Stage 5 handoff is used
 
 ---
 

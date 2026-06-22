@@ -767,6 +767,78 @@ Instead it should mean:
 
 ---
 
+# Stage Decision Brief
+
+Before Stage 2 may run final synthesis or use `ready_for_stage_3`, it must generate:
+
+```text
+Build-Plans/Stage-2/00-stage-decision-brief.md
+```
+
+Purpose:
+
+```text
+Confirm whether the validated product assumptions are strong enough to continue into architecture.
+```
+
+The brief must include:
+
+* key assumptions
+* validated assumptions
+* weakened assumptions
+* contradicted assumptions
+* critical unknowns
+* evidence confidence
+* risks
+* recommended decision
+
+Approval question:
+
+```text
+Do you want to proceed with this validated product direction, revise it, or run deeper validation?
+```
+
+Approval options:
+
+```text
+Proceed to architecture
+Revise product assumptions
+Accept known risks
+Run deeper validation
+Block progression
+```
+
+Stage 2 shared state must include:
+
+```json
+{
+  "stage_decision_brief": {
+    "brief_id": "",
+    "stage": "Stage 2",
+    "brief_path": "Build-Plans/Stage-2/00-stage-decision-brief.md",
+    "recommended_direction": "",
+    "alternatives_considered": [],
+    "key_decisions": [],
+    "assumptions": [],
+    "risks": [],
+    "downstream_impact": [],
+    "user_decision_required": true,
+    "approval_status": "pending | approved | revise | rejected",
+    "approved_by": "",
+    "approved_at": "",
+    "revision_notes": []
+  }
+}
+```
+
+Stage 2 may not lock validation direction or run readiness as `ready_for_stage_3` unless:
+
+```text
+stage_decision_brief.approval_status = approved
+```
+
+---
+
 # Recommended Completion Criteria
 
 Before Stage 2 may use `ready_for_stage_3`, it must run `global-stage-readiness-audit` and write:
@@ -797,6 +869,12 @@ AND:
 
 ```text id="’winijlwm22"
 No critical unknowns remain unresolved.
+```
+
+AND:
+
+```text
+Stage 2 decision brief exists and is approved.
 ```
 
 ---

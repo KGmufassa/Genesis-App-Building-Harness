@@ -81,6 +81,22 @@ The command must load this file at the beginning of Stage 3, update it after eac
   "preflight": {},
   "architecture_drivers": [],
   "architecture_decisions": [],
+  "selected_stack": {
+    "frontend": {},
+    "backend": {},
+    "database": {},
+    "storage": {},
+    "authentication": {},
+    "hosting_and_deployment": {},
+    "testing_stack": {},
+    "package_manager": "",
+    "ai_and_external_services": [],
+    "rationale": "",
+    "rejected_alternatives": [],
+    "risks": []
+  },
+  "stack_decision_status": {},
+  "rejected_stack_alternatives": [],
   "system_topology": {},
   "service_architecture": {},
   "data_architecture": {},
@@ -155,6 +171,43 @@ The command should pause for user input when:
 * a Stage 2 risk cannot be mitigated through architecture
 
 The command should not ask the user to choose implementation details that can be deferred to Stage 5 unless the decision changes Stage 3 architecture.
+
+---
+
+# Concrete Stack Decision Rules
+
+Stage 3 must select one concrete implementation stack before completion.
+
+The command may compare alternatives, but it must collapse them into a single selected stack before final synthesis.
+
+The selected stack must include concrete choices for:
+
+```text
+frontend framework
+frontend language
+styling approach
+backend framework
+backend runtime
+API style
+primary database
+ORM or query layer
+authentication provider or strategy
+hosting and deployment model
+testing stack
+package manager
+AI providers or none_for_mvp
+storage provider or none_for_mvp
+```
+
+Selection rules:
+
+* choose the best-fit stack using Stage 2 feasibility, product complexity, known risks, skill availability, implementation speed, scalability, security, cost, and operational burden
+* record rejected alternatives with rationale
+* use `none_for_mvp` for stack areas intentionally excluded from the MVP
+* do not leave unresolved choices such as `or`, `TBD`, `to decide later`, `optional`, or `depends`
+* if the user rejects the stack, update `stack_decision_status`, revise `selected_stack`, and regenerate affected architecture outputs before completion
+
+Stage 3 must block completion when `selected_stack` is missing, incomplete, or contains unresolved alternatives.
 
 ---
 
@@ -454,6 +507,47 @@ Each output must include:
 
 ---
 
+# Stage Decision Brief
+
+Before final synthesis, `ready_for_stage_4`, or Stage 5 architecture handoff, generate:
+
+```text
+Build-Plans/Stage-3/00-stage-decision-brief.md
+```
+
+The brief confirms the selected concrete architecture stack before UX/UI planning and build orchestration.
+
+The brief must present one selected concrete stack, not multiple unresolved options.
+
+Ask:
+
+```text
+Do you approve this selected concrete stack for the build?
+```
+
+Allowed user decisions:
+
+```text
+Approve tech stack
+Change frontend stack
+Change backend stack
+Change database/auth/deployment
+Choose simpler architecture
+Choose more scalable architecture
+```
+
+Record the brief in shared architecture state as `stage_decision_brief`.
+
+Do not use `ready_for_stage_4` or send Stage 5 architecture handoff unless:
+
+```text
+selected_stack is complete
+selected_stack contains no unresolved alternatives
+stage_decision_brief.approval_status = approved
+```
+
+---
+
 # Completion Gate
 
 Before Stage 3 may use `ready_for_stage_4`, run `global-stage-readiness-audit`.
@@ -480,11 +574,13 @@ Stage 3 may complete only when:
 * data ownership is defined
 * API surfaces are mapped to workflows
 * integrations and infrastructure are defined
+* selected concrete stack is complete and approved
 * security foundations are present
 * scalability framework exists
 * high and critical architecture risks have mitigation paths
 * critical interactive guidance questions are answered or converted into recorded assumptions
 * no architecture-blocking Stage 2 unknowns remain unresolved
+* Stage 3 decision brief exists and is approved
 
 Possible completion statuses:
 
@@ -508,10 +604,13 @@ Before completing Stage 3, confirm:
 * every core workflow is supported by the architecture
 * every data entity has an owner
 * every external dependency has an integration strategy
+* selected stack has exactly one concrete choice for frontend, backend, database, auth, deployment, testing, and package manager
+* rejected stack alternatives are recorded with rationale
 * security and scalability risks are recorded
 * critical interactive guidance questions are answered or converted into recorded assumptions
 * Stage 4 handoff is usable for UX architecture
 * Stage 5 handoff is usable for development orchestration
+* Stage 3 decision brief approval is recorded before Stage 4 or Stage 5 handoff is used
 
 ---
 

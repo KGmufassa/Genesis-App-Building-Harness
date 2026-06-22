@@ -546,6 +546,80 @@ Writes all final Stage 1 files.
 
 ---
 
+# Stage Decision Brief
+
+Before Stage 1 may run final synthesis or use `ready_for_stage_2`, it must generate:
+
+```text
+Build-Plans/Stage-1/00-stage-decision-brief.md
+```
+
+Purpose:
+
+```text
+Confirm the app idea, features, MVP direction, and how the app should work before Stage 2 validation.
+```
+
+The brief must include:
+
+* app concept
+* target users
+* core problem
+* main user outcomes
+* proposed feature list
+* feature priorities
+* how the app workflow should operate
+* MVP boundary
+* assumptions
+* intentionally out-of-scope items
+
+Approval question:
+
+```text
+Does this correctly describe the app you want to build, the features it should include, and how it should work?
+```
+
+Approval options:
+
+```text
+Approve direction
+Revise app idea
+Add/remove features
+Change how the app works
+Redefine MVP scope
+```
+
+Stage 1 shared state must include:
+
+```json
+{
+  "stage_decision_brief": {
+    "brief_id": "",
+    "stage": "Stage 1",
+    "brief_path": "Build-Plans/Stage-1/00-stage-decision-brief.md",
+    "recommended_direction": "",
+    "alternatives_considered": [],
+    "key_decisions": [],
+    "assumptions": [],
+    "risks": [],
+    "downstream_impact": [],
+    "user_decision_required": true,
+    "approval_status": "pending | approved | revise | rejected",
+    "approved_by": "",
+    "approved_at": "",
+    "revision_notes": []
+  }
+}
+```
+
+Stage 1 may not lock product direction or run readiness as `ready_for_stage_2` unless:
+
+```text
+stage_decision_brief.approval_status = approved
+```
+
+---
+
 # Completion Gate
 
 Before Stage 1 may use `ready_for_stage_2`, it must run `global-stage-readiness-audit` and write:
@@ -572,6 +646,7 @@ Stage 1 may complete only when:
 * MVP scope is defined
 * success framework is present
 * Stage 2 handoff includes validation seed assumptions
+* Stage 1 decision brief exists and is approved
 * all critical interactive guidance questions are answered or converted into recorded assumptions
 * no critical Stage 1 planning gap blocks Stage 2 validation
 
@@ -584,7 +659,7 @@ needs_scope_reduction
 blocked_by_missing_foundation
 ```
 
-Use `ready_for_stage_2` only when Stage 2 can safely validate product assumptions using the generated Stage 1 files.
+Use `ready_for_stage_2` only when Stage 2 can safely validate product assumptions using the generated Stage 1 files and `stage_decision_brief.approval_status = approved`.
 
 ---
 

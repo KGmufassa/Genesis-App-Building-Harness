@@ -266,6 +266,10 @@ Required Stage 3 files:
 08-scalability-framework.json
 ```
 
+Stage 5 must also consume the approved Stage 3 `selected_stack` from the Stage 3 architecture state, decision brief, or Stage 3 handoff.
+
+Stage 5 must not invent, change, or defer the implementation stack. If `selected_stack` is missing, incomplete, or contains unresolved alternatives, Stage 5 must block and create a revision loop back to Stage 3.
+
 Required Stage 4 files:
 
 ```text
@@ -318,6 +322,9 @@ Before development orchestration, validate:
 
 * Stage 1 MVP scope exists
 * Stage 3 architecture outputs exist and are readable
+* Stage 3 `selected_stack` exists
+* Stage 3 `selected_stack` has concrete choices for frontend, backend, database, auth, deployment, testing, and package manager
+* Stage 3 `selected_stack` contains no unresolved alternatives such as `or`, `TBD`, `to decide later`, `optional`, or `depends`
 * Stage 4 UX outputs exist and are readable
 * Stage 4 UI blueprint output exists and is readable
 * Stage 4 design system foundation exists and is readable
@@ -2684,6 +2691,7 @@ Stage 5 may complete only when:
 * parallel execution plan blocks unresolved dependency, file ownership, API, schema, architecture, or UX conflicts
 * parallel execution plan defines file locks, merge owner, and failure policy
 * Stage 6 handoff includes execution queue, validation commands, dev server plan, environment requirements, file scope controls, retry policy, and `expected_artifacts`
+* Stage 6 handoff includes the approved Stage 3 `selected_stack`
 * release plan exists
 * high and critical execution risks have mitigation paths
 * critical interactive guidance questions are answered or converted into recorded assumptions
@@ -2701,6 +2709,7 @@ Before completing Stage 5, confirm:
 * every MVP feature appears in the roadmap or deferred work
 * every launch-critical workflow has an implementation sequence
 * every major engineering dependency is mapped
+* approved Stage 3 `selected_stack` is present and unchanged
 * testing strategy includes validation checkpoints
 * build tickets exist for every MVP implementation slice
 * build tickets include primary skill, recommended skill chain, agent-required skills, skill usage instructions, acceptance criteria, and validation steps
@@ -2718,6 +2727,15 @@ Before completing Stage 5, confirm:
 # A-Grade Workflow Compliance
 
 Stage 5 must consume `stage_contract_profile` and `guidance_policy`.
+
+Stage 5 must consume the approved Stage 3 `selected_stack`.
+
+If the selected stack is missing or ambiguous, Stage 5 must not create build tickets. It must write a revision loop targeting Stage 3 and stop with:
+
+```text
+completion_status.status = blocked
+completion_status.reason = "missing_or_unresolved_selected_stack"
+```
 
 Stage 5 output validation should reference:
 

@@ -684,6 +684,42 @@ Every output must reference relevant assumption IDs and include confidence and e
 
 ---
 
+# Stage Decision Brief
+
+Before final synthesis or `ready_for_stage_3`, generate:
+
+```text
+Build-Plans/Stage-2/00-stage-decision-brief.md
+```
+
+The brief confirms whether the validated product assumptions are strong enough to continue into architecture.
+
+Ask:
+
+```text
+Do you want to proceed with this validated product direction, revise it, or run deeper validation?
+```
+
+Allowed user decisions:
+
+```text
+Proceed to architecture
+Revise product assumptions
+Accept known risks
+Run deeper validation
+Block progression
+```
+
+Record the brief in shared validation state as `stage_decision_brief`.
+
+Do not use `ready_for_stage_3` unless:
+
+```text
+stage_decision_brief.approval_status = approved
+```
+
+---
+
 # Completion Gate
 
 Before Stage 2 may use `ready_for_stage_3`, run `global-stage-readiness-audit`.
@@ -709,6 +745,7 @@ Stage 2 may complete only when:
 * no unresolved contradictions remain
 * all high-risk assumptions have mitigation paths
 * architecture readiness status is `ready`
+* Stage 2 decision brief exists and is approved
 * all critical interactive guidance questions are answered or converted into recorded assumptions
 
 Possible completion statuses:
@@ -720,7 +757,7 @@ requires_product_revision
 blocked
 ```
 
-Use `ready_for_stage_3` only when the product assumptions have been sufficiently validated for safe architectural progression.
+Use `ready_for_stage_3` only when the product assumptions have been sufficiently validated for safe architectural progression and `stage_decision_brief.approval_status = approved`.
 
 ---
 

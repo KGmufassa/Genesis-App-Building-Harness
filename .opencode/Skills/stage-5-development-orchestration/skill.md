@@ -218,6 +218,15 @@ completion_status.status = "blocked"
 completion_status.reason = "missing_development_orchestration_inputs"
 ```
 
+Stage 5 must also consume the approved Stage 3 `selected_stack` from the Stage 3 architecture state, decision brief, or Stage 3 handoff.
+
+Stage 5 must not invent, change, or defer the implementation stack. If `selected_stack` is missing, incomplete, or contains unresolved alternatives, stop and set:
+
+```text
+completion_status.status = "blocked"
+completion_status.reason = "missing_or_unresolved_selected_stack"
+```
+
 If Stage 4 completion status is not `ready_for_stage_5`, continue only if unresolved issues are not execution-blocking. Record all carry-forward risks in `execution_risks`.
 
 ---
@@ -228,6 +237,9 @@ Before development orchestration, validate:
 
 * Stage 1 MVP scope exists
 * Stage 3 architecture outputs exist and are readable
+* Stage 3 `selected_stack` exists
+* Stage 3 `selected_stack` has concrete choices for frontend, backend, database, auth, deployment, testing, and package manager
+* Stage 3 `selected_stack` contains no unresolved alternatives such as `or`, `TBD`, `to decide later`, `optional`, or `depends`
 * Stage 4 UX outputs exist and are readable
 * Stage 4 UI blueprint output exists and is readable
 * Stage 4 design system foundation exists and is readable
@@ -548,6 +560,7 @@ Before completing Stage 5, confirm:
 * generated agents have valid markdown definitions in `.opencode/agents/`, safe permission settings, and complete prompt bodies
 * parallel execution plan defines batches, merge strategy, and validation gates
 * release plan includes readiness gates
+* approved Stage 3 `selected_stack` is present and unchanged
 * critical interactive guidance questions are answered or converted into recorded assumptions
 * Stage 6 handoff is usable for implementation and validation
 
@@ -556,6 +569,15 @@ Before completing Stage 5, confirm:
 # A-Grade Workflow Compliance
 
 Stage 5 must consume `stage_contract_profile` and `guidance_policy`.
+
+Stage 5 must consume the approved Stage 3 `selected_stack`.
+
+If the selected stack is missing or ambiguous, Stage 5 must not create build tickets. It must write a revision loop targeting Stage 3 and stop with:
+
+```text
+completion_status.status = blocked
+completion_status.reason = "missing_or_unresolved_selected_stack"
+```
 
 Stage 5 must reference:
 

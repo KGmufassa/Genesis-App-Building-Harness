@@ -111,6 +111,7 @@ Determine:
 * whether architecture progression is safe
 * whether critical unknowns remain
 * whether the product needs revision before Stage 3
+* whether `Build-Plans/Stage-2/00-stage-decision-brief.md` exists and is approved
 
 ---
 
@@ -148,6 +149,7 @@ Do not ask broad research or architecture questions at this stage. Only ask ques
 * high or critical risks without mitigation
 * critical unknowns that affect Stage 3 readiness
 * final output fields that cannot be completed honestly
+* unapproved Stage 2 decision brief
 
 If proceeding with assumptions, record them in:
 
@@ -194,6 +196,7 @@ Stage 2 may complete only when:
 * no unresolved contradictions remain
 * all high-risk assumptions have mitigation paths
 * architecture readiness status is `ready`
+* Stage 2 decision brief exists and is approved
 
 Possible completion statuses:
 
@@ -204,7 +207,15 @@ requires_product_revision
 blocked
 ```
 
-Use `ready_for_stage_3` only when the product assumptions have been sufficiently validated for safe architectural progression.
+Use `ready_for_stage_3` only when the product assumptions have been sufficiently validated for safe architectural progression and `stage_decision_brief.approval_status = approved`.
+
+Before using `ready_for_stage_3`, this skill must generate or verify:
+
+```text
+Build-Plans/Stage-2/00-stage-decision-brief.md
+```
+
+If the decision brief is not approved, return the brief for user review instead of locking Stage 2.
 
 ---
 

@@ -207,6 +207,71 @@ Every handoff must include:
 
 ---
 
+# Stage Decision Brief Rules
+
+Stages 1-4 must use a proposal-first planning workflow before final readiness.
+
+Stages 1-4 decide the product, validation, architecture, and UX/UI direction. These stages must present a user-reviewable decision brief before they lock outputs and hand off to the next stage.
+
+Stages 5-8 consume approved direction and do not require a stage decision brief by default.
+
+Required brief output path:
+
+```text
+Build-Plans/Stage-N/00-stage-decision-brief.md
+```
+
+Shared decision brief object:
+
+```json
+{
+  "stage_decision_brief": {
+    "brief_id": "",
+    "stage": "",
+    "brief_path": "",
+    "recommended_direction": "",
+    "alternatives_considered": [],
+    "key_decisions": [],
+    "assumptions": [],
+    "risks": [],
+    "downstream_impact": [],
+    "user_decision_required": true,
+    "approval_status": "pending | approved | revise | rejected",
+    "approved_by": "",
+    "approved_at": "",
+    "revision_notes": []
+  }
+}
+```
+
+Completion rule:
+
+```text
+Stages 1-4 may not use ready completion status unless stage_decision_brief.approval_status = approved.
+```
+
+Exception:
+
+```text
+Assumed approval is allowed only when the active stage_contract_profile explicitly permits inferred approval for that stage.
+```
+
+Traceability:
+
+```text
+stage_decision_brief -> stage outputs -> next stage handoff
+```
+
+Stage 1 decision brief confirms the app idea, features, MVP direction, and how the app should work.
+
+Stage 2 decision brief confirms whether validated product assumptions are strong enough to continue into architecture.
+
+Stage 3 decision brief confirms architecture and tech stack direction.
+
+Stage 4 decision brief uses the recommended approach to propose UX/UI direction before build tickets are generated.
+
+---
+
 # Revision Loop Rules
 
 When a later stage discovers a blocker, it must route the issue to the correct earlier stage.

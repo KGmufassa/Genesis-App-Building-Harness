@@ -42,6 +42,8 @@ Verify:
 * output IDs and references are consistent
 * unresolved questions are captured
 * assumptions are ready for Stage 2 validation
+* `Build-Plans/Stage-1/00-stage-decision-brief.md` exists
+* `stage_decision_brief.approval_status` is `approved`
 
 ## Stage 2 Handoff
 
@@ -72,6 +74,7 @@ Pause for user input when:
 * MVP scope and success criteria conflict
 * Stage 2 would not have enough assumptions to validate
 * a blocked decision affects product boundaries
+* the Stage 1 decision brief has not been approved
 
 Update:
 
@@ -149,3 +152,10 @@ with:
 
 Use `ready_for_stage_2` only after `global-stage-readiness-audit` passes.
 
+Before using `ready_for_stage_2`, this skill must generate or verify:
+
+```text
+Build-Plans/Stage-1/00-stage-decision-brief.md
+```
+
+The brief must confirm the app idea, feature direction, MVP boundary, and how the app should work. If `stage_decision_brief.approval_status` is not `approved`, return the brief for user review instead of locking Stage 1.

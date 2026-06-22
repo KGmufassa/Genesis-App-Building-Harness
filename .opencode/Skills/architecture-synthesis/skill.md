@@ -11,6 +11,7 @@ It produces:
 * data architecture
 * API architecture
 * integration architecture
+* selected concrete implementation stack
 * security foundations
 * infrastructure model
 * scalability framework
@@ -29,6 +30,7 @@ This skill is the final architecture synthesis and handoff engine for Stage 3.
   "data_architecture": {},
   "api_architecture": {},
   "integration_architecture": {},
+  "selected_stack": {},
   "security_foundations": {},
   "infrastructure_model": {},
   "scalability_framework": {},
@@ -63,7 +65,9 @@ Validate:
 Record:
 
 * major architecture decisions
+* selected concrete stack
 * alternatives considered
+* rejected stack alternatives with rationale
 * accepted risks
 * deferred architecture concerns
 * Stage 4 handoff implications
@@ -79,6 +83,50 @@ needs_architecture_revision
 needs_stage_2_revalidation
 blocked
 ```
+
+Also determine whether `Build-Plans/Stage-3/00-stage-decision-brief.md` exists and `stage_decision_brief.approval_status` is `approved`.
+
+Also determine whether `selected_stack` is complete and contains no unresolved alternatives.
+
+---
+
+# Concrete Stack Enforcement
+
+Before finalizing Stage 3, verify that `selected_stack` includes exactly one concrete choice for:
+
+```text
+frontend framework
+frontend language
+styling approach
+backend framework
+backend runtime
+API style
+primary database
+ORM or query layer
+authentication provider or strategy
+hosting and deployment model
+testing stack
+package manager
+AI providers or none_for_mvp
+storage provider or none_for_mvp
+```
+
+Reject stack outputs that leave implementation choices unresolved with terms such as:
+
+```text
+or
+TBD
+to decide later
+optional
+depends
+choose during implementation
+```
+
+If multiple options remain viable, choose the best-fit option based on Stage 2 feasibility, product complexity, security, scalability, cost, operational burden, and available skill coverage.
+
+Record non-selected options in `selected_stack.rejected_alternatives` with rationale.
+
+If `selected_stack` is incomplete or unresolved, do not use `ready_for_stage_4`; set `completion_status.status` to `needs_architecture_revision` and return the missing stack decisions.
 
 ---
 
@@ -114,7 +162,9 @@ Do not ask broad technical preference questions at this stage. Only ask question
 * unresolved data ownership decisions
 * unresolved security decisions
 * unresolved infrastructure or integration decisions
+* incomplete or unresolved selected stack decisions
 * architecture risks that block Stage 4 or Stage 5 handoff
+* unapproved Stage 3 architecture and tech stack decision brief
 
 If proceeding with assumptions, record them in:
 
@@ -139,6 +189,7 @@ and return the specific questions or decisions required.
 ```json
 {
   "architecture_outputs": {},
+  "selected_stack": {},
   "architecture_decisions": [],
   "architecture_risks": [],
   "tradeoffs": [],
@@ -182,6 +233,7 @@ Update:
 
 ```text
 architecture_decisions
+selected_stack
 architecture_risks
 tradeoffs
 stage_4_handoff
@@ -208,11 +260,14 @@ Stage 3 may complete only when:
 * data ownership is defined
 * API surfaces are mapped to workflows
 * integrations and infrastructure are defined
+* selected concrete stack is complete
+* selected stack contains no unresolved alternatives
 * security foundations are present
 * scalability framework exists
 * high and critical architecture risks have mitigation paths
 * critical interactive guidance questions are answered or converted into recorded assumptions
 * no architecture-blocking Stage 2 unknowns remain unresolved
+* Stage 3 decision brief exists and is approved
 
 ---
 
@@ -227,8 +282,20 @@ Before completing Stage 3, confirm:
 * every core workflow is supported by the architecture
 * every data entity has an owner
 * every external dependency has an integration strategy
+* selected stack has exactly one concrete choice for frontend, backend, database, auth, deployment, testing, and package manager
+* rejected stack alternatives are recorded with rationale
 * security and scalability risks are recorded
 * critical interactive guidance questions are answered or converted into recorded assumptions
 * Stage 4 handoff is usable for UX architecture
 * Stage 5 handoff is usable for development orchestration
+* Stage 3 decision brief approval is recorded before Stage 4 or Stage 5 handoff is used
 
+Before using `ready_for_stage_4` or sending Stage 5 architecture handoff, this skill must generate or verify:
+
+```text
+Build-Plans/Stage-3/00-stage-decision-brief.md
+```
+
+If the decision brief is not approved, return the architecture and tech stack proposal for user review instead of locking Stage 3.
+
+If `selected_stack` is not complete or contains unresolved alternatives, return the concrete stack gaps for revision before producing `ready_for_stage_4` or Stage 5 architecture handoff.

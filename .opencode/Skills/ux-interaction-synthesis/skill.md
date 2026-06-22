@@ -86,6 +86,8 @@ needs_stage_3_revision
 blocked
 ```
 
+Also determine whether `Build-Plans/Stage-4/00-stage-decision-brief.md` exists and `stage_decision_brief.approval_status` is `approved`.
+
 ---
 
 # Interactive Guidance Responsibilities
@@ -124,6 +126,7 @@ Do not ask broad aesthetic preference questions at this stage. Only ask question
 * unresolved design system decisions
 * unresolved accessibility decisions
 * UX risks that block Stage 5 handoff
+* unapproved Stage 4 recommended UX/UI decision brief
 
 If proceeding with assumptions, record them in:
 
@@ -231,6 +234,7 @@ Stage 4 may complete only when:
 * high and critical UX risks have mitigation paths
 * critical interactive guidance questions are answered or converted into recorded assumptions
 * no interaction-blocking Stage 3 unknowns remain unresolved
+* Stage 4 decision brief exists and is approved
 
 ---
 
@@ -254,3 +258,12 @@ Before completing Stage 4, confirm:
 * accessibility risks are recorded
 * critical interactive guidance questions are answered or converted into recorded assumptions
 * Stage 5 handoff is usable for development orchestration
+* Stage 4 decision brief approval is recorded before Stage 5 handoff is used
+
+Before using `ready_for_stage_5`, this skill must generate or verify:
+
+```text
+Build-Plans/Stage-4/00-stage-decision-brief.md
+```
+
+If the decision brief is not approved, return the recommended UX/UI direction for user review instead of locking Stage 4.

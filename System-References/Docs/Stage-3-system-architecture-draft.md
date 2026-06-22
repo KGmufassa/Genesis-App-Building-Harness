@@ -317,6 +317,14 @@ The `stage_4_handoff` object must include:
 ```json
 {
   "stage_3_output_directory": "Build-Plans/Stage-3/",
+  "selected_stack": {
+    "frontend": {},
+    "backend": {},
+    "hosting_and_deployment": {},
+    "testing_stack": {},
+    "package_manager": "",
+    "stage_4_implications": []
+  },
   "system_topology_refs": [],
   "service_refs": [],
   "data_entity_refs": [],
@@ -337,6 +345,20 @@ The `stage_5_handoff` object must include:
 {
   "stage_3_output_directory": "Build-Plans/Stage-3/",
   "architecture_decision_records": [],
+  "selected_stack": {
+    "frontend": {},
+    "backend": {},
+    "database": {},
+    "storage": {},
+    "authentication": {},
+    "hosting_and_deployment": {},
+    "testing_stack": {},
+    "package_manager": "",
+    "ai_and_external_services": [],
+    "rationale": "",
+    "rejected_alternatives": [],
+    "risks": []
+  },
   "service_implementation_units": [],
   "data_implementation_units": [],
   "api_implementation_units": [],
@@ -374,6 +396,77 @@ Every major architecture decision must use this structure:
   "stage_5_implications": []
 }
 ```
+
+---
+
+# Concrete Stack Decision Contract
+
+Stage 3 must select one concrete implementation stack before it can complete.
+
+Stage 3 may compare alternatives, but it may not leave unresolved stack choices for Stage 5, implementation agents, or frontend/backend builders to decide later.
+
+The selected stack must include:
+
+```json
+{
+  "stack_decision_id": "",
+  "frontend": {
+    "framework": "",
+    "language": "",
+    "styling": "",
+    "ui_library": "",
+    "state_management": "",
+    "routing": ""
+  },
+  "backend": {
+    "framework": "",
+    "language": "",
+    "runtime": "",
+    "api_style": ""
+  },
+  "database": {
+    "primary_database": "",
+    "orm_or_query_layer": "",
+    "migration_tool": ""
+  },
+  "storage": {
+    "provider": "",
+    "usage": []
+  },
+  "authentication": {
+    "provider": "",
+    "session_strategy": "",
+    "authorization_model": ""
+  },
+  "hosting_and_deployment": {
+    "frontend_host": "",
+    "backend_host": "",
+    "database_host": "",
+    "deployment_flow": ""
+  },
+  "testing_stack": {
+    "unit": "",
+    "integration": "",
+    "e2e": "",
+    "visual": ""
+  },
+  "package_manager": "",
+  "ai_and_external_services": [],
+  "rationale": "",
+  "rejected_alternatives": [],
+  "risks": [],
+  "stage_4_implications": [],
+  "stage_5_implications": []
+}
+```
+
+Selection rules:
+
+* choose one best-fit stack based on Stage 2 feasibility, product complexity, skill availability, implementation speed, scalability, security, cost, and operational burden
+* record rejected alternatives with rationale
+* use `none_for_mvp` for stack areas that are intentionally unnecessary instead of leaving them blank
+* do not use unresolved phrases such as `or`, `TBD`, `to decide later`, `optional`, or `depends` in the selected stack
+* if the user rejects the stack in the Stage 3 decision brief, revise the selected stack and regenerate affected architecture outputs before completing Stage 3
 
 ---
 
@@ -1369,6 +1462,88 @@ Each output must include:
 
 ---
 
+# Stage Decision Brief
+
+Before Stage 3 may run final synthesis, use `ready_for_stage_4`, or send a Stage 5 handoff, it must generate:
+
+```text
+Build-Plans/Stage-3/00-stage-decision-brief.md
+```
+
+Purpose:
+
+```text
+Confirm the selected concrete architecture stack before UX/UI planning and build orchestration.
+```
+
+The brief must include:
+
+* selected architecture approach
+* selected frontend stack
+* selected backend stack
+* selected runtime
+* selected database and storage
+* selected authentication model
+* selected hosting and deployment model
+* selected testing stack
+* selected package manager
+* integrations
+* AI, model, or provider choices if relevant
+* rejected alternatives with rationale
+* tradeoffs
+* risks
+* downstream impact on Stage 4 and Stage 5
+
+Approval question:
+
+```text
+Do you approve this selected concrete stack for the build?
+```
+
+Approval options:
+
+```text
+Approve tech stack
+Change frontend stack
+Change backend stack
+Change database/auth/deployment
+Choose simpler architecture
+Choose more scalable architecture
+```
+
+Stage 3 shared state must include:
+
+```json
+{
+  "stage_decision_brief": {
+    "brief_id": "",
+    "stage": "Stage 3",
+    "brief_path": "Build-Plans/Stage-3/00-stage-decision-brief.md",
+    "recommended_direction": "",
+    "alternatives_considered": [],
+    "key_decisions": [],
+    "assumptions": [],
+    "risks": [],
+    "downstream_impact": [],
+    "user_decision_required": true,
+    "approval_status": "pending | approved | revision_requested | blocked",
+    "approved_by": "",
+    "approved_at": "",
+    "revision_notes": []
+  }
+}
+```
+
+Stage 3 may not lock architecture direction, use `ready_for_stage_4`, or send Stage 5 architecture handoff unless:
+
+```text
+selected_stack is complete
+selected_stack contains no unresolved alternatives
+stage_decision_brief.approval_status = approved
+```
+
+---
+
 # Completion Gate
 
 Before Stage 3 may use `ready_for_stage_4`, it must run `global-stage-readiness-audit` and write:
@@ -1391,10 +1566,12 @@ Stage 3 may complete only when:
 * data ownership is defined
 * API surfaces are mapped to workflows
 * integrations and infrastructure are defined
+* selected concrete stack is complete and approved
 * security foundations are present
 * scalability framework exists
 * high and critical architecture risks have mitigation paths
 * no architecture-blocking Stage 2 unknowns remain unresolved
+* Stage 3 decision brief exists and is approved
 
 ---
 
@@ -1409,10 +1586,13 @@ Before completing Stage 3, confirm:
 * every core workflow is supported by the architecture
 * every data entity has an owner
 * every external dependency has an integration strategy
+* selected stack has exactly one concrete choice for frontend, backend, database, auth, deployment, testing, and package manager
+* rejected stack alternatives are recorded with rationale
 * security and scalability risks are recorded
 * critical interactive guidance questions are answered or converted into recorded assumptions
 * Stage 4 handoff is usable for UX architecture
 * Stage 5 handoff is usable for development orchestration
+* Stage 3 decision brief approval is recorded before Stage 4 or Stage 5 handoff is used
 
 ---
 

@@ -7,11 +7,13 @@ description: Current workflow health assessment for the eight-stage app planning
 
 ## Executive Grade
 
-Overall workflow efficiency grade: **97 / 100**
+Overall workflow efficiency grade: **98 / 100**
 
-Overall rating: **A-grade, production-ready workflow architecture with remaining automation opportunities**
+Overall rating: **A-grade, production-ready workflow architecture with strong command and subskill alignment**
 
 The Stage 1-8 workflow now has strong continuity from product intake through research, architecture, UX/UI planning, development orchestration, implementation validation, launch readiness, and post-launch evolution.
+
+The newest scan included both the review documents and the actual `.opencode/Skills` command/subskill layer. The workflow is no longer only well documented. The command skills and final synthesis skills now reflect the same major gates, especially the Stage 1-4 decision brief approval flow.
 
 The major prior gaps have been addressed:
 
@@ -26,14 +28,16 @@ The major prior gaps have been addressed:
 - cross-stage reference integrity
 - readiness failure revision loops
 - standardized `expected_artifacts`
+- Stage 1-4 `stage_decision_brief` approval gates
+- schema support for `stage_decision_brief`
 
-The remaining gaps are no longer architectural. They are mostly about future automation: implementing stricter schema validators, building an automated reference resolver, and deciding how automated agents should populate risk acceptance ownership.
+The remaining gaps are no longer stage architecture problems. They are mostly automation and enforcement work: implementing stricter schema validators, building an automated reference resolver, and defining exactly who may accept high or critical risks during agent-run workflows.
 
 ---
 
 ## Diagnostic Scope
 
-Reviewed files:
+Reviewed review docs:
 
 ```text
 System-References/Docs/Stage-1-product-initialization-draft.md
@@ -44,6 +48,33 @@ System-References/Docs/Stage-5-development-orchestration-draft.md
 System-References/Docs/Stage-6-implementation-validation-draft.md
 System-References/Docs/Stage-7-launch-operationalization-draft.md
 System-References/Docs/Stage-8-post-launch-evolution-draft.md
+System-References/Docs/Global-Stage-Workflow-Contract.md
+```
+
+Reviewed command skills:
+
+```text
+.opencode/Skills/stage-1-product-initialization/skill.md
+.opencode/Skills/stage-2-research-and-validation/skill.md
+.opencode/Skills/stage-3-system-architecture/skill.md
+.opencode/Skills/stage-4-ux-interaction-architecture/skill.md
+.opencode/Skills/stage-5-development-orchestration/skill.md
+.opencode/Skills/stage-6-implementation-validation/skill.md
+.opencode/Skills/stage-7-launch-operationalization/skill.md
+.opencode/Skills/stage-8-post-launch-evolution/skill.md
+```
+
+Reviewed final synthesis subskills:
+
+```text
+.opencode/Skills/product-synthesis/skill.md
+.opencode/Skills/validation-synthesis/skill.md
+.opencode/Skills/architecture-synthesis/skill.md
+.opencode/Skills/ux-interaction-synthesis/skill.md
+.opencode/Skills/development-orchestration-synthesis/skill.md
+.opencode/Skills/system-health-synthesis/skill.md
+.opencode/Skills/launch-operationalization-synthesis/skill.md
+.opencode/Skills/post-launch-evolution-synthesis/skill.md
 ```
 
 Diagnostic checks:
@@ -58,10 +89,13 @@ Diagnostic checks:
 - `Artifact-evidence-registry`
 - `global-stage-readiness-audit`
 - completion status and handoff presence
+- Stage 1-4 `stage_decision_brief`
+- Stage 3 `selected_stack`
 - Stage 5 `expected_artifacts`
 - Stage 7 `deployment_proof`
 - Stage 8 `feedback_route`
 - Stage 4 visual spec and design system continuity
+- command/subskill alignment against review-doc intent
 
 ---
 
@@ -69,14 +103,14 @@ Diagnostic checks:
 
 | Area | Score | Grade | Assessment |
 | --- | ---: | --- | --- |
-| Planning clarity | 97 | A | Stage 1-5 now give a clear path from idea to tickets, agents, and execution batches. |
+| Planning clarity | 98 | A+ | Stages 1-4 now propose direction and require user confirmation before locking planning outputs. |
 | Cross-stage handoff quality | 98 | A+ | Handoffs are explicit, traceable, schema-aware, and protected by reference integrity checks. |
-| Implementation readiness | 97 | A | Stage 5 and Stage 6 now connect tickets, skills, agents, artifacts, validation, repair, and terminal status rules. |
-| User guidance quality | 95 | A | Guidance policy and complexity-based interaction rules reduce unnecessary user friction. |
+| Implementation readiness | 97 | A | Stage 5 and Stage 6 connect tickets, skills, agents, artifacts, validation, repair, and terminal status rules. |
+| User guidance quality | 98 | A+ | Stage 1-4 decision briefs add the missing user-opinion checkpoint before planning is locked. |
 | Visual/UI build readiness | 98 | A+ | Stage 4 through Stage 7 preserve UI blueprint, visual spec, design system, preview, and visual QA continuity. |
-| Launch readiness | 97 | A | Stage 7 now requires deployment proof, smoke checks, rollback proof, environment verification, and launch risk tracking. |
-| Post-launch feedback loop | 95 | A | Stage 8 now routes telemetry, operational, AI, roadmap, and scalability findings to the owning stage. |
-| Global workflow governance | 98 | A+ | Global contracts now include schema validation, artifact evidence, risk ledger, reference integrity, and revision loops. |
+| Launch readiness | 97 | A | Stage 7 requires deployment proof, smoke checks, rollback proof, environment verification, and launch risk tracking. |
+| Post-launch feedback loop | 96 | A | Stage 8 routes telemetry, operational, AI, roadmap, and scalability findings to the owning stage. |
+| Global workflow governance | 98 | A+ | Global contracts include decision briefs, schema validation, artifact evidence, risk ledger, reference integrity, and revision loops. |
 
 ---
 
@@ -84,14 +118,44 @@ Diagnostic checks:
 
 | Stage | Score | Grade | Health |
 | --- | ---: | --- | --- |
-| Stage 1 — Product Initialization | 97 | A | Strong idea intake, MVP boundary, assumptions, schema controls, risk ledger visibility, and Stage 2 handoff. |
-| Stage 2 — Research & Validation | 97 | A | Strong assumption registry, evidence quality rules, confidence modeling, artifact references, and Stage 3 readiness controls. |
-| Stage 3 — System Architecture | 96 | A | Strong architecture outputs, Stage 2 evidence usage, artifact registry reference, and Stage 4/5 handoffs. |
-| Stage 4 — UX & Interaction Architecture | 98 | A+ | Strong UX, UI blueprint, visual spec, design system, accessibility, responsive, and frontend handoff package. |
+| Stage 1 — Product Initialization | 98 | A+ | Strong idea intake, MVP boundary, assumptions, schema controls, risk ledger visibility, Stage 2 handoff, and app idea approval brief. |
+| Stage 2 — Research & Validation | 98 | A+ | Strong assumption registry, evidence quality rules, confidence modeling, artifact references, Stage 3 readiness controls, and validation approval brief. |
+| Stage 3 — System Architecture | 99 | A+ | Strong architecture outputs, Stage 2 evidence usage, artifact registry reference, Stage 4/5 handoffs, concrete selected stack, rejected alternatives, and stack approval brief. |
+| Stage 4 — UX & Interaction Architecture | 99 | A+ | Strong UX, UI blueprint, visual spec, design system, accessibility, responsive planning, frontend handoff package, and UX/UI direction approval brief. |
 | Stage 5 — Development Orchestration | 97 | A | Strong slices, tickets, skill assignment, agent planning, parallel execution planning, and `expected_artifacts`. |
 | Stage 6 — Implementation & Validation | 98 | A+ | Strong implementation loop, terminal statuses, validation, repair, dev server, visual QA, and artifact evidence. |
 | Stage 7 — Launch & Operationalization | 97 | A | Strong deployment proof, monitoring, analytics, support, onboarding, accepted launch risk, and Stage 8 handoff. |
-| Stage 8 — Post Launch Evolution | 95 | A | Strong telemetry, optimization, AI improvement, roadmap, scalability, and prior-stage feedback routing. |
+| Stage 8 — Post Launch Evolution | 96 | A | Strong telemetry, optimization, AI improvement, roadmap, scalability, and prior-stage feedback routing. |
+
+---
+
+## Command And Subskill Alignment
+
+The stage command layer is aligned with the review docs.
+
+| Stage | Command Skill | Orchestrated Subskills | Alignment |
+| --- | --- | --- | --- |
+| Stage 1 | `stage-1-product-initialization` | `product-intelligence`, `workflow-and-capability-synthesis`, `dependency-and-risk-analysis`, `mvp-and-optimization`, `product-synthesis` | Aligned. Decision brief is required before `ready_for_stage_2`. |
+| Stage 2 | `stage-2-research-and-validation` | `assumption-analysis`, `market-and-competitive-validation`, `technical-and-operational-validation`, `business-and-scalability-validation`, `validation-synthesis` | Aligned. Decision brief is required before `ready_for_stage_3`. |
+| Stage 3 | `stage-3-system-architecture` | `system-topology-design`, `service-boundary-architecture`, `data-and-api-architecture`, `integration-and-infrastructure-architecture`, `security-and-scalability-architecture`, `architecture-synthesis` | Aligned. One concrete `selected_stack` and stack decision brief are required before `ready_for_stage_4` or Stage 5 architecture handoff. |
+| Stage 4 | `stage-4-ux-interaction-architecture` | `user-journey-design`, `interaction-architecture-design`, `screen-system-design`, `feature-behavior-specification`, `state-transition-and-accessibility-design`, `ui-blueprint-specification`, `design-system-foundation`, `ux-interaction-synthesis` | Aligned. Recommended UX/UI decision brief is required before `ready_for_stage_5`. |
+| Stage 5 | `stage-5-development-orchestration` | `development-roadmap-planning`, `implementation-sequence-planning`, `engineering-dependency-planning`, `testing-strategy-planning`, `build-ticket-generation`, `agent-assignment-planning`, `parallel-execution-planning`, `release-plan-orchestration`, `development-orchestration-synthesis` | Aligned. No decision brief required because this stage starts build planning. |
+| Stage 6 | `stage-6-implementation-validation` | `implementation-execution`, `validation-execution`, `regression-analysis`, `repair-workflow`, `system-health-synthesis` | Aligned. Enforces terminal ticket status, validation, repair, and artifact evidence. |
+| Stage 7 | `stage-7-launch-operationalization` | `launch-readiness-validation`, `deployment-framework-planning`, `monitoring-systems-planning`, `analytics-framework-planning`, `operational-tooling-planning`, `launch-operationalization-synthesis` | Aligned. Requires launch readiness and deployment proof controls. |
+| Stage 8 | `stage-8-post-launch-evolution` | `telemetry-analysis`, `operational-optimization`, `ai-improvement-planning`, `roadmap-evolution-planning`, `scalability-evolution-planning`, `post-launch-evolution-synthesis` | Aligned. Routes findings back to owning stages through feedback route candidates. |
+
+Final synthesis skills are also aligned with their stage gates:
+
+| Stage | Synthesis Skill | Gate Alignment |
+| --- | --- | --- |
+| Stage 1 | `product-synthesis` | Verifies Stage 1 decision brief before `ready_for_stage_2`. |
+| Stage 2 | `validation-synthesis` | Verifies Stage 2 decision brief and confidence thresholds before `ready_for_stage_3`. |
+| Stage 3 | `architecture-synthesis` | Verifies complete concrete `selected_stack`, rejected alternatives, and approved Stage 3 stack brief before `ready_for_stage_4` or Stage 5 architecture handoff. |
+| Stage 4 | `ux-interaction-synthesis` | Verifies Stage 4 UX/UI brief before `ready_for_stage_5`. |
+| Stage 5 | `development-orchestration-synthesis` | Acts as final Stage 5 completion gate for `ready_for_stage_6`. |
+| Stage 6 | `system-health-synthesis` | Acts as final Stage 6 completion gate for `ready_for_stage_7`. |
+| Stage 7 | `launch-operationalization-synthesis` | Uses `ready_for_stage_8` only after readiness audit passes. |
+| Stage 8 | `post-launch-evolution-synthesis` | Uses `evolution_plan_ready` only after readiness audit passes. |
 
 ---
 
@@ -99,15 +163,15 @@ Diagnostic checks:
 
 ### Planning Phase Efficiency
 
-Planning phase grade: **97 / 100**
+Planning phase grade: **98 / 100**
 
-The planning workflow is now highly efficient because each planning stage has a distinct job and produces structured handoff data:
+The planning workflow is now highly efficient because each planning stage has a distinct job and a user confirmation point before the stage is locked:
 
-- Stage 1 defines what is being built and seeds assumptions.
-- Stage 2 validates assumptions using evidence quality and confidence rules.
-- Stage 3 creates architecture from validated assumptions.
-- Stage 4 turns UX, screen, UI, visual, design system, and accessibility requirements into implementation-ready frontend planning.
-- Stage 5 converts prior outputs into slices, tickets, skill requirements, agents, validation steps, and execution batches.
+- Stage 1 defines the app idea, features, MVP, workflows, and assumptions, then asks the user to approve the product direction.
+- Stage 2 validates assumptions using evidence quality and confidence rules, then asks the user to approve whether validation is strong enough to continue.
+- Stage 3 creates architecture from validated assumptions, selects one concrete stack, records rejected alternatives, then asks the user to approve the selected stack.
+- Stage 4 turns UX, screen, UI, visual, design system, and accessibility requirements into implementation-ready frontend planning, then asks the user to approve the recommended UX/UI direction.
+- Stage 5 converts approved prior outputs into slices, tickets, skill requirements, agents, validation steps, and execution batches.
 
 The biggest efficiency gain is that Stage 5 no longer has to reinterpret Stage 4 or Stage 3. Tickets can carry upstream references, required skills, visual requirements, validation requirements, and `expected_artifacts`.
 
@@ -115,7 +179,7 @@ The biggest efficiency gain is that Stage 5 no longer has to reinterpret Stage 4
 
 Implementation phase grade: **98 / 100**
 
-Stage 6 now has a strong execution model:
+Stage 6 has a strong execution model:
 
 - every ticket must reach a terminal state
 - validation maps back to ticket acceptance criteria
@@ -125,13 +189,13 @@ Stage 6 now has a strong execution model:
 - expected artifacts map back to Stage 5 tickets
 - launch-critical work cannot quietly pass with unresolved blockers
 
-The implementation workflow is now ready for multi-agent execution because Stage 5 creates the agent context and Stage 6 enforces ticket execution, validation, and repair.
+The implementation workflow is ready for multi-agent execution because Stage 5 creates agent context and Stage 6 enforces ticket execution, validation, and repair.
 
 ### Launch And Evolution Efficiency
 
-Launch and evolution grade: **96 / 100**
+Launch and evolution grade: **97 / 100**
 
-Stage 7 now requires real production-readiness proof rather than only launch descriptions. Stage 8 now has routing rules that can send live-product findings back to the stage that owns the root cause.
+Stage 7 requires real production-readiness proof rather than only launch descriptions. Stage 8 has routing rules that can send live-product findings back to the stage that owns the root cause.
 
 This creates a complete loop:
 
@@ -143,27 +207,31 @@ plan -> validate -> architect -> design -> ticket -> build -> launch -> observe 
 
 ## Strongest Workflow Elements
 
-1. **Cognitive stage boundaries**
+1. **Stage 1-4 proposal-first planning**
+
+The workflow now asks the user to approve key directions before they become locked stage outputs. This fixes the previous issue where planning could proceed without the user being asked whether they agreed with the direction.
+
+2. **Cognitive stage boundaries**
 
 Each stage owns a distinct reasoning domain and avoids doing downstream work too early.
 
-2. **Global readiness governance**
+3. **Global readiness governance**
 
-The workflow now has readiness checks for schemas, artifacts, risk acceptance, reference integrity, and revision loops.
+The workflow has readiness checks for schemas, artifacts, risk acceptance, reference integrity, revision loops, and now Stage 1-4 decision briefs.
 
-3. **Traceable frontend implementation path**
+4. **Traceable frontend implementation path**
 
 Stage 4 creates UI blueprints, visual specs, design system rules, and frontend build packages. Stage 5 turns them into tickets. Stage 6 validates implementation and visual QA. Stage 7 checks visual launch readiness.
 
-4. **Agent-ready development orchestration**
+5. **Agent-ready development orchestration**
 
 Stage 5 can scan skills, assign required skills to tickets, generate agents, create parallel batches, and define validation ownership.
 
-5. **Evidence-backed execution**
+6. **Evidence-backed execution**
 
 Artifact registry and `expected_artifacts` make validation proof durable instead of informal.
 
-6. **Post-launch feedback routing**
+7. **Post-launch feedback routing**
 
 Stage 8 can route findings to Stage 1-7 instead of treating every live-product problem as a generic roadmap item.
 
@@ -173,7 +241,7 @@ Stage 8 can route findings to Stage 1-7 instead of treating every live-product p
 
 ### 1. Automated Schema Validation Is Specified, Not Fully Operationalized
 
-The docs now require `schema_validation`, and schema files exist. The next improvement would be a concrete validator command or skill that checks stage output files against the schemas automatically.
+The docs and commands require `schema_validation`, and schema files exist. The next improvement would be a concrete validator command or skill that checks stage output files against the schemas automatically.
 
 Impact: low to medium.
 
@@ -185,7 +253,7 @@ Create a schema-validation utility or skill used by global-stage-readiness-audit
 
 ### 2. Reference Integrity Needs An Automated Resolver
 
-The workflow now requires `reference_integrity`, but the actual ID resolution process is still documented rather than implemented as a resolver.
+The workflow requires `reference_integrity`, but the actual ID resolution process is still documented rather than implemented as a resolver.
 
 Impact: medium once projects generate large outputs.
 
@@ -197,7 +265,7 @@ Create a reference-integrity-audit skill that scans stage outputs and verifies I
 
 ### 3. Risk Acceptance Ownership Needs A Policy For Agent-Run Workflows
 
-The risk ledger now exists, but future execution should define who can populate `accepted_by` when an autonomous or semi-autonomous agent accepts a risk.
+The risk ledger exists, but future execution should define who can populate `accepted_by` when an autonomous or semi-autonomous agent accepts a risk.
 
 Impact: medium for high-risk projects.
 
@@ -205,6 +273,18 @@ Recommended future action:
 
 ```text
 Require user approval for high and critical accepted risks unless a project policy explicitly delegates that authority.
+```
+
+### 4. Decision Brief Output Generation Could Become A Dedicated Helper
+
+Stages 1-4 and their synthesis skills now require decision briefs, but there is no shared helper skill that standardizes formatting and approval capture.
+
+Impact: low.
+
+Recommended future action:
+
+```text
+Create a stage-decision-brief helper skill only if formatting drift appears across Stage 1-4 outputs.
 ```
 
 ---
@@ -215,6 +295,9 @@ Require user approval for high and critical accepted risks unless a project poli
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Stage contract profile | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
 | Guidance policy | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
+| Stage decision brief | Yes | Yes | Yes | Yes | N/A | N/A | N/A | N/A |
+| User approval before lock | Yes | Yes | Yes | Yes | N/A | N/A | N/A | N/A |
+| Concrete selected stack | N/A | N/A | Yes | Consumes | Consumes | Consumes | Consumes | N/A |
 | Schema reference | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
 | Schema validation result | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
 | Reference integrity | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
@@ -222,6 +305,25 @@ Require user approval for high and critical accepted risks unless a project poli
 | Revision loops | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
 | Artifact registry | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
 | Readiness audit | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
+
+---
+
+## Command Layer Verdict
+
+The command and synthesis layers are now consistent with the review docs.
+
+Key confirmations:
+
+- Stage 1 command and `product-synthesis` require an app idea/features/MVP decision brief before `ready_for_stage_2`.
+- Stage 2 command and `validation-synthesis` require a validation decision brief before `ready_for_stage_3`.
+- Stage 3 command and `architecture-synthesis` require a complete concrete `selected_stack`, rejected alternatives, and approved stack decision brief before `ready_for_stage_4` or Stage 5 architecture handoff.
+- Stage 4 command and `ux-interaction-synthesis` require a recommended UX/UI decision brief before `ready_for_stage_5`.
+- Stage 5-8 commands intentionally do not require decision briefs.
+- All stage commands still reference `global-stage-readiness-audit`.
+- Stage 5 still carries `expected_artifacts`.
+- Stage 6 still maps expected artifacts to implementation evidence.
+- Stage 7 still carries deployment proof expectations.
+- Stage 8 still carries feedback routing.
 
 ---
 
@@ -233,10 +335,10 @@ It can guide a user from:
 
 ```text
 raw idea
--> structured product plan
+-> user-approved product direction
 -> validated assumptions
--> system architecture
--> UX/UI and visual blueprint
+-> user-approved concrete architecture stack
+-> user-approved UX/UI and visual blueprint
 -> implementation tickets
 -> agent execution
 -> validation and repair
@@ -250,6 +352,7 @@ The next meaningful improvement is not more stage design. The next improvement i
 schema validation runner
 reference integrity resolver
 risk acceptance ownership policy
+optional decision brief helper
 ```
 
 Current recommended status:

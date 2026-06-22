@@ -1941,6 +1941,80 @@ Each `ui_blueprints[]` entry must include:
 
 ---
 
+# Stage Decision Brief
+
+Before Stage 4 may run final synthesis or use `ready_for_stage_5`, it must generate:
+
+```text
+Build-Plans/Stage-4/00-stage-decision-brief.md
+```
+
+Purpose:
+
+```text
+Use the recommended approach to propose UX/UI direction before build tickets are generated.
+```
+
+The brief must include:
+
+* recommended UX approach
+* recommended navigation model
+* recommended page and screen inventory
+* recommended layout direction
+* recommended component approach
+* recommended visual style
+* recommended design system direction
+* mobile and desktop priority
+* alternatives considered
+* what the user should approve or revise
+
+Approval question:
+
+```text
+Do you approve this recommended UX/UI direction?
+```
+
+Approval options:
+
+```text
+Approve recommended UI direction
+Revise visual style
+Revise page/screen structure
+Revise navigation/layout
+Revise component priorities
+```
+
+Stage 4 shared state must include:
+
+```json
+{
+  "stage_decision_brief": {
+    "brief_id": "",
+    "stage": "Stage 4",
+    "brief_path": "Build-Plans/Stage-4/00-stage-decision-brief.md",
+    "recommended_direction": "",
+    "alternatives_considered": [],
+    "key_decisions": [],
+    "assumptions": [],
+    "risks": [],
+    "downstream_impact": [],
+    "user_decision_required": true,
+    "approval_status": "pending | approved | revise | rejected",
+    "approved_by": "",
+    "approved_at": "",
+    "revision_notes": []
+  }
+}
+```
+
+Stage 4 may not lock UX/UI direction or use `ready_for_stage_5` unless:
+
+```text
+stage_decision_brief.approval_status = approved
+```
+
+---
+
 # Completion Gate
 
 Before Stage 4 may use `ready_for_stage_5`, it must run `global-stage-readiness-audit` and write:
@@ -1977,6 +2051,7 @@ Stage 4 may complete only when:
 * high and critical UX risks have mitigation paths
 * critical interactive guidance questions are answered or converted into recorded assumptions
 * no interaction-blocking Stage 3 unknowns remain unresolved
+* Stage 4 decision brief exists and is approved
 
 ---
 
@@ -2004,6 +2079,7 @@ Before completing Stage 4, confirm:
 * accessibility risks are recorded
 * critical interactive guidance questions are answered or converted into recorded assumptions
 * Stage 5 handoff is usable for development orchestration
+* Stage 4 decision brief approval is recorded before Stage 5 handoff is used
 
 ---
 

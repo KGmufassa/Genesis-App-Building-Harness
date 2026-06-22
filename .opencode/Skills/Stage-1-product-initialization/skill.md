@@ -434,6 +434,42 @@ Detect unresolved gaps before finalizing Stage 1. If Stage 1 is not ready, retur
 
 ---
 
+# Stage Decision Brief
+
+Before final synthesis or `ready_for_stage_2`, generate:
+
+```text
+Build-Plans/Stage-1/00-stage-decision-brief.md
+```
+
+The brief confirms the app idea, feature direction, MVP boundary, and how the app should work before Stage 2 validation.
+
+Ask:
+
+```text
+Does this correctly describe the app you want to build, the features it should include, and how it should work?
+```
+
+Allowed user decisions:
+
+```text
+Approve direction
+Revise app idea
+Add/remove features
+Change how the app works
+Redefine MVP scope
+```
+
+Record the brief in shared planning state as `stage_decision_brief`.
+
+Do not use `ready_for_stage_2` unless:
+
+```text
+stage_decision_brief.approval_status = approved
+```
+
+---
+
 # Completion Gate
 
 Before Stage 1 may use `ready_for_stage_2`, run `global-stage-readiness-audit`.
@@ -463,6 +499,7 @@ Stage 1 is complete only when:
 * major dependencies and risks are recorded
 * MVP scope is defined
 * success framework is present
+* Stage 1 decision brief exists and is approved
 * all critical interactive guidance questions are answered or converted into recorded assumptions
 * no critical Stage 1 planning gap blocks Stage 2 validation
 
@@ -477,7 +514,7 @@ needs_scope_reduction
 blocked_by_missing_foundation
 ```
 
-Use `ready_for_stage_2` only when Stage 2 can safely validate the product assumptions using the generated Stage 1 files.
+Use `ready_for_stage_2` only when Stage 2 can safely validate the product assumptions using the generated Stage 1 files and `stage_decision_brief.approval_status = approved`.
 
 ---
 
