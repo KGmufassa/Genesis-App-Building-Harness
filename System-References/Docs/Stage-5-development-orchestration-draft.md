@@ -331,7 +331,7 @@ Before development orchestration, validate:
 * launch-critical features are known
 * service, data, API, and infrastructure dependencies are available
 * feature behaviors and state transitions are clear enough to sequence implementation
-* UI blueprints define launch-critical pages, components, routes, actions, states, visual specs, visual acceptance criteria, and frontend build package hints
+* UI blueprints define launch-critical pages, components, routes, actions, states, interactive elements (buttons, links, menu items, etc.) with route_targets, visual specs, visual acceptance criteria, and frontend build package hints
 * design system foundation defines shared visual tokens, component rules, responsive rules, and design approval status
 * accessibility and security requirements are available for test planning
 * earlier-stage risks do not block engineering planning
@@ -2576,7 +2576,7 @@ The build ticket output must include:
 * visual spec references and visual requirements for frontend tickets
 * design system references for frontend tickets
 * expected artifacts for tickets requiring validation, preview, visual QA, deployment proof, or launch-readiness evidence
-* page, component, shared component, route, state, and action references when applicable
+* page, component, shared component, route, state, action, and interactive element references when applicable
 * frontend task hints from the Stage 4 frontend build package
 * primary skill from the skill registry
 * recommended skill chain from the skill registry

@@ -80,7 +80,22 @@ The command must load this file at the beginning of Stage 6, update it after eac
   "agent_assignment_plan": {},
   "parallel_execution_plan": {},
   "active_agents": [],
-  "parallel_batches": [],
+  "parallel_batches": [
+    {
+      "batch_id": "",
+      "ticket_ids": [],
+      "agent_ids": [],
+      "status": "pending",
+      "completed_at": "",
+      "recorded_at": "",
+      "file_locks": [],
+      "conflicts_detected": [],
+      "validation_results": [],
+      "blocking_failures": [],
+      "downstream_batches_blocked": [],
+      "batch_completion_recorded": false
+    }
+  ],
   "preflight": {},
   "implementation_status": {},
   "validation_results": {},
@@ -99,7 +114,15 @@ The command must load this file at the beginning of Stage 6, update it after eac
     "implementation_confidence_gaps": []
   },
   "stage_7_handoff": {},
-  "completion_status": {}
+  "completion_status": {
+    "status": "",
+    "reason": "",
+    "completed_at": "",
+    "recorded_at": "",
+    "blocking_items": [],
+    "next_actions": [],
+    "ready_for": ""
+  }
 }
 ```
 
@@ -448,7 +471,7 @@ Stage 6 is `ready_for_stage_7` only when:
 * no unresolved critical validation failures remain
 * no unresolved critical regressions remain
 * all launch-critical tickets are implemented and validated
-* all launch-critical frontend tickets preserve referenced UI blueprint page, component, route, action, state, validation, accessibility, responsive, visual, and design system requirements
+* all launch-critical frontend tickets preserve referenced UI blueprint page, component, route, action, state, interactive element (element_type, label, route_target, behavior), validation, accessibility, responsive, visual, and design system requirements
 * all launch-critical frontend tickets requiring preview have a recorded preview URL or accepted blocker
 * all launch-critical frontend tickets have no `major_visual_drift` unless explicitly accepted as known release risk
 * all high-risk repairs are verified or explicitly accepted as known risk
@@ -461,6 +484,24 @@ needs_repair
 needs_revalidation
 blocked
 ```
+
+## Global Workflow State Update
+
+After the readiness audit passes and before using `ready_for_stage_7`, update:
+
+```text
+Build-Plans/Build-status/Global-workflow-state.json
+```
+
+Record:
+
+* `stages.stage_6.status` — the Stage 6 completion status
+* `stages.stage_6.ready_for_next_stage` — true when audit passed and stage is ready
+* `stages.stage_6.audit_file` — path to the written readiness audit
+* `current_stage` — set to `stage_7` when ready
+* `last_audit` — timestamp of completion
+* `blocking_gaps` and `revision_loops` — from the audit result, if any
+* `next_recommended_action` — `proceed_to_stage_7` or repair instruction
 
 ---
 

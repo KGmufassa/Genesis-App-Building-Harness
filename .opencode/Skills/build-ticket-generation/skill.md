@@ -392,7 +392,7 @@ Identify:
 * frontend tickets without UI blueprint references
 * frontend tickets without visual spec references
 * frontend tickets without design system references
-* frontend tickets that omit page, component, route, state, or action references when applicable
+* frontend tickets that omit page, component, route, state, action, or interactive element references when applicable
 * frontend tickets that omit visual requirements or visual acceptance criteria when applicable
 * frontend tickets that omit responsive requirements when applicable
 * browser-validated frontend tickets without preview requirements
@@ -486,7 +486,7 @@ Validate:
 * every frontend ticket references applicable UI blueprint IDs or explicitly records why no UI blueprint applies
 * every frontend ticket references applicable visual spec IDs or explicitly records why no visual spec applies
 * every frontend ticket references applicable design system IDs or explicitly records why no design system applies
-* every frontend ticket preserves page, component, route, action, state, validation, accessibility, responsive, visual, and design system requirements from Stage 4
+* every frontend ticket preserves page, component, route, action, state, interactive element, validation, accessibility, responsive, visual, and design system requirements from Stage 4
 * every frontend ticket preserves visual style, density, color direction, typography feel, component style, primary visual focus, visual do and don't rules, visual acceptance criteria, and user approval status from Stage 4
 * every frontend ticket maps visual acceptance criteria to validation steps
 * every frontend ticket requiring browser validation sets preview and visual QA requirements

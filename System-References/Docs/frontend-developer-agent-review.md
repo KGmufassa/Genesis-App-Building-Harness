@@ -187,7 +187,7 @@ The frontend agent should receive:
 }
 ```
 
-The frontend agent must treat `07-ui-blueprint-specification.json` as the implementation source for page structure, layout type, sections, components, shared components, routes, actions, data requirements, validation needs, UI states, accessibility requirements, responsive requirements, visual requirements, and visual acceptance criteria.
+The frontend agent must treat `07-ui-blueprint-specification.json` as the implementation source for page structure, layout type, sections, components, shared components, routes, actions, interactive elements (buttons, links, menu items with element_type, label, route_target, and behavior), data requirements, validation needs, UI states, accessibility requirements, responsive requirements, visual requirements, and visual acceptance criteria.
 
 Do not invent frontend structure that conflicts with the referenced UI blueprint.
 

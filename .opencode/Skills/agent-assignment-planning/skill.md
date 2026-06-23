@@ -406,7 +406,7 @@ Validate:
 * frontend agents receive `Build-Plans/Stage-4/07-ui-blueprint-specification.json` when assigned frontend tickets with UI blueprint references
 * frontend agents receive visual spec references and visual requirements when assigned frontend tickets with visual spec references
 * frontend agents receive `Build-Plans/Stage-4/08-design-system-foundation.json` when assigned frontend tickets with design system references
-* agent handoff packages preserve ticket UI blueprint, visual spec, design system, page, component, route, state, action, visual requirements, responsive requirements, preview requirements, visual QA requirements, and frontend task hint references
+* agent handoff packages preserve ticket UI blueprint, visual spec, design system, page, component, route, state, action, interactive element (element_type, label, route_target, behavior), visual requirements, responsive requirements, preview requirements, visual QA requirements, and frontend task hint references
 * generated agents are written under `.opencode/agents/`
 * generated agents include valid frontmatter and complete prompt bodies
 * generated agent permissions match assigned role and risk level

@@ -139,7 +139,7 @@ Validate:
 * frontend validation results map to referenced UI blueprint IDs when present
 * frontend validation results map to referenced visual spec IDs when present
 * frontend validation results map to referenced design system IDs when present
-* frontend tickets with UI blueprint refs validate required page, component, route, action, state, accessibility, responsive, and visual behavior
+* frontend tickets with UI blueprint refs validate required page, component, route, action, state, interactive element (element_type, label, route_target, behavior), accessibility, responsive, and visual behavior
 * frontend tickets with visual spec refs validate visual acceptance criteria and report any visual gaps
 * frontend tickets with visual QA requirements report visual QA evidence and visual drift status
 * frontend tickets with design system refs report design system compliance

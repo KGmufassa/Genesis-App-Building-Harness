@@ -397,6 +397,22 @@ Every screen entry must include:
   "user_actions": [],
   "system_actions": [],
   "states": [],
+  "interactive_elements": [
+    {
+      "element_id": "",
+      "element_type": "button | link | icon_button | menu_item | tab | toggle | checkbox | radio | select | text_input | search_input | file_upload | date_picker",
+      "label": "",
+      "route_target": "",
+      "action_id": "",
+      "behavior": "navigate | submit | open_modal | open_drawer | toggle | trigger_action | open_link | download | call_api | scroll_to",
+      "behavior_target": "",
+      "permission_required": "",
+      "confirmation_required": false,
+      "states": {},
+      "owning_component": "",
+      "owning_section": ""
+    }
+  ],
   "responsive_requirements": [],
   "accessibility_requirement_ids": [],
   "stage_5_ticket_hints": []
@@ -572,17 +588,56 @@ Blueprint structure:
   "primary_user_role": "",
   "screen_type": "",
   "layout_type": "",
-  "route_or_location_hint": "",
-  "sections": [],
-  "components": [],
-  "shared_components": [],
-  "navigation": [],
-  "user_actions": [],
-  "forms": [],
-  "tables": [],
-  "cards": [],
-  "modals": [],
-  "drawers": [],
+  "route": "",
+  "sections": [
+    {
+      "section_id": "",
+      "name": "",
+      "components": [
+        {
+          "component_id": "",
+          "component_type": "",
+          "interactive_elements": [
+            {
+              "element_id": "",
+              "element_type": "button | link | icon_button | menu_item | tab | toggle | checkbox | radio | select",
+              "label": "",
+              "route_target": "",
+              "action_id": "",
+              "behavior": "navigate | submit | open_modal | open_drawer | toggle | trigger_action | open_link | download | call_api | scroll_to",
+              "behavior_target": "",
+              "states": {},
+              "permission_required": "",
+              "confirmation_required": false
+            }
+          ],
+          "data_source": "",
+          "validation": ""
+        }
+      ]
+    }
+  ],
+  "navigation": [
+    {
+      "nav_item_id": "",
+      "label": "",
+      "route_target": "",
+      "icon": "",
+      "permission_required": "",
+      "children": []
+    }
+  ],
+  "global_actions": [
+    {
+      "element_id": "",
+      "element_type": "button | link | icon_button | menu_item | tab",
+      "label": "",
+      "route_target": "",
+      "action_id": "",
+      "behavior": "navigate | submit | open_modal | open_drawer | toggle | trigger_action",
+      "behavior_target": ""
+    }
+  ],
   "states": {
     "loading": {},
     "empty": {},
@@ -599,6 +654,20 @@ Blueprint structure:
     "frontend-design",
     "frontend-builder"
   ],
+  "visual_spec": {
+    "visual_style": "",
+    "density": "",
+    "color_direction": "",
+    "typography_feel": "",
+    "component_style": "",
+    "primary_visual_focus": "",
+    "responsive_behavior": "",
+    "visual_do_rules": [],
+    "visual_dont_rules": [],
+    "reference_apps": [],
+    "visual_acceptance_criteria": [],
+    "user_approval_status": "unconfirmed"
+  },
   "source_trace": []
 }
 ```
@@ -616,6 +685,96 @@ The UI blueprint package should also produce a readable `UI_BLUEPRINT.md` view w
 /forms
 /data-requirements
 /frontend-build-package
+```
+
+---
+
+# Interactive Element Schema
+
+Every interactive element on a page (button, link, icon button, menu item, tab, input, etc.) must be enumerated with:
+
+```json
+{
+  "element_id": "",
+  "element_type": "button | link | icon_button | menu_item | tab | toggle | checkbox | radio | select | text_input | search_input | file_upload | date_picker",
+  "label": "",
+  "icon": "",
+  "route_target": "",
+  "action_id": "",
+  "behavior": "navigate | submit | open_modal | open_drawer | toggle | trigger_action | open_link | download | call_api | scroll_to",
+  "behavior_target": "",
+  "states": {
+    "default": {},
+    "loading": {},
+    "disabled": {},
+    "active": {},
+    "hover": {}
+  },
+  "permission_required": "",
+  "confirmation_required": false,
+  "analytics_event": "",
+  "source_trace": []
+}
+```
+
+# Action Inventory Schema
+
+Every action across all pages must be recorded in a global action inventory:
+
+```json
+{
+  "action_id": "",
+  "name": "",
+  "element_type": "button | link | icon_button | menu_item | tab | toggle | checkbox | radio | select",
+  "label": "",
+  "route_target": "",
+  "behavior": "navigate | submit | open_modal | open_drawer | toggle | trigger_action | open_link | download | call_api | scroll_to",
+  "behavior_target": "",
+  "owning_page_refs": [],
+  "owning_component_refs": [],
+  "permission_required": "",
+  "confirmation_required": false,
+  "states": {},
+  "analytics_event": "",
+  "source_trace": []
+}
+```
+
+# Route Inventory Schema
+
+Every route across all pages must be recorded in a global route inventory:
+
+```json
+{
+  "route_id": "",
+  "path": "",
+  "page_ref": "",
+  "page_name": "",
+  "screen_type": "",
+  "is_launch_critical": false,
+  "role_access": [],
+  "owning_journey_ids": [],
+  "related_routes": [],
+  "source_trace": []
+}
+```
+
+# Navigation Inventory Schema
+
+Every navigation item across the app must be recorded:
+
+```json
+{
+  "nav_item_id": "",
+  "label": "",
+  "route_target": "",
+  "icon": "",
+  "order": 0,
+  "group": "",
+  "permission_required": "",
+  "children": [],
+  "owning_page_refs": []
+}
 ```
 
 ---
@@ -2051,6 +2210,10 @@ Stage 4 may complete only when:
 * high and critical UX risks have mitigation paths
 * critical interactive guidance questions are answered or converted into recorded assumptions
 * no interaction-blocking Stage 3 unknowns remain unresolved
+* every launch-critical UI blueprint enumerates every interactive element (buttons, links, menu items, etc.) on the page
+* every interactive element with navigate behavior has a route_target that exists in the route inventory
+* action_inventory is complete for all launch-critical pages and maps every action to its route_target
+* route_inventory covers all navigation paths used by interactive elements
 * Stage 4 decision brief exists and is approved
 
 ---
@@ -2072,8 +2235,13 @@ Before completing Stage 4, confirm:
 * every launch-critical UI blueprint includes visual acceptance criteria and user approval status
 * design system foundation exists for launch-critical frontend work
 * visual references, liked patterns, disliked patterns, and design approval status are recorded when available
-* every UI blueprint maps page -> section -> component -> action -> data source -> validation -> states
-* component inventory, shared components, routes, states, and actions are defined
+* every UI blueprint maps page -> section -> component -> interactive element -> route -> data source -> validation -> states
+* every interactive element has an element_type, label, and either a route_target or action_id
+* every interactive element with navigate behavior has a route_target that exists in route_inventory
+* every action in action_inventory maps back to its owning page and component
+* every route in route_inventory maps to a blueprint page_ref
+* every navigation item has a route_target pointing to a valid route in route_inventory
+* component inventory, shared components, routes, states, actions, and interactive elements are defined
 * frontend build package is usable by frontend-design, frontend-builder, task generators, and agent builders
 * every core workflow has states and recovery behavior
 * accessibility risks are recorded

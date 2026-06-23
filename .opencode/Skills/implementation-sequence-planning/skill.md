@@ -146,6 +146,7 @@ Validate:
 * every launch-critical workflow has a build path
 * frontend sequencing uses the Stage 4 frontend build package when available
 * shared components, layout systems, navigation, and route foundations precede dependent page work
+* interactive elements (modals, drawers, nested routes) are sequenced after their parent pages and components
 * foundational infrastructure and data work precedes dependent features
 * integrations are not pushed so late that they threaten release readiness
 * each implementation slice has a validation checkpoint

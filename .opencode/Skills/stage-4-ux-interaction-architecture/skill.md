@@ -532,6 +532,10 @@ Stage 4 may complete only when:
 * high and critical UX risks have mitigation paths
 * critical interactive guidance questions are answered or converted into recorded assumptions
 * no interaction-blocking Stage 3 unknowns remain unresolved
+* every launch-critical UI blueprint enumerates every interactive element (buttons, links, menu items, etc.) on the page
+* every interactive element with navigate behavior has a route_target that exists in the route inventory
+* action_inventory is complete for all launch-critical pages and maps every action to its route_target
+* route_inventory covers all navigation paths used by interactive elements
 * Stage 4 decision brief exists and is approved
 
 Possible completion statuses:
@@ -560,7 +564,12 @@ Before completing Stage 4, confirm:
 * every UI blueprint uses the page-definition matrix
 * every launch-critical UI blueprint uses the visual spec matrix
 * design system foundation exists for launch-critical frontend work
-* component inventory, shared components, routes, states, and actions are defined
+* every UI blueprint maps page -> section -> component -> interactive element -> route_target
+* every launch-critical button, link, and interactive element has a defined route_target or action behavior
+* route_inventory contains every path used by interactive elements across all pages
+* action_inventory maps every interactive element to its owning page, component, and route
+* navigation items have structured route_target entries that resolve in route_inventory
+* component inventory, shared components, routes, states, actions, and interactive elements are defined
 * every core workflow has states and recovery behavior
 * accessibility risks are recorded
 * critical interactive guidance questions are answered or converted into recorded assumptions

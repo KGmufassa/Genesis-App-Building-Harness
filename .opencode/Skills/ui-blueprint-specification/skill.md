@@ -193,6 +193,96 @@ Page
 
 ---
 
+# Interactive Element Schema
+
+Every interactive element on a page (button, link, icon button, menu item, tab, input, etc.) must be enumerated with:
+
+```json
+{
+  "element_id": "",
+  "element_type": "button | link | icon_button | menu_item | tab | toggle | checkbox | radio | select | text_input | search_input | file_upload | date_picker",
+  "label": "",
+  "icon": "",
+  "route_target": "",
+  "action_id": "",
+  "behavior": "navigate | submit | open_modal | open_drawer | toggle | trigger_action | open_link | download | call_api | scroll_to",
+  "behavior_target": "",
+  "states": {
+    "default": {},
+    "loading": {},
+    "disabled": {},
+    "active": {},
+    "hover": {}
+  },
+  "permission_required": "",
+  "confirmation_required": false,
+  "analytics_event": "",
+  "source_trace": []
+}
+```
+
+# Action Inventory Schema
+
+Every action across all pages must be recorded in a global action inventory:
+
+```json
+{
+  "action_id": "",
+  "name": "",
+  "element_type": "button | link | icon_button | menu_item | tab | toggle | checkbox | radio | select",
+  "label": "",
+  "route_target": "",
+  "behavior": "navigate | submit | open_modal | open_drawer | toggle | trigger_action | open_link | download | call_api | scroll_to",
+  "behavior_target": "",
+  "owning_page_refs": [],
+  "owning_component_refs": [],
+  "permission_required": "",
+  "confirmation_required": false,
+  "states": {},
+  "analytics_event": "",
+  "source_trace": []
+}
+```
+
+# Route Inventory Schema
+
+Every route across all pages must be recorded in a global route inventory:
+
+```json
+{
+  "route_id": "",
+  "path": "",
+  "page_ref": "",
+  "page_name": "",
+  "screen_type": "",
+  "is_launch_critical": false,
+  "role_access": [],
+  "owning_journey_ids": [],
+  "related_routes": [],
+  "source_trace": []
+}
+```
+
+# Navigation Inventory Schema
+
+Every navigation item across the app must be recorded:
+
+```json
+{
+  "nav_item_id": "",
+  "label": "",
+  "route_target": "",
+  "icon": "",
+  "order": 0,
+  "group": "",
+  "permission_required": "",
+  "children": [],
+  "owning_page_refs": []
+}
+```
+
+---
+
 # Interactive Guidance Responsibilities
 
 Ask the user to confirm or choose:
@@ -298,12 +388,80 @@ The output must include:
 }
 ```
 
-Each `ui_blueprints[]` entry must include:
+Each `ui_blueprints[]` entry must include the page-definition matrix, interactive element hierarchy, and visual spec:
 
 ```json
 {
   "ui_blueprint_id": "",
   "page_ref": "",
+  "page_name": "",
+  "purpose": "",
+  "primary_user_role": "",
+  "screen_type": "",
+  "layout_type": "",
+  "route": "",
+  "sections": [
+    {
+      "section_id": "",
+      "name": "",
+      "components": [
+        {
+          "component_id": "",
+          "component_type": "",
+          "interactive_elements": [
+            {
+              "element_id": "",
+              "element_type": "button | link | icon_button | ...",
+              "label": "",
+              "route_target": "",
+              "action_id": "",
+              "behavior": "navigate | submit | ...",
+              "behavior_target": "",
+              "states": {},
+              "permission_required": "",
+              "confirmation_required": false
+            }
+          ],
+          "data_source": "",
+          "validation": ""
+        }
+      ]
+    }
+  ],
+  "navigation": [
+    {
+      "nav_item_id": "",
+      "label": "",
+      "route_target": "",
+      "icon": "",
+      "permission_required": "",
+      "children": []
+    }
+  ],
+  "global_actions": [
+    {
+      "element_id": "",
+      "element_type": "button | link | ...",
+      "label": "",
+      "route_target": "",
+      "action_id": "",
+      "behavior": "navigate | submit | ...",
+      "behavior_target": ""
+    }
+  ],
+  "states": {
+    "loading": {},
+    "empty": {},
+    "error": {},
+    "success": {},
+    "populated": {}
+  },
+  "data_requirements": [],
+  "validation_requirements": [],
+  "accessibility_requirements": [],
+  "responsive_requirements": [],
+  "frontend_task_hints": [],
+  "recommended_skills": ["frontend-design", "frontend-builder"],
   "visual_spec": {
     "visual_style": "",
     "density": "",
@@ -317,7 +475,8 @@ Each `ui_blueprints[]` entry must include:
     "reference_apps": [],
     "visual_acceptance_criteria": [],
     "user_approval_status": "unconfirmed"
-  }
+  },
+  "source_trace": []
 }
 ```
 
@@ -357,8 +516,14 @@ Validate:
 * every launch-critical page has a UI blueprint
 * every UI blueprint has purpose, primary user, screen type, layout type, sections, components, actions, data needs, states, validation, and navigation
 * every launch-critical UI blueprint has a visual spec with style, density, color direction, typography feel, component style, primary visual focus, responsive behavior, visual do and don't rules, visual acceptance criteria, and user approval status
-* every UI blueprint maps page -> section -> component -> action -> data source -> validation -> states
+* every UI blueprint maps page -> section -> component -> interactive element -> route -> data source -> validation -> states
+* every interactive element has an element_type, label, and either a route_target or action_id
+* every interactive element with navigate behavior has a route_target that exists in route_inventory
+* every action in action_inventory maps back to its owning page and component
+* every route in route_inventory maps to a blueprint page_ref
+* every navigation item has a route_target pointing to a valid route in route_inventory
+* every launch-critical page enumerates every interactive element in every component and section
 * every frontend build package can reference visual specs for frontend tickets
-* component inventory, shared components, routes, states, and actions are defined
+* component inventory, shared components, routes, states, actions, and interactive elements are defined
 * frontend build package is usable by frontend-design, frontend-builder, task generators, and agent builders
 * no frontend code is generated

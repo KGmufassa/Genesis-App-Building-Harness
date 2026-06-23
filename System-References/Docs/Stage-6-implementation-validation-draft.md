@@ -112,7 +112,22 @@ Build-Plans/Build-status/Implementation-state.json
   "agent_assignment_plan": {},
   "parallel_execution_plan": {},
   "active_agents": [],
-  "parallel_batches": [],
+  "parallel_batches": [
+    {
+      "batch_id": "",
+      "ticket_ids": [],
+      "agent_ids": [],
+      "status": "pending",
+      "completed_at": "",
+      "recorded_at": "",
+      "file_locks": [],
+      "conflicts_detected": [],
+      "validation_results": [],
+      "blocking_failures": [],
+      "downstream_batches_blocked": [],
+      "batch_completion_recorded": false
+    }
+  ],
   "preflight": {},
   "environment_state": {
     "detected_stack": [],
@@ -171,7 +186,15 @@ Build-Plans/Build-status/Implementation-state.json
     "implementation_confidence_gaps": []
   },
   "stage_7_handoff": {},
-  "completion_status": {}
+  "completion_status": {
+    "status": "",
+    "reason": "",
+    "completed_at": "",
+    "recorded_at": "",
+    "blocking_items": [],
+    "next_actions": [],
+    "ready_for": ""
+  }
 }
 ```
 
@@ -469,6 +492,7 @@ Stage 6 must validate referenced UI blueprint requirements for:
 * shared components
 * routes
 * user actions
+* interactive elements (buttons, links, menu items) with element_type, label, route_target, and behavior
 * required UI states
 * data requirements
 * validation requirements
@@ -728,12 +752,15 @@ Each parallel batch result must include:
   "ticket_ids": [],
   "agent_ids": [],
   "status": "completed",
+  "completed_at": "",
+  "recorded_at": "",
   "file_locks": [],
   "conflicts_detected": [],
   "merge_owner": "",
   "validation_gates": [],
   "blocking_failures": [],
-  "downstream_batches_blocked": []
+  "downstream_batches_blocked": [],
+  "batch_completion_recorded": false
 }
 ```
 
@@ -1263,12 +1290,31 @@ Stage 6 is `ready_for_stage_7` only when:
 * no unresolved critical validation failures remain
 * no unresolved critical regressions remain
 * all launch-critical tickets are implemented and validated
-* all launch-critical frontend tickets preserve referenced UI blueprint page, component, route, action, state, validation, accessibility, responsive, visual, and design system requirements
+* all launch-critical frontend tickets preserve referenced UI blueprint page, component, route, action, state, interactive element (element_type, label, route_target, behavior), validation, accessibility, responsive, visual, and design system requirements
 * all launch-critical frontend tickets requiring preview have a recorded preview URL or accepted blocker
 * all launch-critical frontend tickets have no `major_visual_drift` unless explicitly accepted as known release risk
 * all launch-critical expected artifacts are recorded in the artifact evidence registry or explicitly accepted as known release risk
 * all high-risk repairs are verified or explicitly accepted as known risk
 * no launch-critical ticket is `failed`, `blocked`, or `deferred` unless explicitly accepted as a known release risk
+
+---
+
+# Global Workflow State Update
+
+After setting completion_status and before declaring stage completion, update:
+
+```text
+Build-Plans/Build-status/Global-workflow-state.json
+```
+
+Set:
+
+* `stages.stage_6.status` — the completion status value
+* `stages.stage_6.ready_for_next_stage` — true if `ready_for_stage_7`, false otherwise
+* `stages.stage_6.audit_file` — path to the readiness audit file
+* `current_stage` — advance to `stage_7` when ready
+* `last_audit` — ISO timestamp
+* `next_recommended_action` — audit-driven next action
 
 ---
 
@@ -1294,6 +1340,8 @@ Before completing Stage 6, confirm:
 * visual QA, responsive validation, design system compliance, and visual drift status are recorded for frontend tickets when required
 * regression analysis maps failures back to affected tickets, agents, batches, workflows, and features
 * repair log includes verification results
+* completion_status includes completed_at and recorded_at timestamps
+* Global-workflow-state.json reflects the stage completion status
 * Stage 7 handoff is usable for launch and operationalization
 
 ---

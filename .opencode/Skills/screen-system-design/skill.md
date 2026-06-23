@@ -64,6 +64,46 @@ Validate:
 * navigation is complete
 * MVP screens are not over-scoped
 
+## Interactive Element Mapping
+
+Each screen must enumerate every interactive element (buttons, links, inputs) it contains:
+
+```json
+{
+  "screen_id": "",
+  "name": "",
+  "route_or_location_hint": "",
+  "owning_journey_ids": [],
+  "supported_feature_ids": [],
+  "role_access": [],
+  "required_data": [],
+  "user_actions": [],
+  "system_actions": [],
+  "states": [],
+  "interactive_elements": [
+    {
+      "element_id": "",
+      "element_type": "button | link | icon_button | menu_item | tab | toggle | checkbox | radio | select | text_input | search_input | file_upload | date_picker",
+      "label": "",
+      "route_target": "",
+      "action_id": "",
+      "behavior": "navigate | submit | open_modal | open_drawer | toggle | trigger_action | open_link | download | call_api | scroll_to",
+      "behavior_target": "",
+      "permission_required": "",
+      "confirmation_required": false,
+      "states": {},
+      "owning_component": "",
+      "owning_section": ""
+    }
+  ],
+  "responsive_requirements": [],
+  "accessibility_requirement_ids": [],
+  "stage_5_ticket_hints": []
+}
+```
+
+Every screen's interactive_elements must be cross-referenced with the UI blueprint's section -> component -> interactive_elements hierarchy during ui-blueprint-specification.
+
 ## Screen Risk Detection
 
 Identify:
@@ -145,4 +185,6 @@ Validate:
 * screen inventory maps to launch-critical features
 * role-based access is represented
 * screen risks are recorded
+* every screen records its interactive elements with route_targets and behavior
+* every interactive element references a valid route or action
 

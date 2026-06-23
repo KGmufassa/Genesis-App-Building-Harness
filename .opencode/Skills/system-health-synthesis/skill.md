@@ -120,7 +120,7 @@ regression_analysis
 system_health
 repair_log
 stage_7_handoff
-completion_status
+completion_status (include completed_at and recorded_at)
 interactive_guidance
 ```
 
@@ -168,6 +168,23 @@ needs_revalidation
 blocked
 ```
 
+## Global Workflow State Update
+
+After setting completion_status and before declaring stage completion, update:
+
+```text
+Build-Plans/Build-status/Global-workflow-state.json
+```
+
+Set:
+
+* `stages.stage_6.status` — the completion status value
+* `stages.stage_6.ready_for_next_stage` — true if `ready_for_stage_7`, false otherwise
+* `stages.stage_6.audit_file` — path to the readiness audit file
+* `current_stage` — advance to `stage_7` when ready
+* `last_audit` — ISO timestamp
+* `next_recommended_action` — audit-driven next action
+
 ---
 
 # Validation Checklist
@@ -186,4 +203,6 @@ Before completing Stage 6, confirm:
 * visual QA and responsive validation results are included for frontend tickets when required
 * regression analysis maps failures back to affected tickets, agents, batches, workflows, and features
 * repair log includes verification results
+* completion_status includes completed_at and recorded_at timestamps
+* Global-workflow-state.json reflects the stage completion status
 * Stage 7 handoff is usable for launch and operationalization

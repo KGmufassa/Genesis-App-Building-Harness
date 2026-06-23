@@ -80,7 +80,22 @@ as the source for page structure, layout type, sections, components, shared comp
   "implemented_items": [],
   "implemented_tickets": [],
   "agent_execution_results": [],
-  "parallel_batch_results": [],
+  "parallel_batch_results": [
+    {
+      "batch_id": "",
+      "status": "",
+      "completed_at": "",
+      "recorded_at": "",
+      "completed_tickets": [],
+      "blocked_tickets": [],
+      "failed_tickets": [],
+      "validation_gates_passed": [],
+      "validation_gates_failed": [],
+      "conflicts_detected": [],
+      "blocking_failures": [],
+      "batch_completion_recorded": false
+    }
+  ],
   "ui_blueprint_execution_refs": [],
   "visual_spec_execution_refs": [],
   "design_system_execution_refs": [],
@@ -127,7 +142,8 @@ Validate:
 * every executed frontend ticket with `visual_spec_refs` records the referenced visual spec IDs
 * every executed frontend ticket with `design_system_refs` records the referenced design system IDs
 * every executed frontend ticket with `preview_required` records a preview URL or blocker
-* every executed frontend ticket preserves referenced page, component, route, action, state, validation, accessibility, responsive, visual, and design system requirements
+* every executed frontend ticket preserves referenced page, component, route, action, state, interactive element (with element_type, label, route_target, and behavior), validation, accessibility, responsive, visual, and design system requirements
 * every generated implementation, preview, build, or log artifact is recorded or queued for `Build-Plans/Build-status/Artifact-evidence-registry.json`
 * every blocker includes a reason and next action
 * every parallel batch execution records batch status
+* every parallel batch result records completion status, completed_at, and recorded_at

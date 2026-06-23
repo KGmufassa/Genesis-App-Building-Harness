@@ -253,6 +253,11 @@ Before completing Stage 4, confirm:
 * every launch-critical page has a visual spec
 * every launch-critical visual spec includes visual acceptance criteria and user approval status
 * design system foundation exists for launch-critical frontend work
+* every UI blueprint enumerates every interactive element per component per section
+* every interactive element with navigate behavior has a route_target in route_inventory
+* action_inventory covers all launch-critical pages
+* route_inventory covers all navigation and action targets
+* navigation items have structured route_target entries that resolve
 * UI blueprints are usable by Stage 5 development orchestration
 * every core workflow has states and recovery behavior
 * accessibility risks are recorded
