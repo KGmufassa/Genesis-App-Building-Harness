@@ -281,6 +281,7 @@ Required Stage 4 files:
 06-accessibility-framework.json
 07-ui-blueprint-specification.json
 08-design-system-foundation.json
+09-complete-app-blueprint.md
 ```
 
 Minimum viable input set:
@@ -303,6 +304,7 @@ Stage 4:
 05-state-transition-map.json
 07-ui-blueprint-specification.json
 08-design-system-foundation.json
+09-complete-app-blueprint.md
 ```
 
 If the minimum viable input set is missing, stop and set:
@@ -328,10 +330,12 @@ Before development orchestration, validate:
 * Stage 4 UX outputs exist and are readable
 * Stage 4 UI blueprint output exists and is readable
 * Stage 4 design system foundation exists and is readable
+* Stage 4 complete app blueprint markdown exists and is readable
 * launch-critical features are known
 * service, data, API, and infrastructure dependencies are available
 * feature behaviors and state transitions are clear enough to sequence implementation
 * UI blueprints define launch-critical pages, components, routes, actions, states, interactive elements (buttons, links, menu items, etc.) with route_targets, visual specs, visual acceptance criteria, and frontend build package hints
+* complete app blueprint markdown maps launch-critical pages to UI blueprint IDs and summarizes page sections, components, actions, routes, states, and data requirements
 * design system foundation defines shared visual tokens, component rules, responsive rules, and design approval status
 * accessibility and security requirements are available for test planning
 * earlier-stage risks do not block engineering planning
@@ -2692,6 +2696,7 @@ Stage 5 may complete only when:
 * parallel execution plan defines file locks, merge owner, and failure policy
 * Stage 6 handoff includes execution queue, validation commands, dev server plan, environment requirements, file scope controls, retry policy, and `expected_artifacts`
 * Stage 6 handoff includes the approved Stage 3 `selected_stack`
+* Stage 6 handoff includes the Stage 4 complete app blueprint markdown path
 * release plan exists
 * high and critical execution risks have mitigation paths
 * critical interactive guidance questions are answered or converted into recorded assumptions
@@ -2714,6 +2719,7 @@ Before completing Stage 5, confirm:
 * build tickets exist for every MVP implementation slice
 * build tickets include primary skill, recommended skill chain, agent-required skills, skill usage instructions, acceptance criteria, and validation steps
 * frontend build tickets include UI blueprint references, visual spec references, design system references, component references, route references, state references, action references, visual requirements, and frontend task hints
+* frontend build tickets reference `09-complete-app-blueprint.md` when page structure, component structure, route structure, or state structure matters
 * agent assignment plan gives each agent clear ownership and handoff inputs
 * agent assignment plan records available-agent scan results, suitability scores, and unassigned ticket reasons
 * generated agents have valid markdown definitions in `.opencode/agents/`, safe permission settings, and complete prompt bodies

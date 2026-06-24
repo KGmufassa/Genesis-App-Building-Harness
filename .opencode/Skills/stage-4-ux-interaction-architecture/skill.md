@@ -446,6 +446,7 @@ Build-Plans/Stage-4/05-state-transition-map.json
 Build-Plans/Stage-4/06-accessibility-framework.json
 Build-Plans/Stage-4/07-ui-blueprint-specification.json
 Build-Plans/Stage-4/08-design-system-foundation.json
+Build-Plans/Stage-4/09-complete-app-blueprint.md
 ```
 
 Each output must include:
@@ -515,7 +516,7 @@ If the audit does not pass, do not use `ready_for_stage_5`.
 
 Stage 4 may complete only when:
 
-* all eight UX, UI blueprint, and design system outputs exist
+* all nine UX, UI blueprint, design system, and complete app blueprint outputs exist
 * primary user journeys are defined
 * interaction architecture supports MVP workflows
 * screen system supports all launch-critical journeys
@@ -524,7 +525,11 @@ Stage 4 may complete only when:
 * accessibility framework exists
 * UI blueprints exist for all launch-critical pages and screens
 * each launch-critical UI blueprint includes page purpose, primary user, screen type, layout type, sections, components, actions, data needs, states, validation, and navigation
+* each selected page or screen type includes `page_type_selection_rationale`
 * each launch-critical UI blueprint includes visual style, density, color direction, typography feel, component style, primary visual focus, responsive behavior, visual do and don't rules, visual acceptance criteria, and user approval status
+* complete app blueprint markdown exists at `Build-Plans/Stage-4/09-complete-app-blueprint.md`
+* complete app blueprint markdown includes every launch-critical page and maps each page to a `ui_blueprint_id`
+* complete app blueprint markdown includes page sections, components, actions, routes, states, data requirements, and frontend build package summary
 * design system foundation exists and defines shared color, typography, spacing, radius, elevation, icon, component, and responsive rules
 * launch-critical visual specs reference or align with the design system foundation
 * launch-critical visual specs and design system approval statuses are approved or explicitly accepted as assumptions
@@ -561,6 +566,8 @@ Before completing Stage 4, confirm:
 * every launch-critical feature has behavior rules
 * every required screen maps to a journey or feature
 * every launch-critical page has a UI blueprint
+* every launch-critical page appears in `09-complete-app-blueprint.md`
+* every selected page type has an inclusion rationale tied to upstream product, workflow, role, feature, journey, or route evidence
 * every UI blueprint uses the page-definition matrix
 * every launch-critical UI blueprint uses the visual spec matrix
 * design system foundation exists for launch-critical frontend work
@@ -570,6 +577,7 @@ Before completing Stage 4, confirm:
 * action_inventory maps every interactive element to its owning page, component, and route
 * navigation items have structured route_target entries that resolve in route_inventory
 * component inventory, shared components, routes, states, actions, and interactive elements are defined
+* complete app blueprint markdown is usable by Stage 5 without reinterpreting page, component, route, action, state, or data requirements
 * every core workflow has states and recovery behavior
 * accessibility risks are recorded
 * critical interactive guidance questions are answered or converted into recorded assumptions

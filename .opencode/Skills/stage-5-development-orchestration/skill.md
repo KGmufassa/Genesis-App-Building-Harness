@@ -209,6 +209,7 @@ Stage 4:
 05-state-transition-map.json
 07-ui-blueprint-specification.json
 08-design-system-foundation.json
+09-complete-app-blueprint.md
 ```
 
 If the minimum viable input set is missing, stop and set:
@@ -243,10 +244,12 @@ Before development orchestration, validate:
 * Stage 4 UX outputs exist and are readable
 * Stage 4 UI blueprint output exists and is readable
 * Stage 4 design system foundation exists and is readable
+* Stage 4 complete app blueprint markdown exists and is readable
 * launch-critical features are known
 * service, data, API, and infrastructure dependencies are available
 * feature behaviors and state transitions are clear enough to sequence implementation
 * UI blueprints define launch-critical pages, components, routes, actions, states, interactive elements (buttons, links, menu items, etc.) with route_targets, visual specs, visual acceptance criteria, and frontend build package hints
+* complete app blueprint markdown maps launch-critical pages to UI blueprint IDs and summarizes page sections, components, actions, routes, states, and data requirements
 * design system foundation defines shared visual tokens, component rules, responsive rules, and design approval status
 * accessibility and security requirements are available for test planning
 * earlier-stage risks do not block engineering planning
@@ -517,6 +520,7 @@ Stage 5 may complete only when:
 * build tickets include skill suitability scores and selection rationale
 * build tickets include acceptance criteria and validation steps
 * frontend build tickets reference applicable UI blueprint IDs or explicitly record why no UI blueprint applies
+* frontend build tickets reference `09-complete-app-blueprint.md` when page structure, component structure, route structure, or state structure matters
 * frontend build tickets reference applicable visual spec IDs or explicitly record why no visual spec applies
 * frontend build tickets reference applicable design system IDs or explicitly record why no design system applies
 * frontend build tickets preserve page, component, route, action, state, interactive element, validation, accessibility, responsive, visual, and design system requirements from Stage 4
@@ -556,6 +560,7 @@ Before completing Stage 5, confirm:
 * build tickets exist for every MVP implementation slice
 * build tickets include primary skill, recommended skill chain, agent-required skills, skill usage instructions, acceptance criteria, and validation steps
 * frontend build tickets include UI blueprint references, visual spec references, design system references, component references, route references, state references, action references, interactive element references, visual requirements, and frontend task hints
+* frontend build tickets reference `09-complete-app-blueprint.md` when page structure, component structure, route structure, or state structure matters
 * agent assignment plan gives each agent clear ownership and handoff inputs
 * generated agents have valid markdown definitions in `.opencode/agents/`, safe permission settings, and complete prompt bodies
 * parallel execution plan defines batches, merge strategy, and validation gates

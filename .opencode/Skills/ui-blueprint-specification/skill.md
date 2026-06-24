@@ -85,8 +85,47 @@ Settings
 Profile
 Analytics
 Messaging
+Landing Page
+Hero Page
+Marketing Page
+Onboarding
+Pricing
+Authentication
+Admin
+Checkout
 Custom
 ```
+
+Screen/page type selection must be contextual.
+
+These options are a controlled vocabulary, not a required checklist. Include only page or screen types justified by:
+
+* Stage 1 product category and MVP scope
+* Stage 1 workflows and feature structure
+* Stage 3 selected stack and architecture constraints
+* Stage 4 user journeys and launch-critical interactions
+* user roles, permissions, and navigation needs
+
+Do not add `Landing Page`, `Hero Page`, `Dashboard`, `Admin`, `Checkout`, `Authentication`, `Pricing`, or any other page type unless the product model requires it.
+
+For each selected page type, record:
+
+```json
+{
+  "page_name": "",
+  "screen_type": "",
+  "included_because": [],
+  "source_refs": [],
+  "excluded_page_types": [
+    {
+      "screen_type": "",
+      "reason": ""
+    }
+  ]
+}
+```
+
+Ask the user only when a launch-critical page type is ambiguous. Otherwise infer the page type from upstream workflow, role, feature, and route evidence, and record the assumption.
 
 Layout type options:
 
@@ -174,6 +213,51 @@ Dense Utility
 Media Rich
 Custom
 ```
+
+---
+
+# Complete App Blueprint Markdown
+
+Generate a readable complete app blueprint tree at:
+
+```text
+Build-Plans/Stage-4/09-complete-app-blueprint.md
+```
+
+The markdown tree must use this structure, adapted to the app being built. The example page names below are illustrative only; the generated tree must include the pages required by the actual product:
+
+```text
+Complete App Blueprint
+│
+├── Pages
+│   ├── Example Landing Page
+│   │   ├── Hero
+│   │   ├── Feature Preview
+│   │   ├── CTA
+│   │   └── Footer
+│   ├── Example Dashboard
+│   │   ├── Summary Cards
+│   │   ├── Activity Feed
+│   │   └── Task Table
+│
+├── Components
+│
+├── Shared Components
+│
+├── Navigation
+│
+├── Routes
+│
+├── Actions
+│
+├── States
+│
+├── Data Requirements
+│
+└── Frontend Build Package
+```
+
+Every launch-critical page in the markdown tree must map to a `ui_blueprint_id` and include its sections, components, primary actions, route, states, and data requirements.
 
 ---
 
@@ -363,6 +447,7 @@ The output must include:
   "status": "",
   "ui_blueprints": [],
   "page_inventory": [],
+  "page_type_selection_rationale": [],
   "component_inventory": [],
   "visual_spec_inventory": [],
   "shared_components": [],
@@ -384,6 +469,7 @@ The output must include:
   },
   "visual_approval_status": {},
   "ui_blueprint_markdown_path": "",
+  "complete_app_blueprint_markdown_path": "Build-Plans/Stage-4/09-complete-app-blueprint.md",
   "stage_5_handoff": {}
 }
 ```
@@ -480,6 +566,12 @@ Each `ui_blueprints[]` entry must include the page-definition matrix, interactiv
 }
 ```
 
+Also produce the required complete app blueprint tree under:
+
+```text
+Build-Plans/Stage-4/09-complete-app-blueprint.md
+```
+
 When useful, also produce a readable `UI_BLUEPRINT.md` reference under:
 
 ```text
@@ -514,6 +606,8 @@ Build-Plans/Build-status/UX-state.json
 Validate:
 
 * every launch-critical page has a UI blueprint
+* every launch-critical page appears in `Build-Plans/Stage-4/09-complete-app-blueprint.md`
+* every selected page type has an inclusion rationale tied to upstream product, workflow, role, feature, journey, or route evidence
 * every UI blueprint has purpose, primary user, screen type, layout type, sections, components, actions, data needs, states, validation, and navigation
 * every launch-critical UI blueprint has a visual spec with style, density, color direction, typography feel, component style, primary visual focus, responsive behavior, visual do and don't rules, visual acceptance criteria, and user approval status
 * every UI blueprint maps page -> section -> component -> interactive element -> route -> data source -> validation -> states
@@ -525,5 +619,7 @@ Validate:
 * every launch-critical page enumerates every interactive element in every component and section
 * every frontend build package can reference visual specs for frontend tickets
 * component inventory, shared components, routes, states, actions, and interactive elements are defined
+* complete app blueprint markdown maps every launch-critical page to a `ui_blueprint_id`
+* complete app blueprint markdown includes page sections, components, actions, routes, states, data requirements, and frontend build package summary
 * frontend build package is usable by frontend-design, frontend-builder, task generators, and agent builders
 * no frontend code is generated

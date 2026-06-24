@@ -513,8 +513,47 @@ Screen type options:
 7. Profile
 8. Analytics
 9. Messaging
-10. Custom
+10. Landing Page
+11. Hero Page
+12. Marketing Page
+13. Onboarding
+14. Pricing
+15. Authentication
+16. Admin
+17. Checkout
+18. Custom
 ```
+
+Screen/page type selection must be contextual.
+
+These options are a controlled vocabulary, not a required checklist. Stage 4 must only include page or screen types that are justified by:
+
+* Stage 1 product category and MVP scope
+* Stage 1 workflows and feature structure
+* Stage 3 selected stack and architecture constraints
+* Stage 4 user journeys and launch-critical interactions
+* user roles, permissions, and navigation needs
+
+Do not add `Landing Page`, `Hero Page`, `Dashboard`, `Admin`, `Checkout`, `Authentication`, `Pricing`, or any other page type unless the product model requires it.
+
+Each selected page type must record a rationale:
+
+```json
+{
+  "page_name": "",
+  "screen_type": "",
+  "included_because": [],
+  "source_refs": [],
+  "excluded_page_types": [
+    {
+      "screen_type": "",
+      "reason": ""
+    }
+  ]
+}
+```
+
+Ask the user only when a launch-critical page type is ambiguous. Otherwise infer the page type from upstream workflow, role, feature, and route evidence, and record the assumption.
 
 Layout type options:
 
@@ -672,7 +711,50 @@ Blueprint structure:
 }
 ```
 
-The UI blueprint package should also produce a readable `UI_BLUEPRINT.md` view when useful, with sections for:
+The UI blueprint package must produce a readable complete app blueprint tree:
+
+```text
+Build-Plans/Stage-4/09-complete-app-blueprint.md
+```
+
+The complete app blueprint must use a markdown tree format that exposes all launch-critical pages and their implementation-relevant structure. The example page names below are illustrative only; the generated tree must include the pages required by the actual product:
+
+```text
+Complete App Blueprint
+│
+├── Pages
+│   ├── Example Landing Page
+│   │   ├── Hero
+│   │   ├── Feature Preview
+│   │   ├── CTA
+│   │   └── Footer
+│   ├── Example Dashboard
+│   │   ├── Summary Cards
+│   │   ├── Activity Feed
+│   │   └── Task Table
+│
+├── Components
+│
+├── Shared Components
+│
+├── Navigation
+│
+├── Routes
+│
+├── Actions
+│
+├── States
+│
+├── Data Requirements
+│
+└── Frontend Build Package
+```
+
+Every page in `09-complete-app-blueprint.md` must map to a `ui_blueprint_id`. Every launch-critical page must show its sections, components, primary actions, route, states, and data requirements.
+
+Do not include every screen type from the controlled vocabulary in the markdown tree. Include only selected pages with recorded rationale.
+
+The UI blueprint package may also produce a readable `UI_BLUEPRINT.md` view when useful, with sections for:
 
 ```text
 /pages
@@ -1883,6 +1965,7 @@ Build-Plans/Stage-4/05-state-transition-map.json
 Build-Plans/Stage-4/06-accessibility-framework.json
 Build-Plans/Stage-4/07-ui-blueprint-specification.json
 Build-Plans/Stage-4/08-design-system-foundation.json
+Build-Plans/Stage-4/09-complete-app-blueprint.md
 ```
 
 Each output must include:
@@ -2005,6 +2088,7 @@ Each output must include:
   "status": "",
   "ui_blueprints": [],
   "page_inventory": [],
+  "page_type_selection_rationale": [],
   "component_inventory": [],
   "visual_spec_inventory": [],
   "shared_components": [],
@@ -2026,6 +2110,7 @@ Each output must include:
   },
   "visual_approval_status": {},
   "ui_blueprint_markdown_path": "",
+  "complete_app_blueprint_markdown_path": "Build-Plans/Stage-4/09-complete-app-blueprint.md",
   "stage_5_handoff": {}
 }
 ```
@@ -2190,7 +2275,7 @@ System-References/Docs/Global-Stage-Workflow-Contract.md
 
 Stage 4 may complete only when:
 
-* all eight UX, UI blueprint, and design system outputs exist
+* all nine UX, UI blueprint, design system, and complete app blueprint outputs exist
 * primary user journeys are defined
 * interaction architecture supports MVP workflows
 * screen system supports all launch-critical journeys
@@ -2199,11 +2284,15 @@ Stage 4 may complete only when:
 * accessibility framework exists
 * UI blueprints exist for all launch-critical pages and screens
 * each launch-critical UI blueprint includes page purpose, primary user, screen type, layout type, sections, components, actions, data needs, states, validation, and navigation
+* each selected page or screen type includes `page_type_selection_rationale`
 * each launch-critical UI blueprint includes a visual spec with style, density, color direction, typography feel, component style, primary visual focus, responsive behavior, visual do and don't rules, visual acceptance criteria, and user approval status
 * design system foundation exists and defines shared color, typography, spacing, radius, elevation, icon, component, responsive, and accessibility rules
 * launch-critical visual specs reference or align with the design system foundation
 * launch-critical visual specs and design system approval statuses are approved or explicitly accepted as assumptions
 * frontend build package includes page inventory, component inventory, shared components, routes, actions, states, frontend task hints, and recommended frontend skills
+* complete app blueprint markdown exists at `Build-Plans/Stage-4/09-complete-app-blueprint.md`
+* complete app blueprint markdown includes every launch-critical page and maps each page to a `ui_blueprint_id`
+* complete app blueprint markdown includes page sections, components, actions, routes, states, data requirements, and frontend build package summary
 * launch-critical screens include role access, required data, actions, states, responsive requirements, and accessibility requirements
 * launch-critical feature behaviors include acceptance criteria and validation rules
 * Stage 5 handoff includes implementation units, UI blueprint IDs, component inventory, frontend build package, validation requirements, responsive requirements, and UX risks
@@ -2230,6 +2319,8 @@ Before completing Stage 4, confirm:
 * every launch-critical feature has behavior rules
 * every required screen maps to a journey or feature
 * every launch-critical page has a UI blueprint
+* every launch-critical page appears in `09-complete-app-blueprint.md`
+* every selected page type has an inclusion rationale tied to upstream product, workflow, role, feature, journey, or route evidence
 * every UI blueprint uses the page-definition matrix
 * every launch-critical UI blueprint uses the visual spec matrix
 * every launch-critical UI blueprint includes visual acceptance criteria and user approval status
@@ -2243,6 +2334,7 @@ Before completing Stage 4, confirm:
 * every navigation item has a route_target pointing to a valid route in route_inventory
 * component inventory, shared components, routes, states, actions, and interactive elements are defined
 * frontend build package is usable by frontend-design, frontend-builder, task generators, and agent builders
+* complete app blueprint markdown is usable by Stage 5 without reinterpreting page, component, route, action, state, or data requirements
 * every core workflow has states and recovery behavior
 * accessibility risks are recorded
 * critical interactive guidance questions are answered or converted into recorded assumptions
